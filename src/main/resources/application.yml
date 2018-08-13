@@ -1,0 +1,68 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: student-service
+  datasource:
+    username: ${username:root}
+    password: ${password:tengyue360}
+    driver-class-name: com.mysql.jdbc.Driver
+    url: ${url:jdbc:mysql://10.88.88.219:3306/shuangshi?characterEncoding=utf-8}
+  redis:
+    host: 10.88.88.219
+    password:
+    port: 6379
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
+   rabbitmq:
+       host: 127.0.0.1
+       port: 5672
+       username: xuliang
+       password: 123456
+       publisher-confirms: true
+       virtual-host: vhost1
+       listener:
+         acknowledge-mode: manual
+         concurrency: 1
+         retry:
+                 enabled: true
+       publisher-returns: true
+ # jackson:
+   # default-property-inclusion: non_null
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${defaultZone:http://eureka-local.dev.tengyue360.com/eureka/}
+  instance:
+    prefer-ip-address: true
+management:
+  security:
+    enabled: false
+mybatis:
+  configuration:
+    call-setters-on-nulls: true
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  config: classpath:logback.xml
+  level:
+    com:
+      tengyue:
+        service:
+          ResumClient: DEBUG
+url:
+  appApi: https://api.tengyue360.com
+  sms: api.tengyue360.com/api/tools/sms/send
+#超时时间
+timeout: 120
+flyway:
+  locations: classpath:db
+  enabled: true
+  encoding: UTF-8
+  baseline-on-migrate: true
+#app中cookie过期时间365天
+cookie:
+  expires: 31536000

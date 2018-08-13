@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tengyue360.dao.SsUserLoginLogMapper">
+    <resultMap id="BaseResultMap" type="com.tengyue360.bean.SsUserLoginLog">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_man" jdbcType="VARCHAR" property="createMan"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_man" jdbcType="VARCHAR" property="updateMan"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, token, create_time, create_man, update_time, update_man, state
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_u_user_login_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ss_u_user_login_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.tengyue360.bean.SsUserLoginLog">
+    insert into ss_u_user_login_log (id, user_id, token, 
+      create_time, create_man, update_time, 
+      update_man, state)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateMan,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.tengyue360.bean.SsUserLoginLog">
+        insert into ss_u_user_login_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createMan != null">
+                create_man,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateMan != null">
+                update_man,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                #{createMan,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateMan != null">
+                #{updateMan,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tengyue360.bean.SsUserLoginLog">
+        update ss_u_user_login_log
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateMan != null">
+                update_man = #{updateMan,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tengyue360.bean.SsUserLoginLog">
+    update ss_u_user_login_log
+    set user_id = #{userId,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_man = #{createMan,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_man = #{updateMan,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <delete id="deleteToeknByUserId">
+
+     delete from ss_u_user_login_log
+        where user_id = #{userId,jdbcType=INTEGER} and state = #{state,jdbcType=VARCHAR}
+
+
+  </delete>
+
+
+</mapper>
