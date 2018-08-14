@@ -8,6 +8,7 @@ import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     /**
      * 修改密码
@@ -61,9 +64,9 @@ public class UserController {
     @RequestMapping(value = "/backPwd", method = RequestMethod.POST)
     public ResponseResult backPwd(UserRequestModel model) {
         logger.info("调用忘记密码接口，参数信息为：{}", model);
-        if (null != BeanValidators.isValidateBackPwd(model)) {
-            logger.info("调用忘记密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model));
-            return BeanValidators.isValidateBackPwd(model);
+        if (null != BeanValidators.isValidateBackPwd(model, redisTemplate)) {
+            logger.info("调用忘记密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model, redisTemplate));
+            return BeanValidators.isValidateBackPwd(model, redisTemplate);
         }
         //调用后台服务
         ResponseResult responseResult = userService.backPwd(model);
@@ -85,9 +88,9 @@ public class UserController {
     @RequestMapping(value = "/loginOut", method = RequestMethod.POST)
     public ResponseResult loginOut(UserRequestModel model) {
         logger.info("调用退出登录接口，参数信息为：{}", model);
-        if (null != BeanValidators.isValidateBackPwd(model)) {
-            logger.info("调用退出登录接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model));
-            return BeanValidators.isValidateBackPwd(model);
+        if (null != BeanValidators.isValidateLoginOut(model)) {
+            logger.info("调用退出登录接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateLoginOut(model));
+            return BeanValidators.isValidateLoginOut(model);
         }
         //调用后台服务
         ResponseResult responseResult = userService.loginOut(model);
@@ -97,15 +100,6 @@ public class UserController {
         }
         return null;
     }
-
-
-
-
-
-
-
-
-
 
 
 }

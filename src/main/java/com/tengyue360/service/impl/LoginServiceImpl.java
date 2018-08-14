@@ -7,6 +7,7 @@ import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
+import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.service.LoginService;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.LoginRequestModel;

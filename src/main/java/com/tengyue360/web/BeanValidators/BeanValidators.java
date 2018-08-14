@@ -6,6 +6,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
+import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.utils.DateUtil;
 import com.tengyue360.web.requestModel.BaseRequestModel;
 import com.tengyue360.web.requestModel.LoginRequestModel;
@@ -86,8 +87,12 @@ public class BeanValidators {
                 return new ResponseResult(ReturnCode.VALIDATE_CODE_FALSE.code(), ReturnCode.VALIDATE_CODE_FALSE.msg(), null);
             }
             //校验缓存 验证码是否相同
-
-
+            String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone()) == null ? ""
+                    : redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone()).toString();
+            if (!cacheCode.equals(model.getMessageCode())) {
+                //验证码不能为空
+                return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
+            }
         }
         return null;
     }
@@ -166,8 +171,7 @@ public class BeanValidators {
      * @param model
      * @return
      */
-
-    public static ResponseResult isValidateBackPwd(UserRequestModel model) {
+    public static ResponseResult isValidateBackPwd(UserRequestModel model, RedisTemplate redisTemplate) {
         //基础校验
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
@@ -176,15 +180,35 @@ public class BeanValidators {
             //验证码不能为空
             return new ResponseResult(ReturnCode.VALIDAT_CODE_EMPTY.code(), ReturnCode.VALIDAT_CODE_EMPTY.msg(), null);
         } else if (StringUtils.isBlank(model.getNewPwd())) {
-            //原始/新密码不能不能为空
+            //新密码不能不能为空
             return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getMessageCode())
-                || !model.getMessageCode().equals(Constants.LOGIN_TYPE_CODE)) {
-            if (StringUtils.isBlank(model.getMessageCode())) {
+        } else if (StringUtils.isNotBlank(model.getMessageCode())) {
+            String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
+                    : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
+            if (!cacheCode.equals(model.getMessageCode())) {
                 //验证码不能为空 缓存期校验
-                return new ResponseResult(ReturnCode.VALIDATE_CODE_FALSE.code(), ReturnCode.VALIDATE_CODE_FALSE.msg(), null);
+                return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
             }
 
+        }
+        return null;
+    }
+
+
+    /**
+     * 退出登录 输入参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateLoginOut(UserRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getUserId())) {
+            //验证码不能为空
+            return new ResponseResult(ReturnCode.ERROR_USER_ID.code(), ReturnCode.ERROR_USER_ID.msg(), null);
         }
         return null;
     }

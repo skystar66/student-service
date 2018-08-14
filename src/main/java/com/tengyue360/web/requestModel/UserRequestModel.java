@@ -14,7 +14,15 @@ public class UserRequestModel extends BaseRequestModel {
     private String newPwd;//新密码
     private String messageCode;//验证码
     private String userId;//用户ID
+    private String phone;//电话
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getOldPwd() {
         return oldPwd;
