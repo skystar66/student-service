@@ -24,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author xuliang
  * @date 2018/8/10 12:37
  */
-@RestController(value = "/login")
+@RestController
+@RequestMapping(value = "/login")
 public class LoginController {
 
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -40,6 +41,7 @@ public class LoginController {
      * @return
      * @throws Exception
      */
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult login(LoginRequestModel model, HttpServletResponse response) {
         logger.info("调用登录接口，参数信息：{}", model);

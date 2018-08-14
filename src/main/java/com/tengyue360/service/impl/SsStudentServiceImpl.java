@@ -11,6 +11,7 @@ import com.tengyue360.web.requestModel.StudentRequestModel;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
+import com.tengyue360.web.responseModel.StudentResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,7 @@ public class SsStudentServiceImpl implements SsStudentService {
         ResponseResult responseResult = new ResponseResult();
         try {
             //查询学员列表
-            SsUStudent student = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
+            StudentResponseModel student = studentMapper.queryStudentById(model.getId());
             if (null != student) {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());

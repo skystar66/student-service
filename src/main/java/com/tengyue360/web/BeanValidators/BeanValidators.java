@@ -51,13 +51,14 @@ public class BeanValidators {
         }
 
         ResponseResult responseResult = new ResponseResult();
-        long diff = Math.abs(new Date().getTime() - requestParams.getTimestamp());
-        if (Constants.REQUESTVALIDITYPERIOD < diff) {
-            logger.info("请求失效：timestamp diff=" + diff + ">" + Constants.REQUESTVALIDITYPERIOD);
-            responseResult.setCode(ReturnCode.REQUEST_FAILURE.code());
-            responseResult.setMsg(ReturnCode.REQUEST_FAILURE.msg());
-        }
-        return responseResult;
+//        long diff = Math.abs(new Date().getTime() - requestParams.getTimestamp());
+//        if (Constants.REQUESTVALIDITYPERIOD < diff) {
+//            logger.info("请求失效：timestamp diff=" + diff + ">" + Constants.REQUESTVALIDITYPERIOD);
+//            responseResult.setCode(ReturnCode.REQUEST_FAILURE.code());
+//            responseResult.setMsg(ReturnCode.REQUEST_FAILURE.msg());
+//            return responseResult;
+//        }
+        return null;
 
     }
 
@@ -112,10 +113,6 @@ public class BeanValidators {
         if (StringUtils.isBlank(model.getPhone())) {
             //用户名不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getOperateType())
-                || RedisConstants.GET_MESSAGE_CODE_LOGIN_OPERATE_TYPE.equals(model.getOperateType())) {
-            //验证码操作类型不正确不能为空
-            return new ResponseResult(ReturnCode.ERROR_GET_CODE.code(), ReturnCode.ERROR_GET_CODE.msg(), null);
         }
         //校验 24h 之内 只能获取五次验证码
         boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone());
@@ -126,12 +123,33 @@ public class BeanValidators {
             }
         }
         //校验一个手机号 只能间隔60s才会获取第二次
-        String loginCodeKey = model.getPhone() + "_" + model.getOperateType();
+        String loginCodeKey = model.getPhone() + "_" + RedisConstants.GET_MESSAGE_CODE_LOGIN_OPERATE_TYPE;
         if (null != redisTemplate.opsForValue().get(loginCodeKey)) {
             return new ResponseResult(ReturnCode.ERROR_AGIN_COUNT.code(), ReturnCode.ERROR_AGIN_COUNT.msg(), null);
         }
         return null;
     }
+
+
+    /**
+     * 获取忘记密码验证码采纳数校验
+     *
+     * @param model
+     * @return
+     */
+
+    public static final ResponseResult isValidateForgetPwdSms(SendSmsRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getPhone())) {
+            //用户名不能为空
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
 
     /**
      * 修改密码 输入参数校验
@@ -223,7 +241,7 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-        if (StringUtils.isBlank(model.getStudentId())) {
+        if (StringUtils.isBlank(model.getRelationId())) {
             //验证码不能为空
             return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
         } else if (null == model.getFile()) {

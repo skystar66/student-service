@@ -16,7 +16,7 @@ public class UploadFileRequestModel extends BaseRequestModel {
 
     private MultipartFile file;
 
-    private String studentId;
+    private String relationId;
 
     private String uploadType;
 
@@ -47,11 +47,11 @@ public class UploadFileRequestModel extends BaseRequestModel {
         this.file = file;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public String getRelationId() {
+        return relationId;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
     }
 }

@@ -45,7 +45,7 @@ public class SsAttachFilePathServiceImpl implements SsAttachFilePathService {
             //做减量
             attachFilePathMapper.deleteByPrimaryKey(model.getAttachaFileId());
             //插入附件信息
-            int num = attachFilePathMapper.insert(neWattachFilePath(url, model.getStudentId(),
+            int num = attachFilePathMapper.insert(neWattachFilePath(url, model.getRelationId(),
                     model.getFile().getOriginalFilename(), model.getUploadType()));
             if (num > 0) {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());

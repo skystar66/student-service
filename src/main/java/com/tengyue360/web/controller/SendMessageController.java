@@ -24,7 +24,8 @@ import sun.misc.Request;
  * @date 2018/8/11 10:03
  */
 
-@RestController(value = "/sms")
+@RestController
+@RequestMapping(value = "/sms")
 public class SendMessageController {
 
 
@@ -41,7 +42,7 @@ public class SendMessageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/login/sendLoginSms", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendLoginSms", method = RequestMethod.POST)
     public ResponseResult sendLoginSms(SendSmsRequestModel model) {
         logger.info("获取登录短信验证码，参数信息：{}", model);
         if (null != BeanValidators.isValidateLoginSms(model, redisTemplate)) {
@@ -67,12 +68,12 @@ public class SendMessageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/login/sendUpdatePwdSms", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendUpdatePwdSms", method = RequestMethod.POST)
     public ResponseResult sendUpdatePwdSms(SendSmsRequestModel model) {
         logger.info("获取修改密码短信验证码，参数信息：{}", model);
-        if (null != BeanValidators.isValidateLoginSms(model, redisTemplate)) {
-            logger.info("获取修改密码短信验证码，参数验证失败：{}", BeanValidators.isValidateLoginSms(model, redisTemplate));
-            return BeanValidators.isValidateLoginSms(model, redisTemplate);
+        if (null != BeanValidators.isValidateForgetPwdSms(model)) {
+            logger.info("获取修改密码短信验证码，参数验证失败：{}", BeanValidators.isValidateForgetPwdSms(model));
+            return BeanValidators.isValidateForgetPwdSms(model);
         }
         //调用后台服务 获取验证码
         model.setValidateType(ValidateCodeEnum.UPDATE_PWD_CODE.getKey());
