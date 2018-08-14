@@ -8,18 +8,17 @@ import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.utils.DateUtil;
-import com.tengyue360.web.requestModel.BaseRequestModel;
-import com.tengyue360.web.requestModel.LoginRequestModel;
-import com.tengyue360.web.requestModel.SendSmsRequestModel;
-import com.tengyue360.web.requestModel.UserRequestModel;
+import com.tengyue360.web.requestModel.*;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.Map;
@@ -209,6 +208,27 @@ public class BeanValidators {
         if (StringUtils.isBlank(model.getUserId())) {
             //验证码不能为空
             return new ResponseResult(ReturnCode.ERROR_USER_ID.code(), ReturnCode.ERROR_USER_ID.msg(), null);
+        }
+        return null;
+    }
+
+    /**
+     * 上传文件 参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateUploadFile(UploadFileRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getStudentId())) {
+            //验证码不能为空
+            return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
+        } else if (null == model.getFile()) {
+            //验证码不能为空
+            return new ResponseResult(ReturnCode.ATTCHA_FILE_EMPTY.code(), ReturnCode.ATTCHA_FILE_EMPTY.msg(), null);
         }
         return null;
     }

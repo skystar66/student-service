@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tengyue360.dao.SsUStudentMapper">
-  <resultMap id="BaseResultMap" type="com.tengyue360.bean.SsUStudent">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="head" jdbcType="VARCHAR" property="head" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="create_man" jdbcType="VARCHAR" property="createMan" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="update_man" jdbcType="VARCHAR" property="updateMan" />
-    <result column="delete_state" jdbcType="VARCHAR" property="deleteState" />
-    <result column="sex" jdbcType="VARCHAR" property="sex" />
-    <result column="front_id" jdbcType="INTEGER" property="frontId" />
-    <result column="score" jdbcType="INTEGER" property="score" />
-    <result column="parent_name" jdbcType="VARCHAR" property="parentName" />
-    <result column="parent_phone" jdbcType="VARCHAR" property="parentPhone" />
-    <result column="integral_num" jdbcType="INTEGER" property="integralNum" />
-    <result column="mark" jdbcType="VARCHAR" property="mark" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="state" jdbcType="VARCHAR" property="state" />
-    <result column="uid" jdbcType="VARCHAR" property="uid" />
-    <result column="grade" jdbcType="VARCHAR" property="grade" />
-    <result column="lea_sch_date" jdbcType="TIMESTAMP" property="leaSchDate" />
-    <result column="display" jdbcType="INTEGER" property="display" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.tengyue360.bean.SsUStudent">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="head" jdbcType="VARCHAR" property="head"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_man" jdbcType="VARCHAR" property="createMan"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_man" jdbcType="VARCHAR" property="updateMan"/>
+        <result column="delete_state" jdbcType="VARCHAR" property="deleteState"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="front_id" jdbcType="INTEGER" property="frontId"/>
+        <result column="score" jdbcType="INTEGER" property="score"/>
+        <result column="parent_name" jdbcType="VARCHAR" property="parentName"/>
+        <result column="parent_phone" jdbcType="VARCHAR" property="parentPhone"/>
+        <result column="integral_num" jdbcType="INTEGER" property="integralNum"/>
+        <result column="mark" jdbcType="VARCHAR" property="mark"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="uid" jdbcType="VARCHAR" property="uid"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
+        <result column="lea_sch_date" jdbcType="TIMESTAMP" property="leaSchDate"/>
+        <result column="display" jdbcType="INTEGER" property="display"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMap_Common" type="com.tengyue360.web.responseModel.AccountInfoResponseModel">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="attachPath" property="attach_path" jdbcType="VARCHAR"/>
+
+
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
     id, name, head, create_time, create_man, update_time, update_man, delete_state, sex, 
     front_id, score, parent_name, parent_phone, integral_num, mark, type, state, uid, 
     grade, lea_sch_date, display
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from ss_u_student
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_u_student
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from ss_u_student
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.tengyue360.bean.SsUStudent">
+    <insert id="insert" parameterType="com.tengyue360.bean.SsUStudent">
     insert into ss_u_student (id, name, head, 
       create_time, create_man, update_time, 
       update_man, delete_state, sex, 
@@ -55,206 +65,206 @@
       #{type,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
       #{leaSchDate,jdbcType=TIMESTAMP}, #{display,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.tengyue360.bean.SsUStudent">
-    insert into ss_u_student
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="head != null">
-        head,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="createMan != null">
-        create_man,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="updateMan != null">
-        update_man,
-      </if>
-      <if test="deleteState != null">
-        delete_state,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="frontId != null">
-        front_id,
-      </if>
-      <if test="score != null">
-        score,
-      </if>
-      <if test="parentName != null">
-        parent_name,
-      </if>
-      <if test="parentPhone != null">
-        parent_phone,
-      </if>
-      <if test="integralNum != null">
-        integral_num,
-      </if>
-      <if test="mark != null">
-        mark,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
-      <if test="uid != null">
-        uid,
-      </if>
-      <if test="grade != null">
-        grade,
-      </if>
-      <if test="leaSchDate != null">
-        lea_sch_date,
-      </if>
-      <if test="display != null">
-        display,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="head != null">
-        #{head,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createMan != null">
-        #{createMan,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateMan != null">
-        #{updateMan,jdbcType=VARCHAR},
-      </if>
-      <if test="deleteState != null">
-        #{deleteState,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="frontId != null">
-        #{frontId,jdbcType=INTEGER},
-      </if>
-      <if test="score != null">
-        #{score,jdbcType=INTEGER},
-      </if>
-      <if test="parentName != null">
-        #{parentName,jdbcType=VARCHAR},
-      </if>
-      <if test="parentPhone != null">
-        #{parentPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="integralNum != null">
-        #{integralNum,jdbcType=INTEGER},
-      </if>
-      <if test="mark != null">
-        #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="uid != null">
-        #{uid,jdbcType=VARCHAR},
-      </if>
-      <if test="grade != null">
-        #{grade,jdbcType=VARCHAR},
-      </if>
-      <if test="leaSchDate != null">
-        #{leaSchDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="display != null">
-        #{display,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.tengyue360.bean.SsUStudent">
-    update ss_u_student
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="head != null">
-        head = #{head,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createMan != null">
-        create_man = #{createMan,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateMan != null">
-        update_man = #{updateMan,jdbcType=VARCHAR},
-      </if>
-      <if test="deleteState != null">
-        delete_state = #{deleteState,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="frontId != null">
-        front_id = #{frontId,jdbcType=INTEGER},
-      </if>
-      <if test="score != null">
-        score = #{score,jdbcType=INTEGER},
-      </if>
-      <if test="parentName != null">
-        parent_name = #{parentName,jdbcType=VARCHAR},
-      </if>
-      <if test="parentPhone != null">
-        parent_phone = #{parentPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="integralNum != null">
-        integral_num = #{integralNum,jdbcType=INTEGER},
-      </if>
-      <if test="mark != null">
-        mark = #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="uid != null">
-        uid = #{uid,jdbcType=VARCHAR},
-      </if>
-      <if test="grade != null">
-        grade = #{grade,jdbcType=VARCHAR},
-      </if>
-      <if test="leaSchDate != null">
-        lea_sch_date = #{leaSchDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="display != null">
-        display = #{display,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.tengyue360.bean.SsUStudent">
+    <insert id="insertSelective" parameterType="com.tengyue360.bean.SsUStudent">
+        insert into ss_u_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="head != null">
+                head,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createMan != null">
+                create_man,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateMan != null">
+                update_man,
+            </if>
+            <if test="deleteState != null">
+                delete_state,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="frontId != null">
+                front_id,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="parentName != null">
+                parent_name,
+            </if>
+            <if test="parentPhone != null">
+                parent_phone,
+            </if>
+            <if test="integralNum != null">
+                integral_num,
+            </if>
+            <if test="mark != null">
+                mark,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="leaSchDate != null">
+                lea_sch_date,
+            </if>
+            <if test="display != null">
+                display,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="head != null">
+                #{head,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                #{createMan,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateMan != null">
+                #{updateMan,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteState != null">
+                #{deleteState,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="frontId != null">
+                #{frontId,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="parentName != null">
+                #{parentName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentPhone != null">
+                #{parentPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="integralNum != null">
+                #{integralNum,jdbcType=INTEGER},
+            </if>
+            <if test="mark != null">
+                #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=VARCHAR},
+            </if>
+            <if test="grade != null">
+                #{grade,jdbcType=VARCHAR},
+            </if>
+            <if test="leaSchDate != null">
+                #{leaSchDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="display != null">
+                #{display,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tengyue360.bean.SsUStudent">
+        update ss_u_student
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="head != null">
+                head = #{head,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateMan != null">
+                update_man = #{updateMan,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteState != null">
+                delete_state = #{deleteState,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="frontId != null">
+                front_id = #{frontId,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="parentName != null">
+                parent_name = #{parentName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentPhone != null">
+                parent_phone = #{parentPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="integralNum != null">
+                integral_num = #{integralNum,jdbcType=INTEGER},
+            </if>
+            <if test="mark != null">
+                mark = #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=VARCHAR},
+            </if>
+            <if test="grade != null">
+                grade = #{grade,jdbcType=VARCHAR},
+            </if>
+            <if test="leaSchDate != null">
+                lea_sch_date = #{leaSchDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="display != null">
+                display = #{display,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tengyue360.bean.SsUStudent">
     update ss_u_student
     set name = #{name,jdbcType=VARCHAR},
       head = #{head,jdbcType=VARCHAR},
@@ -278,4 +288,19 @@
       display = #{display,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+    <select id="queryStudentByPhone" parameterType="java.lang.String" resultMap="BaseResultMap_Common">
+      SELECT
+            s.id,
+            s.`name`,
+            st.attach_path
+        FROM
+            ss_u_student s
+        LEFT JOIN ss_attach_file_path st ON s.id = st.relation_id
+        WHERE
+            s.parent_phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+
 </mapper>
