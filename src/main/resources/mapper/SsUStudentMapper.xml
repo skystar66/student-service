@@ -29,7 +29,7 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="id" property="id" jdbcType="VARCHAR"/>
         <result column="attachPath" property="attach_path" jdbcType="VARCHAR"/>
-
+        <result column="attachaId" property="attachaId" jdbcType="VARCHAR"/>
 
     </resultMap>
 
@@ -294,7 +294,8 @@
       SELECT
             s.id,
             s.`name`,
-            st.attach_path
+            st.attach_path,
+            st.id as attachaId
         FROM
             ss_u_student s
         LEFT JOIN ss_attach_file_path st ON s.id = st.relation_id

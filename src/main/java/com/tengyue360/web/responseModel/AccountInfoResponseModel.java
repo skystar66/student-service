@@ -18,6 +18,15 @@ public class AccountInfoResponseModel implements Serializable {
 
     private String attachPath;//url头像
 
+    private String attachaId;//附件id
+
+    public String getAttachaId() {
+        return attachaId;
+    }
+
+    public void setAttachaId(String attachaId) {
+        this.attachaId = attachaId;
+    }
 
     public String getId() {
         return id;

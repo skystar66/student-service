@@ -42,7 +42,8 @@ public class SsAttachFilePathServiceImpl implements SsAttachFilePathService {
         try {
             //oss返回url 路径
             String url = OssFileUtil.getFileUrl(model.getFile().getBytes(), model.getFile().getOriginalFilename());
-
+            //做减量
+            attachFilePathMapper.deleteByPrimaryKey(model.getAttachaFileId());
             //插入附件信息
             int num = attachFilePathMapper.insert(neWattachFilePath(url, model.getStudentId(),
                     model.getFile().getOriginalFilename(), model.getUploadType()));

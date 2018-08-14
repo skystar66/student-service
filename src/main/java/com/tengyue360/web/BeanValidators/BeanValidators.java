@@ -234,6 +234,25 @@ public class BeanValidators {
     }
 
 
+    /**
+     * 根据学生id查询学生信息 参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateQueryStudentById(StudentRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getId())) {
+            //学生id不能为空
+            return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+
 //    /**
 //     * 访问方法频率控制在指定秒内
 //     *

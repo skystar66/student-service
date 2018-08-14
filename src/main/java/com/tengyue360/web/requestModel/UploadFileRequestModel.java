@@ -20,6 +20,16 @@ public class UploadFileRequestModel extends BaseRequestModel {
 
     private String uploadType;
 
+    private String attachaFileId;//附件id
+
+
+    public String getAttachaFileId() {
+        return attachaFileId;
+    }
+
+    public void setAttachaFileId(String attachaFileId) {
+        this.attachaFileId = attachaFileId;
+    }
 
     public String getUploadType() {
         return uploadType;
