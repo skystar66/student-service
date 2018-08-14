@@ -24,7 +24,8 @@ import sun.misc.Request;
  * @date 2018/8/11 10:03
  */
 
-@RestController(value = "/sms")
+@RestController
+@RequestMapping(value = "/sms")
 public class SendMessageController {
 
 

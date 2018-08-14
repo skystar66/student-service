@@ -51,13 +51,14 @@ public class BeanValidators {
         }
 
         ResponseResult responseResult = new ResponseResult();
-        long diff = Math.abs(new Date().getTime() - requestParams.getTimestamp());
-        if (Constants.REQUESTVALIDITYPERIOD < diff) {
-            logger.info("请求失效：timestamp diff=" + diff + ">" + Constants.REQUESTVALIDITYPERIOD);
-            responseResult.setCode(ReturnCode.REQUEST_FAILURE.code());
-            responseResult.setMsg(ReturnCode.REQUEST_FAILURE.msg());
-        }
-        return responseResult;
+//        long diff = Math.abs(new Date().getTime() - requestParams.getTimestamp());
+//        if (Constants.REQUESTVALIDITYPERIOD < diff) {
+//            logger.info("请求失效：timestamp diff=" + diff + ">" + Constants.REQUESTVALIDITYPERIOD);
+//            responseResult.setCode(ReturnCode.REQUEST_FAILURE.code());
+//            responseResult.setMsg(ReturnCode.REQUEST_FAILURE.msg());
+//            return responseResult;
+//        }
+        return null;
 
     }
 

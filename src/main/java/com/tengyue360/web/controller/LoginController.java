@@ -24,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author xuliang
  * @date 2018/8/10 12:37
  */
-@RestController(value = "/login")
+@RestController
+@RequestMapping(value = "/login")
 public class LoginController {
 
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);

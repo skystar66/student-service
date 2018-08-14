@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xuliang
  * @date 2018/8/11 10:03
  */
-@RestController("student")
+@RestController
+@RequestMapping("student")
 public class StudentController {
 
     private static Logger logger = LoggerFactory.getLogger(StudentController.class);

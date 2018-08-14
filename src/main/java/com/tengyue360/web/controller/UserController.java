@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xuliang
  * @date 2018/8/11 10:03
  */
-@RestController(value = "/user")
+@RestController
+@RequestMapping(value = "/user")
 public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -111,10 +112,6 @@ public class UserController {
 
     @RequestMapping(value = "/queryStudentsByUserId", method = RequestMethod.POST)
     public ResponseResult queryStudentsByUserId(UserRequestModel model) {
-
-
-
-
 
 
         return null;

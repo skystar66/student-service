@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/8/10 12:37
  */
 
-@RestController("/upload")
+@RequestMapping("/upload")
 public class UploadController {
 
     private static Logger logger = LoggerFactory.getLogger(UploadController.class);
