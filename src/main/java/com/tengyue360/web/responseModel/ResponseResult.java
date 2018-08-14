@@ -93,8 +93,11 @@ public class ResponseResult extends BaseBean {
         this.data = data;
     }
 
-    public boolean equals(Object obj){ return super.equals(obj);}
-    public int hashCode(){
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    public int hashCode() {
         return super.hashCode();
     }
 }

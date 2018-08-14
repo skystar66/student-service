@@ -28,9 +28,19 @@
     <resultMap id="BaseResultMap_Common" type="com.tengyue360.web.responseModel.AccountInfoResponseModel">
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="attachPath" property="attach_path" jdbcType="VARCHAR"/>
+        <result column="attach_path" property="attachPath" jdbcType="VARCHAR"/>
         <result column="attachaId" property="attachaId" jdbcType="VARCHAR"/>
 
+    </resultMap>
+
+
+    <resultMap id="BaseResultMap_School" type="com.tengyue360.web.responseModel.StudentResponseModel">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imageUrl" jdbcType="VARCHAR"/>
+        <result column="schoolName" property="schoolName" jdbcType="VARCHAR"/>
+        <result column="uid" property="sId" jdbcType="VARCHAR"/>
     </resultMap>
 
 
@@ -303,5 +313,28 @@
             s.parent_phone = #{phone,jdbcType=VARCHAR}
     </select>
 
+
+    <select id="queryStudentById" parameterType="java.lang.String" resultMap="BaseResultMap_School">
+
+        SELECT
+            st.id,
+            st.`name`,
+            st.sex,
+            st.uid,
+            cs.school_name,
+            sa.attach_path
+        FROM
+            ss_u_student st
+        LEFT JOIN ss_u_c_class_stu uc ON st.id = uc.student_id
+        LEFT JOIN ss_c_class cc ON uc.class_id = cc.id
+        LEFT JOIN ss_c_school cs ON cc.school_id = cs.id
+        LEFT JOIN ss_attach_file_path sa ON sa.relation_id = st.id
+
+        where st.id=#{id}
+
+
+
+
+    </select>
 
 </mapper>

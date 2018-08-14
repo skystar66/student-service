@@ -41,6 +41,7 @@ public class LoginController {
      * @return
      * @throws Exception
      */
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult login(LoginRequestModel model, HttpServletResponse response) {
         logger.info("调用登录接口，参数信息：{}", model);
