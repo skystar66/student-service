@@ -165,4 +165,17 @@ public class UserServiceImpl implements UserService {
         }
         return responseResult;
     }
+
+
+    /**
+     * 根据用户id查询该学生列表
+     *
+     * @return
+     * @throws Exception
+     */
+
+    @Override
+    public ResponseResult queryStudentsByUserId(UserRequestModel model) {
+        return null;
+    }
 }

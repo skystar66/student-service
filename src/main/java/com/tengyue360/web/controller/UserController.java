@@ -102,4 +102,31 @@ public class UserController {
     }
 
 
+    /**
+     * 根据用户id查询该用户下的学生列表
+     *
+     * @return
+     * @throws Exception
+     */
+
+    @RequestMapping(value = "/queryStudentsByUserId", method = RequestMethod.POST)
+    public ResponseResult queryStudentsByUserId(UserRequestModel model) {
+
+
+
+
+
+
+        return null;
+    }
+
+
+    /**
+     * 根据用户id查询该用户下的学生详情
+     *
+     * @return
+     * @throws Exception
+     */
+
+
 }
