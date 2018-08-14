@@ -1,7 +1,9 @@
 package com.tengyue360.service.impl;
 
+import com.tengyue360.bean.SsOpinionFeedback;
 import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.common.ReturnCode;
+import com.tengyue360.dao.SsOpinionFeedbackMapper;
 import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.utils.CommonBeanUtils;
@@ -27,6 +29,9 @@ public class SsStudentServiceImpl implements SsStudentService {
 
     @Autowired
     SsUStudentMapper studentMapper;
+
+    @Autowired
+    private SsOpinionFeedbackMapper ssOpinionFeedbackMapper;
 
     /**
      * 根据家长电话查询该用户下的学员信息
@@ -111,6 +116,40 @@ public class SsStudentServiceImpl implements SsStudentService {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(student);
+                return responseResult;
+            }
+            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
+            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+            responseResult.setData(null);
+            return responseResult;
+        } catch (Exception ex) {
+            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setData(null);
+        }
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult findById(SsOpinionFeedback ssOpinionFeedback) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            SsUStudent student = studentMapper.selectByPrimaryKey(ssOpinionFeedback.getSsUStudent().getId());
+            if ( student != null) {
+                ssOpinionFeedback.setSsUStudent(student);
+                int resultCount = ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
+                if(resultCount >0){
+                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                    responseResult.setData(null);
+                    return responseResult;
+                }
+
+               // responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
+               // responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
+                responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
+                responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+                responseResult.setData(null);
                 return responseResult;
             }
             responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());

@@ -1,6 +1,7 @@
 package com.tengyue360.service;
 
 
+import com.tengyue360.bean.SsOpinionFeedback;
 import com.tengyue360.web.requestModel.StudentRequestModel;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -41,6 +42,14 @@ public interface SsStudentService {
      */
 
     public ResponseResult updateStudentById(StudentRequestModel model);
+
+    /**
+     * 根据id查询学生信息
+     * @param ssOpinionFeedback
+     * @return
+     * @throws Exception
+     */
+    public ResponseResult findById(SsOpinionFeedback ssOpinionFeedback);
 
 
 

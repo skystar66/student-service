@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tengyue360.dao.SsOpinionFeedbackMapper">
+
+
+    <!--新添反馈-->
+    <insert id="addOpinion" parameterType="com.tengyue360.bean.SsOpinionFeedback" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ss_c_opinion_feedback(content,student_id,create_time,create_man,update_time,update_man,delete_state)
+
+        VALUES (#{content},#{ssUStudent.id},now(),#{createMan},now(),#{updateMan},'1')
+    </insert>
+
+</mapper>
