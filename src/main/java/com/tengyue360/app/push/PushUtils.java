@@ -15,6 +15,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/**
+ * app 小程序推送
+ * @author xuliang
+ * @date 2018年8月10日 21:04:55
+ */
 @Component
 public class PushUtils {
 
