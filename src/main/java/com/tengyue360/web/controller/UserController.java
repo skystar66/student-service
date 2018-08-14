@@ -38,7 +38,7 @@ public class UserController {
      * @throws Exception
      */
 
-    @RequestMapping(value = "/pwd", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
     public ResponseResult updatePwd(UserRequestModel model) {
         logger.info("调用修改密码接口，参数信息为：{}", model);
         if (null != BeanValidators.isValidateUpdatePwd(model)) {
