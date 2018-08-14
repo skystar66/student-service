@@ -236,6 +236,10 @@
             </snapshots>
         </repository>
         <repository>
+            <id>snapshots</id>
+            <url> http://nexus.tengyue360.com/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
             <id>getui-nexus</id>
             <url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
         </repository>
