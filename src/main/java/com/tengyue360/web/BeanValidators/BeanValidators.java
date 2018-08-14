@@ -114,7 +114,7 @@ public class BeanValidators {
             return new ResponseResult(ReturnCode.ERROR_GET_CODE.code(), ReturnCode.ERROR_GET_CODE.msg(), null);
         }
         //校验 24h 之内 只能获取五次验证码
-        boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT);
+        boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone());
         if (existHashKey) {
             int count = redisTemplate.opsForHash().keys(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT).size();
             if (count >= 5) {
@@ -160,7 +160,6 @@ public class BeanValidators {
     }
 
 
-
     /**
      * 忘记密码 输入参数校验
      *
@@ -189,10 +188,6 @@ public class BeanValidators {
         }
         return null;
     }
-
-
-
-
 
 
 //    /**

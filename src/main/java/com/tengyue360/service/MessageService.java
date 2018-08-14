@@ -16,12 +16,10 @@ public interface MessageService {
     /**
      * 发送短信
      *
-     * @param account
-     * @param account
      * @param businessType
      * @return
      */
-    boolean sendSms(String account, IMessage iMessage, EMessageTemplateBusinessType businessType);
+    boolean sendSms(EMessageTemplateBusinessType businessType, String phone, String context);
 
 
 }

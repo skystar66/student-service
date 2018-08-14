@@ -14,6 +14,8 @@ public class SendSmsRequestModel extends BaseRequestModel {
 
     private String operateType;//获取验证码操作类型
 
+    private String validateType;//验证码类型
+
 
     public String getOperateType() {
         return operateType;
@@ -29,5 +31,13 @@ public class SendSmsRequestModel extends BaseRequestModel {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getValidateType() {
+        return validateType;
+    }
+
+    public void setValidateType(String validateType) {
+        this.validateType = validateType;
     }
 }

@@ -45,7 +45,7 @@ public class CommonTools {
     /**
     * 验证非零的正整数
     * 
-    * @param 待验证的字符串
+    * @param str
     * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
     */
     public static boolean IsIntNumber(String str) {
@@ -56,7 +56,7 @@ public class CommonTools {
     /**
     * 验证数字输入
     * 
-    * @param 待验证的字符串
+    * @param str
     * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
     */
     public static boolean IsNumber(String str) {

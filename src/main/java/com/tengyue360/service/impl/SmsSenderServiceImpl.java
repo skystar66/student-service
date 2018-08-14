@@ -1,13 +1,10 @@
 package com.tengyue360.service.impl;
 
 import com.tengyue360.service.SmsSenderService;
-import com.tengyue360.sms.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,14 +36,14 @@ public class SmsSenderServiceImpl implements SmsSenderService {
                 }
             }
         }
-		boolean flag = SmsUtil.sendMessage(account, content, null, null, null, "da8d560ef71244b7ae1e4f47ff9408ec", " http://172.16.1.215/phoenix/webService/sendMessage");
-//        boolean flag = SmsUtil.sendMessage(account, content, visitType, smsType, extcode, businessId, url);
-
-        if (flag) {
-            logger.info("短信发送成功: account=" + account + ", content=" + content);
-        } else {
-            logger.info("短信发送失败: account=" + account + ", content=" + content);
-        }
-        return flag;
+//		boolean flag = SmsUtil.sendMessage(account, content, null, null, null, "da8d560ef71244b7ae1e4f47ff9408ec", " http://172.16.1.215/phoenix/webService/sendMessage");
+////        boolean flag = SmsUtil.sendMessage(account, content, visitType, smsType, extcode, businessId, url);
+//
+//        if (flag) {
+//            logger.info("短信发送成功: account=" + account + ", content=" + content);
+//        } else {
+//            logger.info("短信发送失败: account=" + account + ", content=" + content);
+//        }
+        return false;
     }
 }

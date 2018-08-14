@@ -1,5 +1,6 @@
 package com.tengyue360.mq.topic.queue;
 
+import com.tengyue360.constant.QueueConstant;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -14,15 +15,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueueMessage {
 
-
+    /**
+     * 验证码订阅
+     *
+     * @return
+     * @throws Exception
+     */
     @Bean
-    public Queue helloQueue() {
-        return new Queue("topic.message");
+    public Queue sendMessageQueue() {
+        return new Queue(QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE);
     }
 
+    /**
+     * 推送订阅
+     *
+     * @return
+     * @throws Exception
+     */
     @Bean
-    public Queue userQueue() {
-        return new Queue("topic.messages");
+    public Queue pushMessageQueue() {
+        return new Queue(QueueConstant.QUEUE_MESSAGE_PUSH_MESSAGE);
     }
 
 

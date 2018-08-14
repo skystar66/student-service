@@ -2,6 +2,7 @@ package com.tengyue360.web.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.service.SmsService;
 import com.tengyue360.web.BeanValidators.BeanValidators;
 import com.tengyue360.web.requestModel.SendSmsRequestModel;
@@ -48,6 +49,7 @@ public class SendMessageController {
             return BeanValidators.isValidateLoginSms(model, redisTemplate);
         }
         //调用后台服务 获取验证码
+        model.setValidateType(ValidateCodeEnum.LOGIN_CODE.getKey());
         ResponseResult responseResult = smsService.getValidateCode(model);
         if (null != responseResult) {
             logger.info("获取登录短信验证码成功吗，返回信息x：{}", responseResult);
@@ -73,6 +75,7 @@ public class SendMessageController {
             return BeanValidators.isValidateLoginSms(model, redisTemplate);
         }
         //调用后台服务 获取验证码
+        model.setValidateType(ValidateCodeEnum.UPDATE_PWD_CODE.getKey());
         ResponseResult responseResult = smsService.getValidateCode(model);
         if (null != responseResult) {
             logger.info("获取修改短信验证码成功吗，返回信息x：{}", responseResult);
