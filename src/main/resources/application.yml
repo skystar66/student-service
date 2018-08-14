@@ -17,19 +17,19 @@ spring:
       min-idle: 1
       max-active: 1000
       max-wait: -1
-   rabbitmq:
-       host: 127.0.0.1
-       port: 5672
-       username: xuliang
-       password: 123456
-       publisher-confirms: true
-       virtual-host: vhost1
-       listener:
-         acknowledge-mode: manual
-         concurrency: 1
-         retry:
-                 enabled: true
-       publisher-returns: true
+  rabbitmq:
+      host: 127.0.0.1
+      port: 5672
+      username: xuliang
+      password: 123456
+      publisher-confirms: true
+      virtual-host: vhost1
+      listener:
+        acknowledge-mode: manual
+        concurrency: 1
+        retry:
+                enabled: true
+      publisher-returns: true
  # jackson:
    # default-property-inclusion: non_null
 eureka:

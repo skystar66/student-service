@@ -2,6 +2,7 @@ package com.tengyue360.dao;
 
 
 import com.tengyue360.bean.SsUser;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

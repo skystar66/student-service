@@ -1,7 +1,7 @@
 package com.tengyue360.dao;
 
 import com.tengyue360.bean.SsMqPushLog;
-import com.tengyue360.mq.topic.message.MessageTemplate;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
