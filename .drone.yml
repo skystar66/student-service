@@ -1,6 +1,6 @@
 workspace:
   base: /drone/src
-  path: user-service
+  path: student-service
 
 pipeline:
   build:
