@@ -1,6 +1,7 @@
 package com.tengyue360.web.responseModel;
 
 import com.alibaba.fastjson.JSONObject;
+import com.tengyue360.common.ReturnCode;
 
 /**
  * @author 统一返回格式
@@ -51,6 +52,22 @@ public class ResponseResult extends BaseBean {
         this.data = data;
     }
 
+
+    public static ResponseResult onFailure(Object rstObj, ReturnCode rstDesc) {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setCode(rstDesc.code());
+        responseResult.setMsg(rstDesc.msg());
+        responseResult.setData(rstObj);
+        return responseResult;
+    }
+
+    public static ResponseResult onSuccess(Object rstObj, ReturnCode rstDesc) {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.setCode(rstDesc.code());
+        responseResult.setMsg(rstDesc.msg());
+        responseResult.setData(rstObj);
+        return responseResult;
+    }
 
     public int getCode() {
         return code;
