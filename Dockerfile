@@ -1,6 +1,7 @@
 # 基于哪个镜像
 FROM java:8
 ADD target/*.jar app.jar
+RUN mkdir -p /var/logs
 RUN bash -c 'touch /app.jar'
 # 开放8080端口
 EXPOSE 8087
