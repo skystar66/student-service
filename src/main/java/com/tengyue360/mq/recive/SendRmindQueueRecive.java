@@ -22,14 +22,14 @@ import java.util.Map;
 
 /**
  * 接收端 QUEUE_MESSAGE_PUSH_READED_MESSAGE
- * 上课准备推送 课程开始前一天18:00
+ * 课程开始前2小时： topic
  *
  * @author xuliang 2018/08/12
  */
 
 @Component
-@RabbitListener(queues = QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE)
-public class PushReadedQueueRecive {
+@RabbitListener(queues = QueueConstant.QUEUE_MESSAGE_SEND_COURSE_REMIND)
+public class SendRmindQueueRecive {
 
 
     private static Logger logger = LoggerFactory.getLogger(Customer.class);
@@ -40,9 +40,9 @@ public class PushReadedQueueRecive {
     public void process(String hello, Channel channel, Message message) throws IOException {
         String sendMessage = new String(message.getBody(), "UTF-8");
         MessageTemplate messageTemplate = (MessageTemplate) JSONObject.parse(sendMessage);
-        logger.info("队列：{},收到消息：{}", QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, messageTemplate);
+        logger.info("队列：{},收到消息：{}", QueueConstant.QUEUE_MESSAGE_SEND_COURSE_REMIND, messageTemplate);
         try {
-            //推送消息
+            //发送短信
             Map<String, Object> mapResult = PushUtils.pushAppMessage(messageTemplate.getTopic(), messageTemplate.getMessageInfo());
             if (null != mapResult) {
                 if (mapResult.get("result").toString().equals("ok")) {

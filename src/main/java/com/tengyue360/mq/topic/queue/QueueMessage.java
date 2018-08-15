@@ -27,15 +27,74 @@ public class QueueMessage {
     }
 
     /**
-     * 推送订阅
+     * 发送上课准备短信 课程开始前一天18:00： topic
      *
      * @return
      * @throws Exception
      */
     @Bean
-    public Queue pushMessageQueue() {
+    public Queue sendCourseReadedMessageQueue() {
+        return new Queue(QueueConstant.QUEUE_MESSAGE_SEND_COURSE_READED);
+    }
+
+
+    /**
+     * 发送上课准备短信 课程开始前2小时： topic
+     *
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public Queue sendCourseRmindMessageQueue() {
+        return new Queue(QueueConstant.QUEUE_MESSAGE_SEND_COURSE_REMIND);
+    }
+
+
+
+
+    /**
+     * 上课准备推送 课程开始前一天18:00
+     *
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public Queue pushCourseReadedMessageQueue() {
         return new Queue(QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE);
     }
+
+
+
+
+    /**
+     * 上课准备推送 课程开始前2小时
+     *
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public Queue pushCourseRemindMessageQueue() {
+        return new Queue(QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

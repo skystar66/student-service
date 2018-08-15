@@ -40,14 +40,62 @@ public class TopicExcechanges {
     /**
      * 将队列topic.QUEUE_MESSAGE_PUSH_MESSAGE与exchange绑定，binding_key为topic.#,模糊匹配
      *
-     * @param pushMessageQueue
+     * @param sendCourseReadedMessageQueue
      * @param exchange
      * @return
      */
     @Bean
-    Binding bindingExchangeTimeingPush(Queue pushMessageQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(pushMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE);
+    Binding bindingExchangeSendCourseReaded(Queue sendCourseReadedMessageQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(sendCourseReadedMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_SEND_COURSE_READED);
     }
+
+    /**
+     * 将队列topic.QUEUE_MESSAGE_PUSH_MESSAGE与exchange绑定，binding_key为topic.#,模糊匹配
+     *
+     * @param sendCourseRmindMessageQueue
+     * @param exchange
+     * @return
+     */
+    @Bean
+    Binding bindingExchangeSendCourseRemind(Queue sendCourseRmindMessageQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(sendCourseRmindMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_SEND_COURSE_REMIND);
+    }
+
+    /**
+     * 将队列topic.QUEUE_MESSAGE_PUSH_MESSAGE与exchange绑定，binding_key为topic.#,模糊匹配
+     *
+     * @param pushCourseReadedMessageQueue
+     * @param exchange
+     * @return
+     */
+    @Bean
+    Binding bindingExchangePushCourseMessage(Queue pushCourseReadedMessageQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(pushCourseReadedMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE);
+    }
+
+    /**
+     * 将队列topic.QUEUE_MESSAGE_PUSH_MESSAGE与exchange绑定，binding_key为topic.#,模糊匹配
+     *
+     * @param pushCourseRemindMessageQueue
+     * @param exchange
+     * @return
+     */
+    @Bean
+    Binding bindingExchangePushRemind(Queue pushCourseRemindMessageQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(pushCourseRemindMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

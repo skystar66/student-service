@@ -43,9 +43,18 @@ public class CourseTask {
     SSClassMapper classMapper;
 
 
-    public void run() {
+    public void runBeforeOneDay() {
         excuteCourser1(0, 500);
     }
+
+
+
+
+    public void runBegingTwoHour() {
+        excuteCourser1(0, 500);
+    }
+
+
 
 
     /**
