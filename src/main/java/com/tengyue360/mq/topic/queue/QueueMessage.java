@@ -34,7 +34,7 @@ public class QueueMessage {
      */
     @Bean
     public Queue pushMessageQueue() {
-        return new Queue(QueueConstant.QUEUE_MESSAGE_PUSH_MESSAGE);
+        return new Queue(QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE);
     }
 
 

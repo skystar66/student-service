@@ -1,5 +1,7 @@
 package com.tengyue360.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.tengyue360.bean.SsClesson;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
@@ -8,6 +10,7 @@ import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.service.MessageService;
 import com.tengyue360.service.SmsService;
 import com.tengyue360.utils.CommonTools;
+import com.tengyue360.utils.DateUtil;
 import com.tengyue360.web.requestModel.SendSmsRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
@@ -50,7 +53,7 @@ public class SmsServiceImpl implements SmsService {
             String random = CommonTools.createRandom(true, 4);
             if (model.getValidateType().equals(ValidateCodeEnum.LOGIN_CODE.getKey())) {
                 //登录验证码
-                messageService.sendSms(EMessageTemplateBusinessType.LOGIN_CODE, model.getPhone(), random);
+                messageService.sendSms(EMessageTemplateBusinessType.LOGIN_CODE, model.getPhone(), sendParams(random));
                 HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
                 boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT);
                 if (existHashKey) {
@@ -67,13 +70,13 @@ public class SmsServiceImpl implements SmsService {
                 //设置该用户  验证码缓存器
             } else if (model.getValidateType().equals(ValidateCodeEnum.UPDATE_PWD_CODE.getKey())) {
                 //修改密码验证码
-                messageService.sendSms(EMessageTemplateBusinessType.UPDATE_PWD_CHECKCODE, model.getPhone(), random);
+                messageService.sendSms(EMessageTemplateBusinessType.UPDATE_PWD_CHECKCODE, model.getPhone(), sendParams(random));
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), random);
                 redisTemplate.expire(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), 60, TimeUnit.SECONDS);
             } else if (model.getValidateType().equals(ValidateCodeEnum.FORGET_PWD_CODE.getKey())) {
                 //忘记密码验证码
-                messageService.sendSms(EMessageTemplateBusinessType.FINDBACK_LOGIN_PWD, model.getPhone(), random);
+                messageService.sendSms(EMessageTemplateBusinessType.FINDBACK_LOGIN_PWD, model.getPhone(), sendParams(random));
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
                 redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 60, TimeUnit.SECONDS);
@@ -90,4 +93,22 @@ public class SmsServiceImpl implements SmsService {
         }
         return responseResult;
     }
+
+
+    /**
+     * 封装发送模板
+     *
+     * @return return_type 返回类型
+     * @Title: excuteRemind
+     * @Description: TODO()
+     */
+
+
+    public JSONObject sendParams(String random) {
+        JSONObject object = new JSONObject();
+        object.put("random", random);
+        return object;
+    }
+
+
 }

@@ -46,7 +46,7 @@ public class TopicExcechanges {
      */
     @Bean
     Binding bindingExchangeTimeingPush(Queue pushMessageQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(pushMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_PUSH_MESSAGE);
+        return BindingBuilder.bind(pushMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE);
     }
 
 

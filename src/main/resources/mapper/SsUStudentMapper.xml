@@ -30,6 +30,7 @@
         <result column="id" property="id" jdbcType="VARCHAR"/>
         <result column="attach_path" property="attachPath" jdbcType="VARCHAR"/>
         <result column="attachaId" property="attachaId" jdbcType="VARCHAR"/>
+        <result column="stuStatus" property="stuStatus" jdbcType="VARCHAR"/>
 
     </resultMap>
 
@@ -305,6 +306,7 @@
             s.id,
             s.`name`,
             st.attach_path,
+            s.state as stuStatus
             st.id as attachaId
         FROM
             ss_u_student s

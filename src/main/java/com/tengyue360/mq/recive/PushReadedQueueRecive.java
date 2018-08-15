@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * 接收端 QUEUE_MESSAGE_NORMAL_PUSH
+ * 接收端 QUEUE_MESSAGE_PUSH_READED_MESSAGE
  *
  * @author xuliang 2018/08/12
  */
 
 @Component
-@RabbitListener(queues = QueueConstant.QUEUE_MESSAGE_PUSH_MESSAGE)
-public class PushQueueRecive {
+@RabbitListener(queues = QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE)
+public class PushReadedQueueRecive {
 
 
     private static Logger logger = LoggerFactory.getLogger(Customer.class);
@@ -39,7 +39,7 @@ public class PushQueueRecive {
     public void process(String hello, Channel channel, Message message) throws IOException {
         String sendMessage = new String(message.getBody(), "UTF-8");
         MessageTemplate messageTemplate = (MessageTemplate) JSONObject.parse(sendMessage);
-        logger.info("队列：{},收到消息：{}", QueueConstant.QUEUE_MESSAGE_PUSH_MESSAGE, messageTemplate);
+        logger.info("队列：{},收到消息：{}", QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, messageTemplate);
         try {
             //发送短信
             Map<String, Object> mapResult = PushUtils.pushAppMessage(messageTemplate.getTopic(), messageTemplate.getMessageInfo());
