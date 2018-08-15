@@ -151,17 +151,4 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="queryCourseByCid" resultMap="" parameterType="">
-
-
-    select
-
-
-
-  </select>
-
-
-
-
-
 </mapper>

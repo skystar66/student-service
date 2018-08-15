@@ -23,9 +23,4 @@ public interface SsCourseMapper {
 
 
 
-
-
-    List<SsCourse> queryCourseByCid(@Param("cid") String cid);
-
-
 }
