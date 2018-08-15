@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
 
 /**
- * @author: yijunhao
- * @Date: 2018/7/16 10:05
+ * @author: panjt
+ * @Date: 2018/8/14 19:05
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SsLesson {

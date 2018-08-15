@@ -8,8 +8,8 @@ import java.util.List;
 
 /**
  * 题目类
- * @author: yijunhao
- * @Date: 2018/7/26 10:25
+ * @author: panjt
+ * @Date: 2018/8/14 21:25
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SsQuestion {
