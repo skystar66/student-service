@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +64,7 @@ public class UserController {
      */
 
     @RequestMapping(value = "/backPwd", method = RequestMethod.POST)
-    public ResponseResult backPwd(UserRequestModel model) {
+    public ResponseResult backPwd(@RequestBody UserRequestModel model) {
         logger.info("调用忘记密码接口，参数信息为：{}", model);
         if (null != BeanValidators.isValidateBackPwd(model, redisTemplate)) {
             logger.info("调用忘记密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model, redisTemplate));
@@ -111,7 +112,7 @@ public class UserController {
      */
 
     @RequestMapping(value = "/queryStudentsByUserId", method = RequestMethod.POST)
-    public ResponseResult queryStudentsByUserId(UserRequestModel model) {
+    public ResponseResult queryStudentsByUserId(@RequestBody UserRequestModel model) {
 
 
         return null;
