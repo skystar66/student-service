@@ -1,5 +1,6 @@
 package com.tengyue360.bean;
 
+<<<<<<< HEAD
 import java.util.Date;
 
 public class SsCourse {
@@ -22,6 +23,34 @@ public class SsCourse {
     private String updateMan;
 
     private String deleteState;
+=======
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 课程
+ * @author: panjt
+ * @Date: 2018/8/14 13:03
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SsCourse implements Serializable {
+
+    private Integer id;//课程id
+
+    private String name;//课程名称
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    private Date startTime;//课程起始日期
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    private Date endTime;//课程截止时间
+
+    private List<SsLesson> ssLessons;//课程的课节列表
+>>>>>>> d6ca47d26790a2d2ef41011eb8d2740474905d86
 
     public Integer getId() {
         return id;
@@ -36,6 +65,7 @@ public class SsCourse {
     }
 
     public void setName(String name) {
+<<<<<<< HEAD
         this.name = name == null ? null : name.trim();
     }
 
@@ -45,6 +75,17 @@ public class SsCourse {
 
     public void setTeacherId(Integer teacherId) {
         this.teacherId = teacherId;
+=======
+        this.name = name;
+    }
+
+    public List<SsLesson> getSsLessons() {
+        return ssLessons;
+    }
+
+    public void setSsLessons(List<SsLesson> ssLessons) {
+        this.ssLessons = ssLessons;
+>>>>>>> d6ca47d26790a2d2ef41011eb8d2740474905d86
     }
 
     public Date getStartTime() {
@@ -62,6 +103,7 @@ public class SsCourse {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+<<<<<<< HEAD
 
     public Date getCreateTime() {
         return createTime;
@@ -103,3 +145,6 @@ public class SsCourse {
         this.deleteState = deleteState == null ? null : deleteState.trim();
     }
 }
+=======
+}
+>>>>>>> d6ca47d26790a2d2ef41011eb8d2740474905d86
