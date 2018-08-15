@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sun.misc.Request;
 
 /**
@@ -43,7 +40,7 @@ public class SendMessageController {
      * @throws Exception
      */
     @RequestMapping(value = "/sendLoginSms", method = RequestMethod.POST)
-    public ResponseResult sendLoginSms(SendSmsRequestModel model) {
+    public ResponseResult sendLoginSms(@RequestBody SendSmsRequestModel model) {
         logger.info("获取登录短信验证码，参数信息：{}", model);
         if (null != BeanValidators.isValidateLoginSms(model, redisTemplate)) {
             logger.info("获取登录短信验证码，参数验证失败：{}", BeanValidators.isValidateLoginSms(model, redisTemplate));

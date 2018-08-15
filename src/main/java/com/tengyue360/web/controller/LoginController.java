@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,7 @@ public class LoginController {
      */
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseResult login(LoginRequestModel model, HttpServletResponse response) {
+    public ResponseResult login(@RequestBody LoginRequestModel model, HttpServletResponse response) {
         logger.info("调用登录接口，参数信息：{}", model);
         if (null != BeanValidators.isValidateLogin(model, redisTemplate)) {
             logger.info("调用登录接口参数信息校验失败，返回结果：{}", BeanValidators.isValidateLogin(model, redisTemplate));

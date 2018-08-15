@@ -7,6 +7,7 @@ import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,7 @@ public class StudentController {
      * @throws Exception
      */
     @RequestMapping(value = "/queryStudentById", method = RequestMethod.POST)
-    public ResponseResult queryStudentById(StudentRequestModel model) {
+    public ResponseResult queryStudentById(@RequestBody StudentRequestModel model) {
         logger.info("开始调用根据学员id查询学员信息接口，参数信息：{}", model);
         if (null != BeanValidators.isValidateQueryStudentById(model)) {
             logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model));
