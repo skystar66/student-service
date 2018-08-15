@@ -33,7 +33,7 @@ public class BeanValidators {
 
 
     private static Logger logger = LoggerFactory.getLogger(BeanValidators.class);
-    private static final String regex = "^1[3|4|5|7|8][9][0-9]\\d{8}";
+    private static final String regex = "^1[3|4|5|7|8|9][0-9]\\d{8}";
 
     private static RedisOperations<String, Object> redisOperations;//redis 获取值对象
     private static HashOperations<String, String, String> reHashOperations; //redis 获取hash只对象
