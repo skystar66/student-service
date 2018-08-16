@@ -8,6 +8,7 @@ import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.enums.ValidateCodeEnum;
+import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.LoginService;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.LoginRequestModel;
@@ -44,10 +45,12 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public ResponseResult login(LoginRequestModel model) {
-
+        long startcheck1 = System.currentTimeMillis();
         ResponseResult result = new ResponseResult();
+
         try {
             SsUser user = userMapper.login(model.getPhone());
+            logger.info("查询消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
             if (user == null) {
                 //用户不存在
                 result.setCode(ReturnCode.NAME_PWD_FALSE.code());
@@ -140,14 +143,24 @@ public class LoginServiceImpl implements LoginService {
      */
 
     public void saveloginLog(Integer userId, String token) {
-        //删除该用户PC端的登陆token日志
-        userLoginLogMapper.deleteToeknByUserId(userId, "3");
-        //记录登录日志
-        SsUserLoginLog userLoginLog = new SsUserLoginLog();
-        userLoginLog.setState("3");//来源 学生端app
-        userLoginLog.setUserId(userId);
-        userLoginLog.setToken(token);
-        userLoginLogMapper.insert(userLoginLog);
+
+        ThreadProvider.getThreadPool().execute(() -> {
+            long startcheck1 = System.currentTimeMillis();
+
+            //删除该用户PC端的登陆token日志
+            userLoginLogMapper.deleteToeknByUserId(userId, "3");
+
+            logger.info("删除消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
+            long startcheck2 = System.currentTimeMillis();
+
+            //记录登录日志
+            SsUserLoginLog userLoginLog = new SsUserLoginLog();
+            userLoginLog.setState("3");//来源 学生端app
+            userLoginLog.setUserId(userId);
+            userLoginLog.setToken(token);
+            userLoginLogMapper.insert(userLoginLog);
+            logger.info("新增消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
+        });
     }
 
 
