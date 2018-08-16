@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tengyue360.dao.SsSpeakerAssistantMapper">
+    <resultMap id="BaseResultMap" type="com.tengyue360.bean.SsSpeakerAssistant">
+        <id property="id" column="id"/>
+        <result column="uid" jdbcType="VARCHAR" property="uid"/>
+        <result column="front_id" jdbcType="INTEGER" property="frontId"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="subjects" jdbcType="VARCHAR" property="subjects"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
+        <result column="photo" jdbcType="VARCHAR" property="photo"/>
+        <result column="synopsis" jdbcType="VARCHAR" property="synopsis"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_man" jdbcType="VARCHAR" property="createMan" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_man" jdbcType="VARCHAR" property="updateMan" />
+        <result column="delete_state" jdbcType="VARCHAR" property="deleteState" />
+    </resultMap>
+
+    <select id="findByAccountId" parameterType="integer" resultMap="BaseResultMap">
+		SELECT
+			s.id,s.name ,s.photo
+		FROM
+			`ss_u_speaker_assistant` s join ss_u_account_number a on s.front_id = a.id
+		WHERE a.user_id = #{id}
+    </select>
+
+</mapper>

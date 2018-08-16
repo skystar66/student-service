@@ -237,7 +237,7 @@
         </repository>
         <repository>
             <id>snapshots</id>
-            <url> http://nexus.tengyue360.com/nexus/content/repositories/snapshots/</url>
+            <url>http://nexus.tengyue360.com/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>getui-nexus</id>

@@ -1,7 +1,10 @@
-package com.tengyue360.bean;
+package com.tengyue360.web.requestModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.tengyue360.bean.SsKlass;
+import com.tengyue360.bean.SsLesson;
+import com.tengyue360.bean.SsSpeakerAssistant;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,8 +15,7 @@ import java.util.List;
  * @author: panjt
  * @Date: 2018/8/14 13:03
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class SsCourse implements Serializable {
+public class SsCourseRequestModel extends BaseRequestModel {
 
     private Integer id;//课程id
 
@@ -27,9 +29,19 @@ public class SsCourse implements Serializable {
 
     private List<SsLesson> ssLessons;//课程的课节列表
 
+    private SsKlass ssKlass;
+
+    private SsSpeakerAssistant teacher;
+
+    private SsSpeakerAssistant assistant;
+
     private String type;
 
     private String level;
+
+    private Integer totalLseeon;
+
+    private Integer totalFinishLesson;
 
     public Integer getId() {
         return id;
@@ -71,6 +83,30 @@ public class SsCourse implements Serializable {
         this.endTime = endTime;
     }
 
+    public SsKlass getSsKlass() {
+        return ssKlass;
+    }
+
+    public void setSsKlass(SsKlass ssKlass) {
+        this.ssKlass = ssKlass;
+    }
+
+    public SsSpeakerAssistant getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(SsSpeakerAssistant teacher) {
+        this.teacher = teacher;
+    }
+
+    public SsSpeakerAssistant getAssistant() {
+        return assistant;
+    }
+
+    public void setAssistant(SsSpeakerAssistant assistant) {
+        this.assistant = assistant;
+    }
+
     public String getType() {
         return type;
     }
@@ -85,5 +121,21 @@ public class SsCourse implements Serializable {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public Integer getTotalLseeon() {
+        return totalLseeon;
+    }
+
+    public void setTotalLseeon(Integer totalLseeon) {
+        this.totalLseeon = totalLseeon;
+    }
+
+    public Integer getTotalFinishLesson() {
+        return totalFinishLesson;
+    }
+
+    public void setTotalFinishLesson(Integer totalFinishLesson) {
+        this.totalFinishLesson = totalFinishLesson;
     }
 }

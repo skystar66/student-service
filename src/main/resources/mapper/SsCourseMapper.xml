@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tengyue360.dao.SsCourseMapper">
+    <resultMap id="BaseResultMap" type="com.tengyue360.web.requestModel.SsCourseRequestModel">
+        <id property="id" column="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+    </resultMap>
+
+    <select id="findByCourseId" parameterType="integer" resultMap="BaseResultMap">
+		SELECT
+			id,name ,type,level,start_time,end_time
+		FROM
+			`ss_c_course`
+		WHERE id = #{id}
+    </select>
+
+    <select id="findLessonCount" parameterType="integer" resultType="integer">
+		SELECT
+			count(1)
+		FROM
+			`ss_c_lesson`
+		WHERE course_id = #{id}
+    </select>
+    <select id="findFinishLessonCount" parameterType="integer" resultType="integer">
+		SELECT
+			count(1)
+		FROM
+			`ss_c_lesson`
+		WHERE course_id = #{id} and state = '1'
+    </select>
+</mapper>
