@@ -187,8 +187,9 @@
   </update>
 
   <select id ="login" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, name, phone, password,role_id, institution, avatar, create_time, create_man, update_time,
-    update_man, delete_state,user_count from ss_u_user
+    select
+     <include refid="Base_Column_List"/>
+     from ss_u_user
     where phone = #{phone,jdbcType=VARCHAR}
   </select>
 
