@@ -9,12 +9,9 @@
 
 
     <!-- 定义日志文件 输入位置 -->
-    <property name="log_dir" value="/var/logs/student-service"/>
+    <property name="log_dir" value="/Users/xuliang/Documents/data/logs/student-service"/>
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30"/>
-
-    <!-- INFO级别备份日志名称 -->
-    <property name="BACKUP_INFO_NAME">info-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
 
     <!-- ConsoleAppender 控制台输出日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
