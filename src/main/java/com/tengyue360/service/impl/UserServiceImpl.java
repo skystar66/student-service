@@ -6,6 +6,7 @@ import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
+import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.MessageService;
 import com.tengyue360.service.UserService;
 import com.tengyue360.utils.TokenFactory;
@@ -113,7 +114,9 @@ public class UserServiceImpl implements UserService {
 //                    TokenFactory.refreshToken()
 
                 //删除用户登录日志中的token
-                loginLogMapper.deleteToeknByUserId(user.getId(), "3");
+                ThreadProvider.getThreadPool().execute(() -> {
+                    loginLogMapper.deleteToeknByUserId(user.getId(), "3");
+                });
 
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
@@ -152,7 +155,9 @@ public class UserServiceImpl implements UserService {
 //               TokenFactory.refreshToken()
 
                 //删除用户登录日志中的token
-                loginLogMapper.deleteToeknByUserId(user.getId(), "3");
+                ThreadProvider.getThreadPool().execute(() -> {
+                    loginLogMapper.deleteToeknByUserId(user.getId(), "3");
+                });
 
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
