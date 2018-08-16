@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tengyue360.dao.SsKlassMapper">
+    <resultMap id="BaseResultMap" type="com.tengyue360.bean.SsKlass">
+        <id property="id" column="id"/>
+        <association property="ssCourse" javaType="SsCourse">
+            <id property="id" column="course_id"/>
+        </association>
+        <association property="assistant" javaType="SsUser">
+            <id property="id" column="assistant_id"/>
+        </association>
+        <association property="teacher" javaType="SsUser">
+            <id property="id" column="teacher_id"/>
+        </association>
+    </resultMap>
+
+    <select id="findByKlassId" parameterType="integer" resultMap="BaseResultMap">
+		SELECT
+		    id,
+			course_id ,
+			assistant_id ,
+			teacher_id
+		FROM
+			`ss_c_class`
+		WHERE id = #{id}
+    </select>
+
+</mapper>
