@@ -13,6 +13,9 @@
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30"/>
 
+    <!-- INFO级别备份日志名称 -->
+    <property name="BACKUP_INFO_NAME">info-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
+
     <!-- ConsoleAppender 控制台输出日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 对日志进行格式化 -->
