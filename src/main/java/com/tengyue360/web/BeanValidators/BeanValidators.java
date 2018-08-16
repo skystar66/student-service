@@ -7,6 +7,7 @@ import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.enums.ValidateCodeEnum;
+import com.tengyue360.utils.CommonTools;
 import com.tengyue360.utils.DateUtil;
 import com.tengyue360.web.requestModel.*;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -32,6 +33,7 @@ public class BeanValidators {
 
 
     private static Logger logger = LoggerFactory.getLogger(BeanValidators.class);
+    private static final String regex = "^1[3|4|5|7|8|9][0-9]\\d{8}";
 
     private static RedisOperations<String, Object> redisOperations;//redis 获取值对象
     private static HashOperations<String, String, String> reHashOperations; //redis 获取hash只对象
@@ -75,7 +77,8 @@ public class BeanValidators {
             return isBaseValidate(model);
         }
         redisOperations = redisTemplate.opsForValue().getOperations();
-        if (StringUtils.isBlank(model.getPhone())) {
+        if (StringUtils.isBlank(model.getPhone())||
+                !CommonTools.match(regex, model.getPhone())) {
             //电话不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         } else if (StringUtils.isBlank(model.getPassword())) {
@@ -110,7 +113,8 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-        if (StringUtils.isBlank(model.getPhone())) {
+        if (StringUtils.isBlank(model.getPhone())||
+                !CommonTools.match(regex, model.getPhone())) {
             //用户名不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         }
@@ -143,7 +147,8 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-        if (StringUtils.isBlank(model.getPhone())) {
+        if (StringUtils.isBlank(model.getPhone())||
+                !CommonTools.match(regex, model.getPhone())) {
             //用户名不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         }
@@ -229,6 +234,28 @@ public class BeanValidators {
         }
         return null;
     }
+
+
+
+    /**
+     * 根据用户id查询学生列表 输入参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateStulistByPhone(UserRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getPhone())) {
+            //手机号不能为空
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+
 
     /**
      * 上传文件 参数校验

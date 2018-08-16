@@ -21,6 +21,7 @@ public class CourseController {
 
     @GetMapping("/stuApp/courseList")
     public ResponseResult courseList(Integer userId){
+        logger.info("in学生id{}",userId);
         return ssCourseService.findClassByStudentId(userId);
     }
 

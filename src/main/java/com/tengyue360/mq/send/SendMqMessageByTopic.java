@@ -30,11 +30,11 @@ public class SendMqMessageByTopic implements RabbitTemplate.ReturnCallback, Rabb
     @Autowired
     SsMqPushLogMapper mqPushLogMapper;
 
-    public void send(MessageTemplate mqPushLog, String routingKey) {
-        logger.info("发送内容：{},到队列：{}", mqPushLog, routingKey);
+    public void send(MessageTemplate mqPushLog) {
+        logger.info("发送内容：{},到队列：{}", mqPushLog, mqPushLog.getMqQueueName());
         this.rabbitTemplate.setReturnCallback(this);
         this.rabbitTemplate.setConfirmCallback(this);
-        this.rabbitTemplate.convertAndSend(FanoutExancheConstant.FANOUT_EXANCHE_CONSTANT_A, routingKey, mqPushLog, mqPushLog);
+        this.rabbitTemplate.convertAndSend(FanoutExancheConstant.FANOUT_EXANCHE_CONSTANT_A, mqPushLog.getMqQueueName(), mqPushLog, mqPushLog);
     }
 
 

@@ -20,6 +20,8 @@ public class AccountInfoResponseModel implements Serializable {
 
     private String attachaId;//附件id
 
+    private String stuStatus;//学生状态
+
     public String getAttachaId() {
         return attachaId;
     }
@@ -50,5 +52,14 @@ public class AccountInfoResponseModel implements Serializable {
 
     public void setAttachPath(String attachPath) {
         this.attachPath = attachPath;
+    }
+
+
+    public String getStuStatus() {
+        return stuStatus;
+    }
+
+    public void setStuStatus(String stuStatus) {
+        this.stuStatus = stuStatus;
     }
 }

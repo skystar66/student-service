@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018/8/10 12:37
  */
 @RestController
-@RequestMapping(value = "/login")
+@RequestMapping(value = "/unauth")
 public class LoginController {
 
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -37,7 +37,7 @@ public class LoginController {
     LoginService userService;
 
     /**
-     * 登录
+     * 登录1
      *
      * @return
      * @throws Exception

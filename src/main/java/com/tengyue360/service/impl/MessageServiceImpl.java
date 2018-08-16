@@ -36,13 +36,13 @@ public class MessageServiceImpl implements MessageService {
 
 
     @Override
-    public boolean sendSms(EMessageTemplateBusinessType businessType, String phone, String context) {
+    public boolean sendSms(EMessageTemplateBusinessType businessType, String phone, JSONObject context) {
         MessageTemplate messageTemplate = null;
         try {
             messageTemplate = handleMessageParam(businessType, context);
             logger.info("sendSms message=" + messageTemplate + ",businessType=" + businessType
                     + "开始发送短信" + "，phone:" + phone);
-            mqMessageByTopic.send(messageTemplate, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE);
+            mqMessageByTopic.send(messageTemplate);
         } catch (Exception e) {
             logger.info("sendSms message=" + messageTemplate + ",businessType=" + businessType
                     + "开始发送失败" + "，phone:" + phone);
@@ -56,51 +56,92 @@ public class MessageServiceImpl implements MessageService {
 
 
     /**
+     * 推送消息
+     *
+     * @param businessType
+     * @return
+     */
+
+    @Override
+    public boolean pushMessage(EMessageTemplateBusinessType businessType, JSONObject context) {
+        MessageTemplate messageTemplate = null;
+        try {
+            messageTemplate = handleMessageParam(businessType, context);
+            logger.info("pushMessage message=" + messageTemplate + ",businessType=" + businessType
+                    + "开始推送消息,主题：" + messageTemplate.getTopic() + "，内容：" + messageTemplate.getMessageInfo());
+            mqMessageByTopic.send(messageTemplate);
+        } catch (Exception e) {
+            logger.info("pushMessage message=" + messageTemplate + ",businessType=" + businessType
+                    + "开始推送消息失败,主题：" + messageTemplate.getTopic() + "，内容：" + messageTemplate.getMessageInfo());
+            return false;
+        }
+        if (messageTemplate == null) {
+            return false;
+        }
+        return false;
+    }
+
+    /**
      * 根据实际业务类型 选择相应文案模板
      *
      * @return
      * @throws Exception
      */
 
-    private MessageTemplate handleMessageParam(EMessageTemplateBusinessType businessType, String context)
+    private MessageTemplate handleMessageParam(EMessageTemplateBusinessType businessType, JSONObject context)
             throws Exception {
         MessageTemplate messageTemplate = new MessageTemplate();
+        String templateMsg = "";
         switch (businessType) {
             case LOGIN_CODE: {
                 //登录验证码
-                context = "【腾跃校长在线】" + context + "（登录验证码，请完成验证），如非本人操作，请忽略本短信";
+                templateMsg = "【腾跃校长在线】" + context.getString("random") + "（登录验证码，请完成验证），如非本人操作，请忽略本短信";
                 //验证码登录
-                messageTemplate = newMessageTemplate(context, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
             }
             break;
             case UPDATE_PWD_CHECKCODE: {
                 //修改验证码
-                context = "【腾跃校长在线】" + context + "（修改验证码，请完成验证），如非本人操作，请忽略本短信";
+                templateMsg = "【腾跃校长在线】" + context.getString("random") + "（修改验证码，请完成验证），如非本人操作，请忽略本短信";
                 //验证码登录
-                messageTemplate = newMessageTemplate(context, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
             }
             break;
             case FINDBACK_LOGIN_PWD: {
                 //忘记密码
-                context = "【腾跃校长在线】" + context + "（找回登录密码验证码）。工作人员不会向您所要，请勿向任何人泄露，以免造成损失";
+                templateMsg = "【腾跃校长在线】" + context.getString("random") + "（找回登录密码验证码）。工作人员不会向您所要，请勿向任何人泄露，以免造成损失";
                 //验证码登录
-                messageTemplate = newMessageTemplate(context, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
             }
             break;
 
-            case PUSH_RUNING_CLASS_READED: {
-                //推送上课准备消息
-                context = "同学好，《" + context + "》将于明日xx：xx开课，请提前做好预习等准备工作，祝你学习愉快～";
+            case SEND_RUNING_CLASS_READED: {
+                //发送上课准备短信
+                templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
                 //验证码登录
-                messageTemplate = newMessageTemplate(context, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate.setTopic("开课准备");
+            }
+            break;
+            case SEND_RUNING_CLASS_REMIND: {
+                //发送上课准备短信
+                templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate.setTopic("上课提醒");
+            }
+
+
+            case PUSH_RUNING_CLASS_READED: {
+                //推送上课准备短信
+                templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
                 messageTemplate.setTopic("开课准备");
             }
             break;
             case PUSH_RUNING_CLASS_REMIND: {
-                //推送上课提醒消息
-                context = "同学好，《" + context + "》将于xx：xx开课，请带好必备物品，按时上课，注意安全～";
-                //验证码登录
-                messageTemplate = newMessageTemplate(context, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                //推送上课准备短信
+                templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
                 messageTemplate.setTopic("上课提醒");
             }
             break;

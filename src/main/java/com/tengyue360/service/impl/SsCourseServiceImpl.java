@@ -82,10 +82,12 @@ public class SsCourseServiceImpl implements SsCourseService {
                     return 0;
                 }
             });
+
             if (ssCourseRequestModelList.size() <= 0) {
                 responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
                 responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
                 responseResult.setData(null);
+                logger.info("out===>{}",responseResult);
                 return responseResult;
             }
             responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
@@ -97,6 +99,7 @@ public class SsCourseServiceImpl implements SsCourseService {
             responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
+        logger.info("out===>{}",responseResult);
         return responseResult;
     }
 }
