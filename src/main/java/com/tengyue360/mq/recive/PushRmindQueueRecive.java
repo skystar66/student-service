@@ -32,12 +32,12 @@ import java.util.Map;
 public class PushRmindQueueRecive {
 
 
-    private static Logger logger = LoggerFactory.getLogger(Customer.class);
+    private static Logger logger = LoggerFactory.getLogger(PushRmindQueueRecive.class);
     @Autowired
     SsMqPushLogMapper mqPushLogMapper;
 
     @RabbitHandler
-    public void process(String hello, Channel channel, Message message) throws IOException {
+    public void process( Channel channel, Message message) throws IOException {
         String sendMessage = new String(message.getBody(), "UTF-8");
         MessageTemplate messageTemplate = (MessageTemplate) JSONObject.parse(sendMessage);
         logger.info("队列：{},收到消息：{}", QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE, messageTemplate);

@@ -3,7 +3,7 @@ package com.tengyue360.bean;
 import java.util.Date;
 
 public class SsMqPushLog {
-    private Integer messageId;
+    private String messageId;
 
     private String messageInfo;
 
@@ -17,11 +17,11 @@ public class SsMqPushLog {
 
     private Date acceptTime;
 
-    public Integer getMessageId() {
+    public String getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(Integer messageId) {
+    public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
 

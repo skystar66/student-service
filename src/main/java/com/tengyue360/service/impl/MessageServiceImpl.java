@@ -42,6 +42,7 @@ public class MessageServiceImpl implements MessageService {
             messageTemplate = handleMessageParam(businessType, context);
             logger.info("sendSms message=" + messageTemplate + ",businessType=" + businessType
                     + "开始发送短信" + "，phone:" + phone);
+            messageTemplate.setPhone(phone);
             mqMessageByTopic.send(messageTemplate);
         } catch (Exception e) {
             logger.info("sendSms message=" + messageTemplate + ",businessType=" + businessType
@@ -134,14 +135,14 @@ public class MessageServiceImpl implements MessageService {
             case PUSH_RUNING_CLASS_READED: {
                 //推送上课准备短信
                 templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, Constants.LOGIN_TYPE_CODE);
                 messageTemplate.setTopic("开课准备");
             }
             break;
             case PUSH_RUNING_CLASS_REMIND: {
                 //推送上课准备短信
                 templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE, Constants.LOGIN_TYPE_CODE);
                 messageTemplate.setTopic("上课提醒");
             }
             break;

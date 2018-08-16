@@ -15,6 +15,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -32,12 +33,12 @@ import java.util.Map;
 public class SendReadedQueueRecive {
 
 
-    private static Logger logger = LoggerFactory.getLogger(Customer.class);
+    private static Logger logger = LoggerFactory.getLogger(SendReadedQueueRecive.class);
     @Autowired
     SsMqPushLogMapper mqPushLogMapper;
 
     @RabbitHandler
-    public void process(String hello, Channel channel, Message message) throws IOException {
+    public void process(@Payload MessageTemplate messageTemplate1, Channel channel, Message message) throws IOException {
         String sendMessage = new String(message.getBody(), "UTF-8");
         MessageTemplate messageTemplate = (MessageTemplate) JSONObject.parse(sendMessage);
         logger.info("队列：{},收到消息：{}", QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, messageTemplate);

@@ -22,7 +22,7 @@ import sun.misc.Request;
  */
 
 @RestController
-@RequestMapping(value = "/sms")
+@RequestMapping(value = "/unauth/sms")
 public class SendMessageController {
 
 
