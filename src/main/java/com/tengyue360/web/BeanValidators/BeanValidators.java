@@ -235,6 +235,28 @@ public class BeanValidators {
         return null;
     }
 
+
+
+    /**
+     * 根据用户id查询学生列表 输入参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateStulistByPhone(UserRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getPhone())) {
+            //手机号不能为空
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+
+
     /**
      * 上传文件 参数校验
      *

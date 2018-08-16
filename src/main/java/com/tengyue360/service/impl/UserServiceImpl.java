@@ -2,6 +2,7 @@ package com.tengyue360.service.impl;
 
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
+import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
@@ -9,11 +10,14 @@ import com.tengyue360.service.MessageService;
 import com.tengyue360.service.UserService;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.UserRequestModel;
+import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 用户模块服务
@@ -29,6 +33,8 @@ public class UserServiceImpl implements UserService {
     SsUserMapper userMapper;
     @Autowired
     SsUserLoginLogMapper loginLogMapper;
+    @Autowired
+    SsUStudentMapper studentMapper;
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -176,6 +182,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseResult queryStudentsByUserId(UserRequestModel model) {
+        try {
+            List<AccountInfoResponseModel> stuList = studentMapper.queryStudentByPhone(model.getPhone());
+            if (null != stuList && stuList.size() > 0) {
+                return ResponseResult.onSuccess(stuList, ReturnCode.ACTIVE_SUCCESS);
+            }
+            return ResponseResult.onSuccess(null, ReturnCode.ERROR_EMPTY_DATA);
+        } catch (Exception e) {
+            logger.error("系统异常", e);
+            ResponseResult.onFailure(null, ReturnCode.ACTIVE_EXCEPTION);
+        }
         return null;
     }
 }

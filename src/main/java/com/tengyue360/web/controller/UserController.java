@@ -1,6 +1,7 @@
 package com.tengyue360.web.controller;
 
 
+import com.tengyue360.service.SsStudentService;
 import com.tengyue360.service.UserService;
 import com.tengyue360.web.BeanValidators.BeanValidators;
 import com.tengyue360.web.requestModel.UserRequestModel;
@@ -31,6 +32,8 @@ public class UserController {
     UserService userService;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    SsStudentService studentService;
 
     /**
      * 修改密码
@@ -113,18 +116,18 @@ public class UserController {
 
     @RequestMapping(value = "/queryStudentsByUserId", method = RequestMethod.POST)
     public ResponseResult queryStudentsByUserId(@RequestBody UserRequestModel model) {
-
-
+        logger.info("根据用户id查询该用户下的学生列表，参数信息为：{}", model);
+        if (null != BeanValidators.isValidateStulistByPhone(model)) {
+            logger.info("根据用户id查询该用户下的学生列表，参数信息校验失败，返回结果：{}", BeanValidators.isValidateStulistByPhone(model));
+            return BeanValidators.isValidateStulistByPhone(model);
+        }
+        ResponseResult responseResult = userService.queryStudentsByUserId(model);
+        if (null != responseResult) {
+            logger.info("根据用户id查询该用户下的学生列表成功，返回结果：{}", responseResult);
+            return responseResult;
+        }
         return null;
     }
-
-
-    /**
-     * 根据用户id查询该用户下的学生详情
-     *
-     * @return
-     * @throws Exception
-     */
 
 
 }
