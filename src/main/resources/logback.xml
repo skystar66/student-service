@@ -9,7 +9,7 @@
 
 
     <!-- 定义日志文件 输入位置 -->
-    <property name="log_dir" value="/Users/xuliang/Documents/data/logs/student-service"/>
+    <property name="log_dir" value="/var/logs/student-service"/>
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30"/>
 
