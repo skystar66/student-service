@@ -239,5 +239,41 @@
         and sc.state=#{state,jdbcType=VARCHAR}
     </select>
 
+    <resultMap id="BaseRequestResultMap" type="com.tengyue360.web.requestModel.SsClessonRequestModel">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="addr" jdbcType="VARCHAR" property="addr"/>
+        <result column="course_id" jdbcType="INTEGER" property="courseId"/>
+        <result column="class_id" jdbcType="INTEGER" property="classId"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="real_start_time" jdbcType="TIMESTAMP" property="realStartTime"/>
+        <result column="real_end_time" jdbcType="TIMESTAMP" property="realEndTime"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_man" jdbcType="VARCHAR" property="createMan"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_man" jdbcType="VARCHAR" property="updateMan"/>
+        <result column="delete_state" jdbcType="VARCHAR" property="deleteState"/>
+    </resultMap>
+    <select id="findLessonList" resultMap="BaseRequestResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_c_lesson sc  where sc.course_id=#{courseId,jdbcType=INTEGER}
+        <if test="lessonState == 1">
+            and sc.state=#{lessonState,jdbcType=VARCHAR}
+        </if>
+        <if test="lessonState != 1">
+            and sc.state !=#{lessonState,jdbcType=VARCHAR}
+        </if>
+        order by sc.start_time desc
+    </select>
 
+    <select id="findSignState" resultType="integer">
+        select count(1)
+        from ss_c_sign
+         where lesson_id=#{lessonId,jdbcType=INTEGER}
+         and student_id =#{userId,jdbcType=INTEGER} and delete_state=0
+    </select>
 </mapper>

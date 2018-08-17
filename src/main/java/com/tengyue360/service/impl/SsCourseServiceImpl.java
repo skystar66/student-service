@@ -1,17 +1,18 @@
 package com.tengyue360.service.impl;
 
-import com.tengyue360.bean.SsKlass;
-import com.tengyue360.bean.SsSpeakerAssistant;
-import com.tengyue360.bean.SsStudentClass;
-import com.tengyue360.bean.SsUser;
+import com.tengyue360.bean.*;
 import com.tengyue360.common.ReturnCode;
+import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.*;
 import com.tengyue360.service.SsCourseService;
+import com.tengyue360.web.requestModel.SsClessonRequestModel;
 import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -36,6 +37,12 @@ public class SsCourseServiceImpl implements SsCourseService {
 
     @Autowired
     private SsSpeakerAssistantMapper ssSpeakerAssistantMapper;
+
+    @Autowired
+    private SsClessonMapper ssClessonMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public ResponseResult findClassByStudentId(Integer id) {
@@ -87,7 +94,7 @@ public class SsCourseServiceImpl implements SsCourseService {
                 responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
                 responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
                 responseResult.setData(null);
-                logger.info("out===>{}",responseResult);
+                logger.info("out===>{}", responseResult);
                 return responseResult;
             }
             responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
@@ -99,7 +106,37 @@ public class SsCourseServiceImpl implements SsCourseService {
             responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
-        logger.info("out===>{}",responseResult);
+        logger.info("out===>{}", responseResult);
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult findLessonList(Integer courseId, Integer lessonState, Integer userId) {
+        ResponseResult responseResult = new ResponseResult();
+        HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
+        try {
+            List<SsClessonRequestModel> ssLessonList = ssClessonMapper.findLessonList(courseId, lessonState);
+            for (SsClessonRequestModel ssClessonRequestModel : ssLessonList) {
+                if (ssClessonRequestModel != null) {
+                    Integer signCount = ssClessonMapper.findSignState(ssClessonRequestModel.getId(), userId);
+                    if (signCount > 0) {
+                        ssClessonRequestModel.setSignState("1");//已签到
+                    } else {
+                        ssClessonRequestModel.setSignState("0");//未签到
+                    }
+                   // redisTemplate.opsForHash().put(RedisConstants.LESSON_ALREADY_FINISH+ssClessonRequestModel.getId()+userId, )
+                }
+            }
+            responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+            responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+            responseResult.setData(ssLessonList);
+        } catch (Exception e) {
+            logger.error("系统异常", e);
+            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setData(null);
+        }
+        logger.info("out===>{}", responseResult);
         return responseResult;
     }
 }

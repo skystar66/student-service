@@ -1,7 +1,6 @@
 package com.tengyue360.web.controller;
 
 import com.tengyue360.bean.SsOpinionFeedback;
-import com.tengyue360.service.SsOpinionFeedbackService;
 import com.tengyue360.service.SsIntegralService;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -34,7 +33,7 @@ public class IntegralRecordController {
      * @param userId
      * @return
      */
-    @GetMapping("/stuApp/integralRecord")
+    @PostMapping("/stuApp/integralRecord")
     public ResponseResult integralRecord(Integer userId){
         logger.info("in====>userId:{}",userId);
         return ssIntegralService.integralRecord(userId);

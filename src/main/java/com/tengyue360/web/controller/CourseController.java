@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,10 +20,29 @@ public class CourseController {
     @Autowired
     private SsCourseService ssCourseService;
 
-    @GetMapping("/stuApp/courseList")
+    /**
+     * 课程列表
+     * @param userId
+     * @return
+     */
+    @PostMapping("/stuApp/courseList")
     public ResponseResult courseList(Integer userId){
         logger.info("in学生id{}",userId);
         return ssCourseService.findClassByStudentId(userId);
+    }
+
+    /**
+     * 已上/待上课次列表
+     * @param courseId
+     * @param lessonState
+     * @param userId
+     * @return
+     */
+    @PostMapping("/stuApp/lessonList")
+    public ResponseResult lessonList(Integer courseId,Integer lessonState,Integer userId){
+        logger.info("in===>course{},lessonState{},userId{}",courseId,lessonState,userId);
+        return ssCourseService.findLessonList(courseId,lessonState,userId);
+
     }
 
 }

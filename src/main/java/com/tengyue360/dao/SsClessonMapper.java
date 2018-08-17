@@ -1,6 +1,7 @@
 package com.tengyue360.dao;
 
 import com.tengyue360.bean.SsClesson;
+import com.tengyue360.web.requestModel.SsClessonRequestModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +29,7 @@ public interface SsClessonMapper {
     List<SsClesson> queryAllLesion(@Param("cid") String cid, @Param("state") String state);
 
 
+    List<SsClessonRequestModel> findLessonList(@Param("courseId") Integer courseId, @Param("lessonState") Integer lessonState);
+
+    Integer findSignState(@Param("lessonId")Integer lessonId, @Param("userId") Integer userId);
 }
