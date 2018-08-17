@@ -31,7 +31,7 @@
     </select>
 
     <select id="selectByUsrId" resultType="integer">
-        SELECT sum(value)
+        SELECT COALESCE(sum(value),0)
         FROM ss_c_integral
         where student_id=#{userId}
     </select>
