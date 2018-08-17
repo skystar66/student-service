@@ -2,6 +2,7 @@ package com.tengyue360.mq.topic.message;
 
 import org.springframework.amqp.rabbit.support.CorrelationData;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  * @date 2018/8/11 10:03
  */
 
-public class MessageTemplate extends CorrelationData {
+public class MessageTemplate extends CorrelationData implements Serializable {
 
     private String messageId; // 消息id（自动生成）
     private String messageInfo; // 消息信息

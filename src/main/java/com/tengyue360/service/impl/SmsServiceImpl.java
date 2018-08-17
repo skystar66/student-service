@@ -2,17 +2,21 @@ package com.tengyue360.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.bean.SsClesson;
+import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
+import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.service.MessageService;
 import com.tengyue360.service.SmsService;
+import com.tengyue360.service.UserService;
 import com.tengyue360.utils.CommonTools;
 import com.tengyue360.utils.DateUtil;
 import com.tengyue360.web.requestModel.SendSmsRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,8 @@ public class SmsServiceImpl implements SmsService {
     MessageService messageService;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    SsUserMapper userMapper;
 
     /**
      * 获取短信验证码
@@ -50,6 +56,14 @@ public class SmsServiceImpl implements SmsService {
     public ResponseResult getValidateCode(SendSmsRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
         try {
+            SsUser user = userMapper.login(model.getPhone());
+            if (null != user) {
+                if (StringUtils.isNotBlank(user.getDeleteState()) && !user.getDeleteState().equals("1")) {
+                    return ResponseResult.onFailure(null, ReturnCode.NAME_EMPTY);
+                }
+            } else {
+                return ResponseResult.onFailure(null, ReturnCode.NAME_EMPTY);
+            }
             String random = CommonTools.createRandom(true, 4);
             if (model.getValidateType().equals(ValidateCodeEnum.LOGIN_CODE.getKey())) {
                 //登录验证码

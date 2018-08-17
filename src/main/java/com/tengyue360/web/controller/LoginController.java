@@ -45,11 +45,13 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult login(@RequestBody LoginRequestModel model, HttpServletResponse response) {
+        long startcheck = System.currentTimeMillis();
         logger.info("调用登录接口，参数信息：{}", model);
         if (null != BeanValidators.isValidateLogin(model, redisTemplate)) {
             logger.info("调用登录接口参数信息校验失败，返回结果：{}", BeanValidators.isValidateLogin(model, redisTemplate));
             return BeanValidators.isValidateLogin(model, redisTemplate);
         }
+        logger.info("校验消费时间：" + Math.abs(System.currentTimeMillis() - startcheck));
         //调用后端服务
         ResponseResult responseResult = new ResponseResult();
         if (model.getLoginType().equals(Constants.LOGIN_TYPE_CODE)) {
@@ -62,6 +64,7 @@ public class LoginController {
         if (ReturnCode.ACTIVE_SUCCESS.code() == responseResult.getCode()) {
             response.setHeader(TokenFactory.HEADER_NAME, responseResult.getToken());
         }
+        logger.info("接口调用消耗时间："+Math.abs(System.currentTimeMillis() - startcheck));
         return responseResult;
 
     }

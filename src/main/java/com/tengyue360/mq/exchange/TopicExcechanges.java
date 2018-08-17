@@ -1,5 +1,6 @@
 package com.tengyue360.mq.exchange;
 
+import com.tengyue360.constant.FanoutExancheConstant;
 import com.tengyue360.constant.QueueConstant;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -21,7 +22,7 @@ public class TopicExcechanges {
 
     @Bean
     TopicExchange exchange() {
-        return new TopicExchange("exchange");
+        return new TopicExchange(FanoutExancheConstant.FANOUT_EXANCHE_CONSTANT_A);
     }
 
 
@@ -84,12 +85,6 @@ public class TopicExcechanges {
     Binding bindingExchangePushRemind(Queue pushCourseRemindMessageQueue, TopicExchange exchange) {
         return BindingBuilder.bind(pushCourseRemindMessageQueue).to(exchange).with(QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE);
     }
-
-
-
-
-
-
 
 
 

@@ -5,6 +5,7 @@ import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.SsOpinionFeedbackMapper;
 import com.tengyue360.dao.SsUStudentMapper;
+import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.utils.CommonBeanUtils;
 import com.tengyue360.web.requestModel.StudentRequestModel;
@@ -113,7 +114,9 @@ public class SsStudentServiceImpl implements SsStudentService {
             CommonBeanUtils.copyProperties(model, student);
             if (null != student) {
                 //修改学生信息
-                studentMapper.updateByPrimaryKey(student);
+                ThreadProvider.getThreadPool().execute(() -> {
+                    studentMapper.updateByPrimaryKey(student);
+                });
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(student);

@@ -77,13 +77,10 @@ public class BeanValidators {
             return isBaseValidate(model);
         }
         redisOperations = redisTemplate.opsForValue().getOperations();
-        if (StringUtils.isBlank(model.getPhone())||
+        if (StringUtils.isBlank(model.getPhone()) ||
                 !CommonTools.match(regex, model.getPhone())) {
             //电话不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getPassword())) {
-            //密码不能不能为空
-            return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
         } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_CODE)) {
             if (StringUtils.isBlank(model.getMessageCode())) {
                 //验证码不能为空
@@ -96,6 +93,12 @@ public class BeanValidators {
                 //验证码不能为空
                 return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
             }
+        } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_PWD)) {
+            if (StringUtils.isBlank(model.getPassword())) {
+                //密码不能不能为空
+                return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
+            }
+
         }
         return null;
     }
@@ -113,7 +116,7 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-        if (StringUtils.isBlank(model.getPhone())||
+        if (StringUtils.isBlank(model.getPhone()) ||
                 !CommonTools.match(regex, model.getPhone())) {
             //用户名不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
@@ -121,13 +124,13 @@ public class BeanValidators {
         //校验 24h 之内 只能获取五次验证码
         boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone());
         if (existHashKey) {
-            int count = redisTemplate.opsForHash().keys(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT).size();
+            int count = redisTemplate.opsForHash().keys(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone()).size();
             if (count >= 5) {
                 return new ResponseResult(ReturnCode.ERROR_GET_LOGIN_CODE_COUNT.code(), ReturnCode.ERROR_GET_LOGIN_CODE_COUNT.msg(), null);
             }
         }
         //校验一个手机号 只能间隔60s才会获取第二次
-        String loginCodeKey = model.getPhone() + "_" + RedisConstants.GET_MESSAGE_CODE_LOGIN_OPERATE_TYPE;
+        String loginCodeKey = ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone();
         if (null != redisTemplate.opsForValue().get(loginCodeKey)) {
             return new ResponseResult(ReturnCode.ERROR_AGIN_COUNT.code(), ReturnCode.ERROR_AGIN_COUNT.msg(), null);
         }
@@ -147,7 +150,7 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-        if (StringUtils.isBlank(model.getPhone())||
+        if (StringUtils.isBlank(model.getPhone()) ||
                 !CommonTools.match(regex, model.getPhone())) {
             //用户名不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
@@ -236,7 +239,6 @@ public class BeanValidators {
     }
 
 
-
     /**
      * 根据用户id查询学生列表 输入参数校验
      *
@@ -254,7 +256,6 @@ public class BeanValidators {
         }
         return null;
     }
-
 
 
     /**
