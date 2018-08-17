@@ -39,11 +39,11 @@ public class SmsUtil {
         try {
             responseResult = SmsHttpSend.sendSmsByPost(url, requestJson);
             SmsVariableResponse smsVariableResponse = JSON.parseObject(responseResult, SmsVariableResponse.class);
-            logger.info("手机号：{},短信验证码{}发送成功,返回结果：{}", mobile, context, smsVariableResponse);
+            logger.info("手机号：{},短信【{}】发送成功,返回结果：{}", mobile, context, smsVariableResponse);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("手机号：{},短信验证码{}发送失败,返回结果：{}", mobile, context, responseResult);
+            logger.info("手机号：{},短信【{}】发送失败,返回结果：{}", mobile, context, responseResult);
         }
         return false;
     }

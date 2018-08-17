@@ -1,7 +1,6 @@
 package com.tengyue360.web.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.service.SmsService;
 import com.tengyue360.web.BeanValidators.BeanValidators;
@@ -12,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
+
 
 /**
  * 发送短信管理类
@@ -42,6 +41,7 @@ public class SendMessageController {
     @RequestMapping(value = "/sendLoginSms", method = RequestMethod.POST)
     public ResponseResult sendLoginSms(@RequestBody SendSmsRequestModel model) {
         logger.info("获取登录短信验证码，参数信息：{}", model);
+        long starttime = System.currentTimeMillis();
         if (null != BeanValidators.isValidateLoginSms(model, redisTemplate)) {
             logger.info("获取登录短信验证码，参数验证失败：{}", BeanValidators.isValidateLoginSms(model, redisTemplate));
             return BeanValidators.isValidateLoginSms(model, redisTemplate);
@@ -51,9 +51,11 @@ public class SendMessageController {
         ResponseResult responseResult = smsService.getValidateCode(model);
         if (null != responseResult) {
             logger.info("获取登录短信验证码成功吗，返回信息x：{}", responseResult);
+            logger.info("调用结束，接口耗时：{}", System.currentTimeMillis() - starttime);
             return responseResult;
         }
 
+        logger.info("调用结束，接口耗时：{}", System.currentTimeMillis() - starttime);
         return null;
 
     }
@@ -66,7 +68,7 @@ public class SendMessageController {
      * @throws Exception
      */
     @RequestMapping(value = "/sendUpdatePwdSms", method = RequestMethod.POST)
-    public ResponseResult sendUpdatePwdSms(@RequestBody  SendSmsRequestModel model) {
+    public ResponseResult sendUpdatePwdSms(@RequestBody SendSmsRequestModel model) {
         logger.info("获取修改密码短信验证码，参数信息：{}", model);
         if (null != BeanValidators.isValidateForgetPwdSms(model)) {
             logger.info("获取修改密码短信验证码，参数验证失败：{}", BeanValidators.isValidateForgetPwdSms(model));
@@ -82,9 +84,6 @@ public class SendMessageController {
         return null;
 
     }
-
-
-
 
 
 }
