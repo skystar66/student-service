@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * 使用apache.commons.lang3.builder重写了三个方法
  *
- * @author xuliang
+ * @author xuliang1
  * @date 2018年8月10日 21:04:55
  */
 public class BaseBean {
