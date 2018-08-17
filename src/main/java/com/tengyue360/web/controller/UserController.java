@@ -43,7 +43,7 @@ public class UserController {
      */
 
     @RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
-    public ResponseResult updatePwd(UserRequestModel model) {
+    public ResponseResult updatePwd(@RequestBody UserRequestModel model) {
         logger.info("调用修改密码接口，参数信息为：{}", model);
         if (null != BeanValidators.isValidateUpdatePwd(model)) {
             logger.info("调用修改密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateUpdatePwd(model));
@@ -91,7 +91,7 @@ public class UserController {
      */
 
     @RequestMapping(value = "/loginOut", method = RequestMethod.POST)
-    public ResponseResult loginOut(UserRequestModel model) {
+    public ResponseResult loginOut(@RequestBody UserRequestModel model) {
         logger.info("调用退出登录接口，参数信息为：{}", model);
         if (null != BeanValidators.isValidateLoginOut(model)) {
             logger.info("调用退出登录接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateLoginOut(model));

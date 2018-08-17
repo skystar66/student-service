@@ -66,7 +66,7 @@ public class SendMessageController {
      * @throws Exception
      */
     @RequestMapping(value = "/sendUpdatePwdSms", method = RequestMethod.POST)
-    public ResponseResult sendUpdatePwdSms(SendSmsRequestModel model) {
+    public ResponseResult sendUpdatePwdSms(@RequestBody  SendSmsRequestModel model) {
         logger.info("获取修改密码短信验证码，参数信息：{}", model);
         if (null != BeanValidators.isValidateForgetPwdSms(model)) {
             logger.info("获取修改密码短信验证码，参数验证失败：{}", BeanValidators.isValidateForgetPwdSms(model));

@@ -58,7 +58,7 @@ public class StudentController {
      */
 
     @RequestMapping(value = "/updateStudentById", method = RequestMethod.POST)
-    public ResponseResult updateStudentById(StudentRequestModel model) {
+    public ResponseResult updateStudentById(@RequestBody StudentRequestModel model) {
         logger.info("开始调用根据学员id更新学员信息接口，参数信息：{}", model);
         if (null != BeanValidators.isValidateQueryStudentById(model)) {
             logger.info("根据学员id更新学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model));
