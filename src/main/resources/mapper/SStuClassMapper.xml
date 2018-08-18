@@ -79,4 +79,17 @@
     where class_id = #{classId,jdbcType=INTEGER}
       and student_id = #{studentId,jdbcType=INTEGER}
   </update>
+
+
+    <select id="queryClassBySid" resultMap="BaseResultMap" parameterType="string">
+
+
+        select
+        <include refid="Base_Column_List"/>
+        from ss_u_c_class_stu su where su.student_id = #{sid}
+
+
+    </select>
+
+
 </mapper>

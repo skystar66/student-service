@@ -221,4 +221,7 @@ public class SsClessonRequestModel {
     public void setSignState(String signState) {
         this.signState = signState;
     }
+
+
+
 }

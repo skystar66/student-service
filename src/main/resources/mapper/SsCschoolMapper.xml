@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tengyue360.dao.SsCschoolMapper">
+  <resultMap id="BaseResultMap" type="com.tengyue360.bean.SsCschool">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+    <result column="classroom_number" jdbcType="INTEGER" property="classroomNumber" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_man" jdbcType="VARCHAR" property="createMan" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_man" jdbcType="VARCHAR" property="updateMan" />
+    <result column="delete_state" jdbcType="VARCHAR" property="deleteState" />
+    <result column="subjects" jdbcType="VARCHAR" property="subjects" />
+    <result column="exit_time" jdbcType="TIMESTAMP" property="exitTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, school_name, principal_id, classroom_number, province, city, area, mark, 
+    create_time, create_man, update_time, update_man, delete_state, subjects, exit_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ss_c_school
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ss_c_school
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tengyue360.bean.SsCschool">
+    insert into ss_c_school (id, uid, school_name, 
+      principal_id, classroom_number, province, 
+      city, area, mark, create_time, 
+      create_man, update_time, update_man, 
+      delete_state, subjects, exit_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{schoolName,jdbcType=VARCHAR}, 
+      #{principalId,jdbcType=VARCHAR}, #{classroomNumber,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createMan,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateMan,jdbcType=VARCHAR}, 
+      #{deleteState,jdbcType=VARCHAR}, #{subjects,jdbcType=VARCHAR}, #{exitTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tengyue360.bean.SsCschool">
+    insert into ss_c_school
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="schoolName != null">
+        school_name,
+      </if>
+      <if test="principalId != null">
+        principal_id,
+      </if>
+      <if test="classroomNumber != null">
+        classroom_number,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="mark != null">
+        mark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createMan != null">
+        create_man,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateMan != null">
+        update_man,
+      </if>
+      <if test="deleteState != null">
+        delete_state,
+      </if>
+      <if test="subjects != null">
+        subjects,
+      </if>
+      <if test="exitTime != null">
+        exit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null">
+        #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="principalId != null">
+        #{principalId,jdbcType=VARCHAR},
+      </if>
+      <if test="classroomNumber != null">
+        #{classroomNumber,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createMan != null">
+        #{createMan,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMan != null">
+        #{updateMan,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteState != null">
+        #{deleteState,jdbcType=VARCHAR},
+      </if>
+      <if test="subjects != null">
+        #{subjects,jdbcType=VARCHAR},
+      </if>
+      <if test="exitTime != null">
+        #{exitTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tengyue360.bean.SsCschool">
+    update ss_c_school
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolName != null">
+        school_name = #{schoolName,jdbcType=VARCHAR},
+      </if>
+      <if test="principalId != null">
+        principal_id = #{principalId,jdbcType=VARCHAR},
+      </if>
+      <if test="classroomNumber != null">
+        classroom_number = #{classroomNumber,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        mark = #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createMan != null">
+        create_man = #{createMan,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateMan != null">
+        update_man = #{updateMan,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteState != null">
+        delete_state = #{deleteState,jdbcType=VARCHAR},
+      </if>
+      <if test="subjects != null">
+        subjects = #{subjects,jdbcType=VARCHAR},
+      </if>
+      <if test="exitTime != null">
+        exit_time = #{exitTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tengyue360.bean.SsCschool">
+    update ss_c_school
+    set uid = #{uid,jdbcType=VARCHAR},
+      school_name = #{schoolName,jdbcType=VARCHAR},
+      principal_id = #{principalId,jdbcType=VARCHAR},
+      classroom_number = #{classroomNumber,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      mark = #{mark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_man = #{createMan,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_man = #{updateMan,jdbcType=VARCHAR},
+      delete_state = #{deleteState,jdbcType=VARCHAR},
+      subjects = #{subjects,jdbcType=VARCHAR},
+      exit_time = #{exitTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -55,4 +55,15 @@ public class UserRequestModel extends BaseRequestModel {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "UserRequestModel{" +
+                "oldPwd='" + oldPwd + '\'' +
+                ", newPwd='" + newPwd + '\'' +
+                ", messageCode='" + messageCode + '\'' +
+                ", userId='" + userId + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

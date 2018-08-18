@@ -40,4 +40,14 @@ public class SendSmsRequestModel extends BaseRequestModel {
     public void setValidateType(String validateType) {
         this.validateType = validateType;
     }
+
+
+    @Override
+    public String toString() {
+        return "SendSmsRequestModel{" +
+                "phone='" + phone + '\'' +
+                ", operateType='" + operateType + '\'' +
+                ", validateType='" + validateType + '\'' +
+                '}';
+    }
 }

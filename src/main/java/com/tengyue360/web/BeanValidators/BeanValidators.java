@@ -81,6 +81,8 @@ public class BeanValidators {
                 !CommonTools.match(regex, model.getPhone())) {
             //电话不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        }else if (StringUtils.isBlank(model.getLoginType())) {
+            return new ResponseResult(ReturnCode.LOGIN_TYPE_EMPTY.code(), ReturnCode.LOGIN_TYPE_EMPTY.msg(), null);
         } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_CODE)) {
             if (StringUtils.isBlank(model.getMessageCode())) {
                 //验证码不能为空
@@ -297,6 +299,35 @@ public class BeanValidators {
         }
         return null;
     }
+
+
+    /**
+     * 根据用户手机号查询学生 参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateQueryStudentByPhone(UserRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getPhone())) {
+            //用户手机号不能为空
+            return new ResponseResult(ReturnCode.PHONE_IS_EMPTY.code(), ReturnCode.PHONE_IS_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 //    /**

@@ -15,7 +15,7 @@ public class StudentResponseModel implements Serializable {
 
     private String schoolName;//学生姓名
 
-    private String sId;//学号
+    private String uid;//学号
 
 
     public String getId() {
@@ -58,11 +58,11 @@ public class StudentResponseModel implements Serializable {
         this.schoolName = schoolName;
     }
 
-    public String getsId() {
-        return sId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setsId(String sId) {
-        this.sId = sId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }
