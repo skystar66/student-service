@@ -190,7 +190,7 @@
     select
      <include refid="Base_Column_List"/>
      from ss_u_user
-    where phone = #{phone,jdbcType=VARCHAR}
+    where phone = ${phone}
   </select>
 
 

@@ -119,7 +119,11 @@ public class LoginServiceImpl implements LoginService {
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 //删除当日获取5次的验证码hash key
-                redisTemplate.delete(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT);
+                redisTemplate.delete(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone());
+
+                //记录登录日志
+                saveloginLog(user.getId(), token);
+
                 result.setToken(token);
                 result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
