@@ -1,10 +1,8 @@
 package com.tengyue360.service.impl;
 
-import com.tengyue360.bean.SsOpinionFeedback;
-import com.tengyue360.bean.SsUStudent;
+import com.tengyue360.bean.*;
 import com.tengyue360.common.ReturnCode;
-import com.tengyue360.dao.SsOpinionFeedbackMapper;
-import com.tengyue360.dao.SsUStudentMapper;
+import com.tengyue360.dao.*;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.utils.CommonBeanUtils;
@@ -16,6 +14,7 @@ import com.tengyue360.web.responseModel.StudentResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -34,6 +33,16 @@ public class SsStudentServiceImpl implements SsStudentService {
 
     @Autowired
     private SsOpinionFeedbackMapper ssOpinionFeedbackMapper;
+
+    @Autowired
+    SStuClassMapper stuClassMapper;
+    @Autowired
+    SsCschoolMapper ssCschoolMapper;
+    @Autowired
+    SSClassMapper classMapper;
+    @Autowired
+    SsAttachFilePathMapper attachFilePathMapper;
+
 
     /**
      * 根据家长电话查询该用户下的学员信息
@@ -76,13 +85,39 @@ public class SsStudentServiceImpl implements SsStudentService {
     @Override
     public ResponseResult queryStudentById(StudentRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
+        StudentResponseModel studentResponseModel = new StudentResponseModel();
         try {
-            //查询学员列表
-            StudentResponseModel student = studentMapper.queryStudentById(model.getId());
+            //根据学员id查询学员信息
+            SsUStudent student = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
             if (null != student) {
+                List<SStuClass> classes = stuClassMapper.queryClassBySid(String.valueOf(student.getId()));
+                if (null != classes && classes.size() > 0) {
+                    SStuClass sStuClass = classes.get(0);
+                    //根据班级id查询学校
+                    if (null != sStuClass) {
+                        SSClass ssClass = classMapper.selectByPrimaryKey(sStuClass.getClassId());
+                        if (null != ssClass) {
+                            SsCschool ssCschool = ssCschoolMapper.selectByPrimaryKey(Integer.parseInt(ssClass.getSchoolId()));
+                            if (ssCschool != null) {
+                                studentResponseModel.setSchoolName(ssCschool.getSchoolName());
+                            }
+                        }
+                    }
+                }
+                //根据学生id查询头像 url
+                List<SsAttachFilePath> attachFilePaths = attachFilePathMapper.queryUrlByReleationId(student.getId().toString());
+                if (null != attachFilePaths && attachFilePaths.size() > 0) {
+                    SsAttachFilePath attachFilePath = attachFilePaths.get(0);
+                    if (null != attachFilePath) {
+                        studentResponseModel.setImageUrl(attachFilePath.getAttachPath());
+                    }
+                }
+                CommonBeanUtils.copyPropertiesElseList(student, studentResponseModel, Arrays.asList("schoolName", "imageUrl"));
+            }
+            if (null != studentResponseModel) {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-                responseResult.setData(student);
+                responseResult.setData(studentResponseModel);
                 return responseResult;
             }
             responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
@@ -139,18 +174,18 @@ public class SsStudentServiceImpl implements SsStudentService {
         ResponseResult responseResult = new ResponseResult();
         try {
             SsUStudent student = studentMapper.selectByPrimaryKey(ssOpinionFeedback.getSsUStudent().getId());
-            if ( student != null) {
+            if (student != null) {
                 ssOpinionFeedback.setSsUStudent(student);
                 int resultCount = ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
-                if(resultCount >0){
+                if (resultCount > 0) {
                     responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                     responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                     responseResult.setData(null);
                     return responseResult;
                 }
 
-               // responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
-               // responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
+                // responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
+                // responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
                 responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
                 responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
                 responseResult.setData(null);

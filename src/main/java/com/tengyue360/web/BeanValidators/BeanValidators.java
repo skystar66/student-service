@@ -301,6 +301,35 @@ public class BeanValidators {
     }
 
 
+    /**
+     * 根据用户手机号查询学生 参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateQueryStudentByPhone(UserRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getPhone())) {
+            //用户手机号不能为空
+            return new ResponseResult(ReturnCode.PHONE_IS_EMPTY.code(), ReturnCode.PHONE_IS_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 //    /**
 //     * 访问方法频率控制在指定秒内
 //     *
