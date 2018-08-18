@@ -44,7 +44,7 @@ public class SendMessageController {
         long starttime = System.currentTimeMillis();
         if (null != BeanValidators.isValidateLoginSms(model, redisTemplate)) {
             logger.info("获取登录短信验证码，参数验证失败：{}", BeanValidators.isValidateLoginSms(model, redisTemplate));
-//            return BeanValidators.isValidateLoginSms(model, redisTemplate);
+            return BeanValidators.isValidateLoginSms(model, redisTemplate);
         }
         //调用后台服务 获取验证码
         model.setValidateType(ValidateCodeEnum.LOGIN_CODE.getKey());
