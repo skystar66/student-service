@@ -81,7 +81,7 @@ public class BeanValidators {
                 !CommonTools.match(regex, model.getPhone())) {
             //电话不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
-        }else if (StringUtils.isBlank(model.getLoginType())) {
+        } else if (StringUtils.isBlank(model.getLoginType())) {
             return new ResponseResult(ReturnCode.LOGIN_TYPE_EMPTY.code(), ReturnCode.LOGIN_TYPE_EMPTY.msg(), null);
         } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_CODE)) {
             if (StringUtils.isBlank(model.getMessageCode())) {
@@ -177,6 +177,9 @@ public class BeanValidators {
         if (StringUtils.isBlank(model.getMessageCode())) {
             //验证码不能为空
             return new ResponseResult(ReturnCode.VALIDAT_CODE_EMPTY.code(), ReturnCode.VALIDAT_CODE_EMPTY.msg(), null);
+        } else if (StringUtils.isBlank(model.getPhone())) {
+            //新密码不能不能为空
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         } else if (StringUtils.isBlank(model.getOldPwd()) || StringUtils.isBlank(model.getNewPwd())) {
             //原始/新密码不能不能为空
             return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
@@ -212,7 +215,7 @@ public class BeanValidators {
         } else if (StringUtils.isBlank(model.getPhone())) {
             //新密码不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
-        }else if (StringUtils.isNotBlank(model.getMessageCode())) {
+        } else if (StringUtils.isNotBlank(model.getMessageCode())) {
             String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
                     : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
             if (!cacheCode.equals(model.getMessageCode())) {
@@ -321,16 +324,6 @@ public class BeanValidators {
         }
         return null;
     }
-
-
-
-
-
-
-
-
-
-
 
 
 //    /**
