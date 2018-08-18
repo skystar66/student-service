@@ -58,29 +58,29 @@ public class UserController {
         return null;
     }
 
-
-    /**
-     * 忘记密码
-     *
-     * @return
-     * @throws Exception
-     */
-
-    @RequestMapping(value = "/backPwd", method = RequestMethod.POST)
-    public ResponseResult backPwd(@RequestBody UserRequestModel model) {
-        logger.info("调用忘记密码接口，参数信息为：{}", model);
-        if (null != BeanValidators.isValidateBackPwd(model, redisTemplate)) {
-            logger.info("调用忘记密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model, redisTemplate));
-            return BeanValidators.isValidateBackPwd(model, redisTemplate);
-        }
-        //调用后台服务
-        ResponseResult responseResult = userService.backPwd(model);
-        if (null != responseResult) {
-            logger.info("调用忘记密码接口成功，返回结果：{}", responseResult);
-            return responseResult;
-        }
-        return null;
-    }
+//
+//    /**
+//     * 忘记密码
+//     *
+//     * @return
+//     * @throws Exception
+//     */
+//
+//    @RequestMapping(value = "/backPwd", method = RequestMethod.POST)
+//    public ResponseResult backPwd(@RequestBody UserRequestModel model) {
+//        logger.info("调用忘记密码接口，参数信息为：{}", model);
+//        if (null != BeanValidators.isValidateBackPwd(model, redisTemplate)) {
+//            logger.info("调用忘记密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model, redisTemplate));
+//            return BeanValidators.isValidateBackPwd(model, redisTemplate);
+//        }
+//        //调用后台服务
+//        ResponseResult responseResult = userService.backPwd(model);
+//        if (null != responseResult) {
+//            logger.info("调用忘记密码接口成功，返回结果：{}", responseResult);
+//            return responseResult;
+//        }
+//        return null;
+//    }
 
 
     /**

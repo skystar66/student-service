@@ -3,9 +3,11 @@ package com.tengyue360.web.controller;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.service.LoginService;
+import com.tengyue360.service.UserService;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.BeanValidators.BeanValidators;
 import com.tengyue360.web.requestModel.LoginRequestModel;
+import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,9 @@ public class LoginController {
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
-    LoginService userService;
+    LoginService loginService;
+    @Autowired
+    UserService userService;
 
     /**
      * 登录1
@@ -56,10 +60,10 @@ public class LoginController {
         ResponseResult responseResult = new ResponseResult();
         if (model.getLoginType().equals(Constants.LOGIN_TYPE_CODE)) {
             //验证码登录
-            responseResult = userService.codeLogin(model);
+            responseResult = loginService.codeLogin(model);
         } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_PWD)) {
             //密码登录
-            responseResult = userService.login(model);
+            responseResult = loginService.login(model);
         }
         if (ReturnCode.ACTIVE_SUCCESS.code() == responseResult.getCode()) {
             response.setHeader(TokenFactory.HEADER_NAME, responseResult.getToken());
@@ -69,6 +73,33 @@ public class LoginController {
         return responseResult;
 
     }
+
+
+
+    /**
+     * 忘记密码
+     *
+     * @return
+     * @throws Exception
+     */
+
+    @RequestMapping(value = "/backPwd", method = RequestMethod.POST)
+    public ResponseResult backPwd(@RequestBody UserRequestModel model) {
+        logger.info("调用忘记密码接口，参数信息为：{}", model);
+        if (null != BeanValidators.isValidateBackPwd(model, redisTemplate)) {
+            logger.info("调用忘记密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwd(model, redisTemplate));
+            return BeanValidators.isValidateBackPwd(model, redisTemplate);
+        }
+        //调用后台服务
+        ResponseResult responseResult = userService.backPwd(model);
+        if (null != responseResult) {
+            logger.info("调用忘记密码接口成功，返回结果：{}", responseResult);
+            return responseResult;
+        }
+        return null;
+    }
+
+
 
 
 }
