@@ -5,6 +5,7 @@ import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.*;
 import com.tengyue360.service.SsCourseService;
+import com.tengyue360.utils.FastJsonUtil;
 import com.tengyue360.web.requestModel.SsClessonRequestModel;
 import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author panjt
@@ -119,13 +121,12 @@ public class SsCourseServiceImpl implements SsCourseService {
         boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_ALREADY_FINISH + userId);
         if (existHashKey) {
             List<String> ssLessonList = redisValidateCode.values(RedisConstants.LESSON_ALREADY_FINISH + userId);
-            List<JSONObject> ssLessonLists = new ArrayList<>();
+            List<SsClessonRequestModel> ssLessonLists = new ArrayList<>();
             logger.info("执行redis操作-----");
             for (String ssClessonRequestModel : ssLessonList) {
-                JSONObject jsonObject = JSONObject.fromObject(ssClessonRequestModel);
-                ssLessonLists.add(jsonObject);
+                SsClessonRequestModel ssClessonRequestModels =  FastJsonUtil.json2Bean(ssClessonRequestModel,SsClessonRequestModel.class);
+                ssLessonLists.add(ssClessonRequestModels);
             }
-            JSONArray jsonArray = JSONArray.fromObject(ssLessonList);
 
             responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
             responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
@@ -145,6 +146,7 @@ public class SsCourseServiceImpl implements SsCourseService {
                         redisTemplate.opsForHash().put(RedisConstants.LESSON_ALREADY_FINISH + userId, "" + ssClessonRequestModel.getId() + userId, ssClessonRequestModel.toString());
                     }
                 }
+                redisTemplate.expire(RedisConstants.LESSON_ALREADY_FINISH + userId, 180, TimeUnit.SECONDS);
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(ssLessonList);

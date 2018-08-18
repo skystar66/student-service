@@ -39,25 +39,51 @@ public class SsClessonRequestModel {
 
     @Override
     public String toString() {
-        return "{" +
+        String str = "{" +
                 "id:" + id +
                 ", name:\"" + name + '"' +
                 ", addr:\"" + addr + '"' +
                 ", courseId:" + courseId +
                 ", classId:" + classId +
                 ", number:" + number +
-                ", state:\"" + state + '"' +
-                ", realStartTime:" + realStartTime.getTime() +
-                ", realEndTime:" + realEndTime.getTime() +
-                ", startTime:" + startTime.getTime() +
-                ", endTime:" + endTime.getTime() +
-                ", createTime:" + createTime.getTime() +
-                ", createMan:\"" + createMan + '"' +
-                ", updateTime:" + updateTime.getTime() +
-                ", updateMan:\"" + updateMan + '"' +
+                ", state:\"" + state + '"';
+        if (realStartTime != null) {
+            str += ", realStartTime:" + realStartTime.getTime();
+        } else {
+            str += ", realStartTime:" + realStartTime;
+        }
+        if (realEndTime != null) {
+            str += ", realEndTime:" + realEndTime.getTime();
+        } else {
+            str += ", realEndTime:" + realEndTime;
+        }
+        if (startTime != null) {
+            str += ", startTime:" + startTime.getTime();
+        } else {
+            str += ", startTime:" + startTime;
+        }
+        if (endTime != null) {
+            str += ", endTime:" + endTime.getTime();
+        } else {
+            str += ", endTime:" + endTime;
+        }
+        if (createTime != null) {
+            str += ", createTime:" + createTime.getTime();
+        } else {
+            str += ", createTime:" + createTime;
+        }
+        str += ", createMan:\"" + createMan + '"';
+        if (updateTime != null) {
+            str += ", updateTime:" + updateTime.getTime();
+        } else {
+            str += ", updateTime:" + updateTime;
+        }
+
+        str += ", updateMan:\"" + updateMan + '"' +
                 ", deleteState:\"" + deleteState + '"' +
                 ", signState:\"" + signState + '"' +
                 '}';
+        return str ;
     }
 
     public Integer getId() {

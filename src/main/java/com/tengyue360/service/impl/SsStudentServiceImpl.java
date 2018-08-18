@@ -13,6 +13,8 @@ import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import com.tengyue360.web.responseModel.StudentResponseModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ import java.util.List;
  */
 @Service
 public class SsStudentServiceImpl implements SsStudentService {
+    Logger logger = LoggerFactory.getLogger(SsStudentServiceImpl.class);
 
 
     @Autowired
@@ -141,18 +144,14 @@ public class SsStudentServiceImpl implements SsStudentService {
             SsUStudent student = studentMapper.selectByPrimaryKey(ssOpinionFeedback.getSsUStudent().getId());
             if ( student != null) {
                 ssOpinionFeedback.setSsUStudent(student);
-                int resultCount = ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
-                if(resultCount >0){
-                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-                    responseResult.setData(null);
-                    return responseResult;
-                }
+                ThreadProvider.getThreadPool().execute(() -> {
+                    ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
+                });
 
                // responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
                // responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
-                responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-                responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
             }
@@ -167,4 +166,23 @@ public class SsStudentServiceImpl implements SsStudentService {
         }
         return responseResult;
     }
+
+//    /**
+//     * 添加反馈时间
+//     * @param ssOpinionFeedback
+//     */
+//    public int saveIntegral(SsOpinionFeedback ssOpinionFeedback) {
+//        int resultCount = 0 ;
+//        ThreadProvider.getThreadPool().execute(() -> {
+//            long startcheck1 = System.currentTimeMillis();
+//
+//            //添加反馈
+//             resultCount =  ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
+//
+//            logger.info("添加消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
+//
+//
+//        });
+//        return resultCount;
+//    }
 }
