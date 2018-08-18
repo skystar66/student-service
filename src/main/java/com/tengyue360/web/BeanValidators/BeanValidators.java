@@ -209,9 +209,9 @@ public class BeanValidators {
         } else if (StringUtils.isBlank(model.getNewPwd())) {
             //新密码不能不能为空
             return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getUserId())) {
+        } else if (StringUtils.isBlank(model.getPhone())) {
             //新密码不能不能为空
-            return new ResponseResult(ReturnCode.ERROR_USER_ID.code(), ReturnCode.ERROR_USER_ID.msg(), null);
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         }else if (StringUtils.isNotBlank(model.getMessageCode())) {
             String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
                     : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
