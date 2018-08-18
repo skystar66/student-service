@@ -3,14 +3,19 @@ package com.tengyue360.service.impl;
 import com.tengyue360.bean.*;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.*;
+import com.tengyue360.enums.EnumModelType;
+import com.tengyue360.exception.BusinessException;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.utils.CommonBeanUtils;
+import com.tengyue360.utils.ElseFiledsUtils;
 import com.tengyue360.web.requestModel.StudentRequestModel;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import com.tengyue360.web.responseModel.StudentResponseModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +32,8 @@ import java.util.List;
 @Service
 public class SsStudentServiceImpl implements SsStudentService {
 
+
+    private static Logger logger = LoggerFactory.getLogger(SsStudentServiceImpl.class);
 
     @Autowired
     SsUStudentMapper studentMapper;
@@ -68,6 +75,7 @@ public class SsStudentServiceImpl implements SsStudentService {
             responseResult.setData(stuList);
             return responseResult;
         } catch (Exception ex) {
+            logger.error(ex.getMessage());
             responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
             responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
@@ -112,7 +120,7 @@ public class SsStudentServiceImpl implements SsStudentService {
                         studentResponseModel.setImageUrl(attachFilePath.getAttachPath());
                     }
                 }
-                CommonBeanUtils.copyPropertiesElseList(student, studentResponseModel, Arrays.asList("schoolName", "imageUrl"));
+                CommonBeanUtils.copyPropertiesElseList(student, studentResponseModel, ElseFiledsUtils.elseFileds(EnumModelType.QUERY_STUDENT_BY_ID.code()));
             }
             if (null != studentResponseModel) {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
@@ -125,6 +133,8 @@ public class SsStudentServiceImpl implements SsStudentService {
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
+            logger.error(ex.toString());
+//            throw new BusinessException(ex.toString(), true);
             responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
             responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
@@ -162,6 +172,7 @@ public class SsStudentServiceImpl implements SsStudentService {
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
+            logger.error(ex.getMessage());
             responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
             responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
@@ -196,6 +207,7 @@ public class SsStudentServiceImpl implements SsStudentService {
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
+            logger.error(ex.getMessage());
             responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
             responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);

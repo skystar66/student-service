@@ -31,7 +31,7 @@ public interface SsStudentService {
      * @throws Exception
      */
 
-    public ResponseResult queryStudentById(StudentRequestModel model);
+    public ResponseResult queryStudentById(StudentRequestModel model) ;
 
 
     /**
