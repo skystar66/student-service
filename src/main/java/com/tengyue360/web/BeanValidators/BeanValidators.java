@@ -80,6 +80,8 @@ public class BeanValidators {
         if (StringUtils.isBlank(model.getPhone()) ||
                 !CommonTools.match(regex, model.getPhone())) {
             //电话不能不能为空
+            return new ResponseResult(ReturnCode.LOGIN_TYPE_EMPTY.code(), ReturnCode.LOGIN_TYPE_EMPTY.msg(), null);
+        }else if (StringUtils.isBlank(model.getLoginType())) {
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_CODE)) {
             if (StringUtils.isBlank(model.getMessageCode())) {
