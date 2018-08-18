@@ -10,9 +10,11 @@ import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.LoginService;
+import com.tengyue360.utils.CommonBeanUtils;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.LoginRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
+import com.tengyue360.web.responseModel.UserResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,11 @@ public class LoginServiceImpl implements LoginService {
 
             result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
             result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-            result.setData(user);
+
+            //封装返回参数
+            UserResponseModel userResponseModel = new UserResponseModel();
+            CommonBeanUtils.copyProperties(user,userResponseModel);
+            result.setData(userResponseModel);
         } catch (Exception e) {
             logger.error("系统异常", e);
             result.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
