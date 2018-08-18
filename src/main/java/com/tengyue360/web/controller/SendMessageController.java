@@ -75,7 +75,7 @@ public class SendMessageController {
             return BeanValidators.isValidateForgetPwdSms(model);
         }
         //调用后台服务 获取验证码
-        model.setValidateType(ValidateCodeEnum.UPDATE_PWD_CODE.getKey());
+        model.setValidateType(ValidateCodeEnum.FORGET_PWD_CODE.getKey());
         ResponseResult responseResult = smsService.getValidateCode(model);
         if (null != responseResult) {
             logger.info("获取修改短信验证码成功吗，返回信息x：{}", responseResult);
