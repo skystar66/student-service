@@ -8,6 +8,8 @@ import com.tengyue360.service.SsCourseService;
 import com.tengyue360.web.requestModel.SsClessonRequestModel;
 import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,27 +116,44 @@ public class SsCourseServiceImpl implements SsCourseService {
     public ResponseResult findLessonList(Integer courseId, Integer lessonState, Integer userId) {
         ResponseResult responseResult = new ResponseResult();
         HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
-        try {
-            List<SsClessonRequestModel> ssLessonList = ssClessonMapper.findLessonList(courseId, lessonState);
-            for (SsClessonRequestModel ssClessonRequestModel : ssLessonList) {
-                if (ssClessonRequestModel != null) {
-                    Integer signCount = ssClessonMapper.findSignState(ssClessonRequestModel.getId(), userId);
-                    if (signCount > 0) {
-                        ssClessonRequestModel.setSignState("1");//已签到
-                    } else {
-                        ssClessonRequestModel.setSignState("0");//未签到
-                    }
-                   // redisTemplate.opsForHash().put(RedisConstants.LESSON_ALREADY_FINISH+ssClessonRequestModel.getId()+userId, )
-                }
+        boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_ALREADY_FINISH + userId);
+        if (existHashKey) {
+            List<String> ssLessonList = redisValidateCode.values(RedisConstants.LESSON_ALREADY_FINISH + userId);
+            List<JSONObject> ssLessonLists = new ArrayList<>();
+            logger.info("执行redis操作-----");
+            for (String ssClessonRequestModel : ssLessonList) {
+                JSONObject jsonObject = JSONObject.fromObject(ssClessonRequestModel);
+                ssLessonLists.add(jsonObject);
             }
+            JSONArray jsonArray = JSONArray.fromObject(ssLessonList);
+
             responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
             responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-            responseResult.setData(ssLessonList);
-        } catch (Exception e) {
-            logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
-            responseResult.setData(null);
+            responseResult.setData(ssLessonLists);
+        } else {
+            logger.info("未执行redis----");
+            try {
+                List<SsClessonRequestModel> ssLessonList = ssClessonMapper.findLessonList(courseId, lessonState);
+                for (SsClessonRequestModel ssClessonRequestModel : ssLessonList) {
+                    if (ssClessonRequestModel != null) {
+                        Integer signCount = ssClessonMapper.findSignState(ssClessonRequestModel.getId(), userId);
+                        if (signCount > 0) {
+                            ssClessonRequestModel.setSignState("1");//已签到
+                        } else {
+                            ssClessonRequestModel.setSignState("0");//未签到
+                        }
+                        redisTemplate.opsForHash().put(RedisConstants.LESSON_ALREADY_FINISH + userId, "" + ssClessonRequestModel.getId() + userId, ssClessonRequestModel.toString());
+                    }
+                }
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(ssLessonList);
+            } catch (Exception e) {
+                logger.error("系统异常", e);
+                responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+                responseResult.setData(null);
+            }
         }
         logger.info("out===>{}", responseResult);
         return responseResult;

@@ -37,6 +37,29 @@ public class SsClessonRequestModel {
 
     private String signState;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id:" + id +
+                ", name:\"" + name + '"' +
+                ", addr:\"" + addr + '"' +
+                ", courseId:" + courseId +
+                ", classId:" + classId +
+                ", number:" + number +
+                ", state:\"" + state + '"' +
+                ", realStartTime:" + realStartTime.getTime() +
+                ", realEndTime:" + realEndTime.getTime() +
+                ", startTime:" + startTime.getTime() +
+                ", endTime:" + endTime.getTime() +
+                ", createTime:" + createTime.getTime() +
+                ", createMan:\"" + createMan + '"' +
+                ", updateTime:" + updateTime.getTime() +
+                ", updateMan:\"" + updateMan + '"' +
+                ", deleteState:\"" + deleteState + '"' +
+                ", signState:\"" + signState + '"' +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

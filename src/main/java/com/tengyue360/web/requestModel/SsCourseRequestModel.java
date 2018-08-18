@@ -21,10 +21,8 @@ public class SsCourseRequestModel extends BaseRequestModel {
 
     private String name;//课程名称
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date startTime;//课程起始日期
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date endTime;//课程截止时间
 
     private List<SsLesson> ssLessons;//课程的课节列表

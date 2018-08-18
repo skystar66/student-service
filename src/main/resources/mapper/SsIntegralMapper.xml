@@ -16,7 +16,7 @@
           FROM
         (
             SELECT
-                sum(VALUE)
+                COALESCE(sum(VALUE),0)
             VALUE , lesson_id , student_id ,source
             FROM
                 ss_c_integral
