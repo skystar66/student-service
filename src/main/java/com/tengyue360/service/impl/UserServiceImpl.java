@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     public ResponseResult backPwd(UserRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            SsUser user = userMapper.selectByPrimaryKey(Integer.parseInt(model.getUserId()));
+            SsUser user = userMapper.login(model.getPhone());
             if (null != user) {
                 //更新密码
                 user.setPassword(model.getNewPwd());
