@@ -1,7 +1,7 @@
 # 基于哪个镜像
 FROM java:8
 ADD target/*.jar app.jar
-RUN mkdir -p /var/logs/student-service
+#RUN mkdir -p /var/logs/student-service
 RUN bash -c 'touch /app.jar'
 RUN mkdir -p /var/logs/student-service
 # 开放8080端口

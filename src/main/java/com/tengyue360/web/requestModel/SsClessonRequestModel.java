@@ -172,4 +172,28 @@ public class SsClessonRequestModel {
     public void setSignState(String signState) {
         this.signState = signState;
     }
+
+
+    @Override
+    public String toString() {
+        return "SsClessonRequestModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", addr='" + addr + '\'' +
+                ", courseId=" + courseId +
+                ", classId=" + classId +
+                ", number=" + number +
+                ", state='" + state + '\'' +
+                ", realStartTime=" + realStartTime +
+                ", realEndTime=" + realEndTime +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", createTime=" + createTime +
+                ", createMan='" + createMan + '\'' +
+                ", updateTime=" + updateTime +
+                ", updateMan='" + updateMan + '\'' +
+                ", deleteState='" + deleteState + '\'' +
+                ", signState='" + signState + '\'' +
+                '}';
+    }
 }

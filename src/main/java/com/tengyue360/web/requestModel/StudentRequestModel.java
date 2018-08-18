@@ -39,4 +39,14 @@ public class StudentRequestModel extends BaseRequestModel {
     public void setId(String id) {
         this.id = id;
     }
+
+
+    @Override
+    public String toString() {
+        return "StudentRequestModel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
 }

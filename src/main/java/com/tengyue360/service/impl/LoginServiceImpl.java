@@ -68,7 +68,7 @@ public class LoginServiceImpl implements LoginService {
                     return result;
                 }
                 //获取学生端 app jwt topken
-                String token = TokenFactory.createToken(user.getId().toString(), Constants.SOURCE_APP_STUDENT);
+                String token = TokenFactory.createToken(user.getId().toString(), null);
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 result.setToken(token);
@@ -84,7 +84,7 @@ public class LoginServiceImpl implements LoginService {
 
             //封装返回参数
             UserResponseModel userResponseModel = new UserResponseModel();
-            CommonBeanUtils.copyProperties(user,userResponseModel);
+            CommonBeanUtils.copyProperties(user, userResponseModel);
             result.setData(userResponseModel);
         } catch (Exception e) {
             logger.error("系统异常", e);
@@ -121,7 +121,7 @@ public class LoginServiceImpl implements LoginService {
                 return result;
             } else {
                 //获取学生端 app jwt topken
-                String token = TokenFactory.createToken(user.getId().toString(), Constants.SOURCE_APP_STUDENT);
+                String token = TokenFactory.createToken(user.getId().toString(), null);
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 //删除当日获取5次的验证码hash key
@@ -133,7 +133,9 @@ public class LoginServiceImpl implements LoginService {
                 result.setToken(token);
                 result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-                result.setData(user);
+                //封装返回参数
+                UserResponseModel userResponseModel = new UserResponseModel();
+                CommonBeanUtils.copyProperties(user, userResponseModel);
                 return result;
             }
         } catch (Exception e) {
@@ -153,16 +155,12 @@ public class LoginServiceImpl implements LoginService {
      */
 
     public void saveloginLog(Integer userId, String token) {
-
         ThreadProvider.getThreadPool().execute(() -> {
             long startcheck1 = System.currentTimeMillis();
-
             //删除该用户PC端的登陆token日志
             userLoginLogMapper.deleteToeknByUserId(userId, "3");
-
             logger.info("删除消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
             long startcheck2 = System.currentTimeMillis();
-
             //记录登录日志
             SsUserLoginLog userLoginLog = new SsUserLoginLog();
             userLoginLog.setState("3");//来源 学生端app

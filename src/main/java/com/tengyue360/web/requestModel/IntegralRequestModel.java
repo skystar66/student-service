@@ -35,4 +35,14 @@ public class IntegralRequestModel  extends BaseRequestModel{
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
+
+
+    @Override
+    public String toString() {
+        return "IntegralRequestModel{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                ", startTime=" + startTime +
+                '}';
+    }
 }

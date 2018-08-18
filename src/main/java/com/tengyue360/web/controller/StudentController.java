@@ -3,6 +3,7 @@ package com.tengyue360.web.controller;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.web.BeanValidators.BeanValidators;
 import com.tengyue360.web.requestModel.StudentRequestModel;
+import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,4 +72,37 @@ public class StudentController {
         }
         return null;
     }
+
+    /**
+     * 根据用户id查询学员接口
+     *
+     * @return
+     * @throws Exception
+     */
+
+    @RequestMapping(value = "/queryStudentByPhone", method = RequestMethod.POST)
+    public ResponseResult queryStudentByPhone(@RequestBody UserRequestModel model) {
+        logger.info("开始调用根据用户手机号查询学员信息接口，参数信息：{}", model);
+        if (null != BeanValidators.isValidateQueryStudentByPhone(model)) {
+            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentByPhone(model));
+            return BeanValidators.isValidateQueryStudentByPhone(model);
+        }
+        ResponseResult responseResult = studentService.queryStudentByPhone(model);
+        if (null != responseResult) {
+            logger.info("根据学员id查询学员信息接口成功，返回结果{}", responseResult);
+            return responseResult;
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

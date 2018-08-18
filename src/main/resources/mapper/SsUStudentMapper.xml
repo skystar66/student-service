@@ -306,7 +306,7 @@
             s.id,
             s.`name`,
             st.attach_path,
-            s.state as stuStatus
+            s.state as stuStatus,
             st.id as attachaId
         FROM
             ss_u_student s

@@ -69,4 +69,17 @@ public class LoginRequestModel extends BaseRequestModel {
     public void setLoginType(String loginType) {
         this.loginType = loginType;
     }
+
+
+    @Override
+    public String toString() {
+        return "LoginRequestModel{" +
+                "phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                ", messageCode='" + messageCode + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", source='" + source + '\'' +
+                ", loginType='" + loginType + '\'' +
+                '}';
+    }
 }
