@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xuliang
  * @date 2018/8/10 12:37
  */
-
+@RestController
 @RequestMapping("/upload")
 public class UploadController {
 

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
             if (null != user) {
                 //更新密码
                 user.setPassword(model.getNewPwd());
-                userMapper.updateByPrimaryKey(user);
+
                 //发送修改密码成功短信 加入队列
 //                    sendModifyPWDMessage(user, EMessageTemplateBusinessType.MODIFY_LOGIN_PWD);
 
@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
 
                 //删除用户登录日志中的token
                 ThreadProvider.getThreadPool().execute(() -> {
+                    userMapper.updateByPrimaryKey(user);
                     loginLogMapper.deleteToeknByUserId(user.getId(), "3");
                 });
 
