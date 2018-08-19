@@ -54,4 +54,15 @@ public class UploadFileRequestModel extends BaseRequestModel {
     public void setRelationId(String relationId) {
         this.relationId = relationId;
     }
+
+
+    @Override
+    public String toString() {
+        return "UploadFileRequestModel{" +
+                "file=" + file +
+                ", relationId='" + relationId + '\'' +
+                ", uploadType='" + uploadType + '\'' +
+                ", attachaFileId='" + attachaFileId + '\'' +
+                '}';
+    }
 }
