@@ -29,6 +29,7 @@ spring:
             concurrency: 1
             retry:
                     enabled: true
+            max-concurrency: 10
           publisher-returns: true
  # jackson:
    # default-property-inclusion: non_null
