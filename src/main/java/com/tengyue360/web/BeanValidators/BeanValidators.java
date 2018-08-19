@@ -213,7 +213,7 @@ public class BeanValidators {
             //新密码不能不能为空
             return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
         } else if (StringUtils.isBlank(model.getPhone())) {
-            //新密码不能不能为空
+            //手机号不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         } else if (StringUtils.isNotBlank(model.getMessageCode())) {
             String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
