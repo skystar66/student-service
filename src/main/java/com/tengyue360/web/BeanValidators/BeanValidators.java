@@ -196,7 +196,7 @@ public class BeanValidators {
 
 
     /**
-     * 忘记密码 输入参数校验
+     * 忘记密码s 输入参数校验
      *
      * @param model
      * @return
