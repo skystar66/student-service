@@ -68,7 +68,7 @@ public class LoginController {
             responseResult = loginService.login(model);
         }
         if (ReturnCode.ACTIVE_SUCCESS.code() == responseResult.getCode()) {
-            response.setHeader(TokenFactory.HEADER_NAME, responseResult.getToken());
+            response.setHeader(TokenFactory.getInstance().HEADER_NAME, responseResult.getToken());
             responseResult.setToken(null);
         }
         logger.info("接口调用消耗时间：" + Math.abs(System.currentTimeMillis() - startcheck));
