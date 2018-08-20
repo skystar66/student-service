@@ -17,6 +17,8 @@ public class StudentResponseModel implements Serializable {
 
     private String uid;//学号
 
+    private String parentPhone;//家长手机号
+
 
     public String getId() {
         return id;
@@ -64,5 +66,14 @@ public class StudentResponseModel implements Serializable {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+
+    public String getParentPhone() {
+        return parentPhone;
+    }
+
+    public void setParentPhone(String parentPhone) {
+        this.parentPhone = parentPhone;
     }
 }

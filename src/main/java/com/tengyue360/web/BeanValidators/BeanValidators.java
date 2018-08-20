@@ -1,29 +1,19 @@
 package com.tengyue360.web.BeanValidators;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Constant;
-import com.sun.org.apache.regexp.internal.RE;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.utils.CommonTools;
-import com.tengyue360.utils.DateUtil;
 import com.tengyue360.web.requestModel.*;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 接口校验类
