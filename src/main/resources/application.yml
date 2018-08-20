@@ -9,14 +9,14 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: ${url:jdbc:mysql://10.88.88.219:3306/shuangshi?characterEncoding=utf-8}
   redis:
-    host: 10.88.88.219
-    password:
-    port: 6379
-    pool:
-      max-idle: 100
-      min-idle: 1
-      max-active: 1000
-      max-wait: -1
+      host: ${redis.host:10.88.88.219}
+      password:
+      port: ${redis.port:6379}
+      pool:
+        max-idle: 100
+        min-idle: 1
+        max-active: 1000
+        max-wait: -1
   rabbitmq:
           host: ${rabbitmq.host:10.88.88.47}
           port: ${rabbitmq.port:5672}
