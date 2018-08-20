@@ -209,20 +209,24 @@ public class BeanValidators {
         if (StringUtils.isBlank(model.getMessageCode())) {
             //验证码不能为空
             return new ResponseResult(ReturnCode.VALIDAT_CODE_EMPTY.code(), ReturnCode.VALIDAT_CODE_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getNewPwd())) {
-            //新密码不能不能为空
-            return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
+        } else if (StringUtils.isNotBlank(model.getType()) && !model.getType().equals(Constants.UPDATE_PWD_CODE_VALIDATE)) {
+            if (StringUtils.isBlank(model.getNewPwd())) {
+                //新密码不能不能为空
+                return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
+            }
         } else if (StringUtils.isBlank(model.getPhone())) {
             //手机号不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
-        } else if (StringUtils.isNotBlank(model.getMessageCode())) {
-            String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
-                    : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
-            if (!cacheCode.equals(model.getMessageCode())) {
-                //验证码不能为空 缓存期校验
-                return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
-            }
+        } else if (StringUtils.isNotBlank(model.getType()) && !model.getType().equals(Constants.FORGET_PWD_CODE_VALIDATE)) {
+            if (StringUtils.isNotBlank(model.getMessageCode())) {
+                String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
+                        : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
+                if (!cacheCode.equals(model.getMessageCode())) {
+                    //验证码不能为空 缓存期校验
+                    return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
+                }
 
+            }
         }
         return null;
     }
