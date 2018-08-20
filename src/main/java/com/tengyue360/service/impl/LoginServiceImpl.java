@@ -10,6 +10,7 @@ import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.LoginService;
+import com.tengyue360.service.UserLoginLogService;
 import com.tengyue360.utils.CommonBeanUtils;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.LoginRequestModel;
@@ -20,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 登录模块服务
@@ -35,7 +38,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
-    SsUserLoginLogMapper userLoginLogMapper;
+    UserLoginLogService userLoginLogService;
 
     private static Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
 
@@ -49,7 +52,6 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult login(LoginRequestModel model) {
         long startcheck1 = System.currentTimeMillis();
         ResponseResult result = new ResponseResult();
-
         try {
             SsUser user = userMapper.login(model.getPhone());
             logger.info("查询消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
@@ -153,21 +155,9 @@ public class LoginServiceImpl implements LoginService {
      * @return
      * @throws Exception
      */
-
     public void saveloginLog(Integer userId, String token) {
         ThreadProvider.getThreadPool().execute(() -> {
-            long startcheck1 = System.currentTimeMillis();
-            //删除该用户PC端的登陆token日志
-            userLoginLogMapper.deleteToeknByUserId(userId, "3");
-            logger.info("删除消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
-            long startcheck2 = System.currentTimeMillis();
-            //记录登录日志
-            SsUserLoginLog userLoginLog = new SsUserLoginLog();
-            userLoginLog.setState("3");//来源 学生端app
-            userLoginLog.setUserId(userId);
-            userLoginLog.setToken(token);
-            userLoginLogMapper.insert(userLoginLog);
-            logger.info("新增消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
+            userLoginLogService.saveloginLog(userId, token);
         });
     }
 
