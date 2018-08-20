@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.QueueConstant;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
+import com.tengyue360.enums.EMqSendType;
 import com.tengyue360.mq.send.SendMqMessageByTopic;
 import com.tengyue360.mq.topic.message.MessageTemplate;
 import com.tengyue360.service.MessageService;
@@ -98,21 +99,21 @@ public class MessageServiceImpl implements MessageService {
                 //登录验证码
                 templateMsg = "【腾跃校长在线】" + context.getString("random") + "（登录验证码，请完成验证），如非本人操作，请忽略本短信";
                 //验证码登录
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.LOGIN_TYPE_GET_CODE.getCode());
             }
             break;
             case UPDATE_PWD_CHECKCODE: {
                 //修改验证码
                 templateMsg = "【腾跃校长在线】" + context.getString("random") + "（修改验证码，请完成验证），如非本人操作，请忽略本短信";
                 //验证码登录
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.UPDATE_TYPE_GET_CODE.getCode());
             }
             break;
             case FINDBACK_LOGIN_PWD: {
                 //忘记密码
                 templateMsg = "【腾跃校长在线】" + context.getString("random") + "（找回登录密码验证码）。工作人员不会向您所要，请勿向任何人泄露，以免造成损失";
                 //验证码登录
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.FORGET_TYPE_GET_CODE.getCode());
             }
             break;
 
@@ -120,14 +121,14 @@ public class MessageServiceImpl implements MessageService {
                 //发送上课准备短信
                 templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
                 //验证码登录
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.SEND_RUNING_CLASS_READED_ON_EIGHTEEN_CODE.getCode());
                 messageTemplate.setTopic("开课准备");
             }
             break;
             case SEND_RUNING_CLASS_REMIND: {
                 //发送上课准备短信
                 templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.SEND_RUNING_CLASS_REMIND_ON_BEFOR_TWO_HOUR_CODE.getCode());
                 messageTemplate.setTopic("上课提醒");
             }
 
@@ -135,14 +136,14 @@ public class MessageServiceImpl implements MessageService {
             case PUSH_RUNING_CLASS_READED: {
                 //推送上课准备短信
                 templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, EMqSendType.PUSH_RUNING_CLASS_READED_ON_EIGHTEEN_CODE.getCode());
                 messageTemplate.setTopic("开课准备");
             }
             break;
             case PUSH_RUNING_CLASS_REMIND: {
                 //推送上课准备短信
                 templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE, Constants.LOGIN_TYPE_CODE);
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE, EMqSendType.PUSH_RUNING_CLASS_REMIND_ON_BEFOR_TWO_HOUR_CODE.getCode());
                 messageTemplate.setTopic("上课提醒");
             }
             break;
@@ -166,8 +167,8 @@ public class MessageServiceImpl implements MessageService {
         MessageTemplate messageTemplate = new MessageTemplate();
         messageTemplate.setMessageId(UUID.randomUUID().toString().replace("-", ""));
         messageTemplate.setMessageInfo(context);
-        messageTemplate.setMqQueueName(queueName);
-        messageTemplate.setMqType(type);
+        messageTemplate.setMessageQueueName(queueName);
+        messageTemplate.setMmessgeType(type);
         messageTemplate.setSendTime(new Date());
         return messageTemplate;
     }

@@ -16,11 +16,13 @@ public class MessageTemplate extends CorrelationData implements Serializable {
 
     private String messageId; // 消息id（自动生成）
     private String messageInfo; // 消息信息
-    private String mqQueueName; // 队列名称
-    private String mqType; //消息类型
+    private String messageQueueName; //队列名称
+
+    private String mmessgeType;//队列类型
+
     private Integer mqStatus;
     private Date sendTime;
-    private Date messageAcceptTime; // 消息接收时间;
+    private Date acceptTime; // 消息接收时间;
 
     private String topic;//消息主题
 
@@ -43,20 +45,20 @@ public class MessageTemplate extends CorrelationData implements Serializable {
         this.messageInfo = messageInfo;
     }
 
-    public String getMqQueueName() {
-        return mqQueueName;
+    public String getMessageQueueName() {
+        return messageQueueName;
     }
 
-    public void setMqQueueName(String mqQueueName) {
-        this.mqQueueName = mqQueueName;
+    public void setMessageQueueName(String messageQueueName) {
+        this.messageQueueName = messageQueueName;
     }
 
-    public String getMqType() {
-        return mqType;
+    public String getMmessgeType() {
+        return mmessgeType;
     }
 
-    public void setMqType(String mqType) {
-        this.mqType = mqType;
+    public void setMmessgeType(String mmessgeType) {
+        this.mmessgeType = mmessgeType;
     }
 
     public Integer getMqStatus() {
@@ -75,12 +77,12 @@ public class MessageTemplate extends CorrelationData implements Serializable {
         this.sendTime = sendTime;
     }
 
-    public Date getMessageAcceptTime() {
-        return messageAcceptTime;
+    public Date getAcceptTime() {
+        return acceptTime;
     }
 
-    public void setMessageAcceptTime(Date messageAcceptTime) {
-        this.messageAcceptTime = messageAcceptTime;
+    public void setAcceptTime(Date acceptTime) {
+        this.acceptTime = acceptTime;
     }
 
     public String getPhone() {

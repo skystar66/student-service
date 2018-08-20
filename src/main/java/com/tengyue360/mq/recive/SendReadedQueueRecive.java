@@ -19,6 +19,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -55,6 +56,7 @@ public class SendReadedQueueRecive {
             } else {
                 messageTemplate.setMqStatus(4);//已处理
             }
+            messageTemplate1.setAcceptTime(new Date());//接收时间
             SsMqPushLog pushLog = new SsMqPushLog();
             CommonBeanUtils.copyProperties(messageTemplate, pushLog);
             mqPushLogMapper.updateByPrimaryKey(pushLog);
