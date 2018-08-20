@@ -63,8 +63,12 @@ public class LoginServiceImpl implements LoginService {
                     result.setData(null);
                     return result;
                 }
+                long startcheck2 = System.currentTimeMillis();
+
                 //获取学生端 app jwt topken
                 String token = TokenFactory.getInstance().createToken(user.getId().toString(), "3");
+                logger.info("生成token消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
+
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 result.setToken(token);
