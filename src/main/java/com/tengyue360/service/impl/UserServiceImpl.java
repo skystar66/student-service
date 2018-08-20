@@ -5,11 +5,8 @@ import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
-import com.tengyue360.enums.EMessageTemplateBusinessType;
 import com.tengyue360.pool.ThreadProvider;
-import com.tengyue360.service.MessageService;
 import com.tengyue360.service.UserService;
-import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -17,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,17 +52,14 @@ public class UserServiceImpl implements UserService {
             SsUser user = userMapper.selectByPrimaryKey(Integer.parseInt(model.getUserId()));
             if (null != user) {
                 if (model.getOldPwd().equals(user.getPassword())) {
-                    //更新密码
+                    //更新 密码
                     user.setPassword(model.getNewPwd());
-                    userMapper.updateByPrimaryKey(user);
-                    //发送修改密码成功短信 加入队列
-//                    sendModifyPWDMessage(user, EMessageTemplateBusinessType.MODIFY_LOGIN_PWD);
                     //删除JWT中所有该用户的登录token
 //                    TokenFactory.refreshToken()
-
                     //删除用户登录日志中的token
-                    loginLogMapper.deleteToeknByUserId(user.getId(), "3");
-
+                    ThreadProvider.getThreadPool().execute(() -> {
+                        updatePwd(user);
+                    });
                     responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                     responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                     responseResult.setData(null);
@@ -105,25 +100,16 @@ public class UserServiceImpl implements UserService {
             if (null != user) {
                 //更新密码
                 user.setPassword(model.getNewPwd());
-
-                //发送修改密码成功短信 加入队列
-//                    sendModifyPWDMessage(user, EMessageTemplateBusinessType.MODIFY_LOGIN_PWD);
-
-
                 //删除JWT中所有该用户的登录token
 //                    TokenFactory.refreshToken()
-
                 //删除用户登录日志中的token
                 ThreadProvider.getThreadPool().execute(() -> {
-                    userMapper.updateByPrimaryKey(user);
-                    loginLogMapper.deleteToeknByUserId(user.getId(), "3");
+                    updatePwd(user);
                 });
-
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
-
             }
             //用户不存在
             responseResult.setCode(ReturnCode.NAME_PWD_FALSE.code());
@@ -200,4 +186,19 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+
+    /**
+     * 忘记密码 删除登录token 修改密码
+     *
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public int updatePwd(SsUser user) {
+        loginLogMapper.deleteToeknByUserId(user.getId(), "3");
+        int num = userMapper.updateByPrimaryKey(user);
+        return num;
+    }
+
 }

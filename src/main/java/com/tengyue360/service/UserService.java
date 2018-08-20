@@ -10,7 +10,9 @@ import com.tengyue360.web.responseModel.ResponseResult;
  * @author xuliang
  * @date 2018/8/10 10:03
  */
-public interface UserService {
+public interface
+
+UserService {
 
 
     /**

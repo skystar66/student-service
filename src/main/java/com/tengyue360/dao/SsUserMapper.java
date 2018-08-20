@@ -24,4 +24,7 @@ public interface SsUserMapper {
     SsUser login(@Param("phone") String phone);
 
 
+
+
+
 }

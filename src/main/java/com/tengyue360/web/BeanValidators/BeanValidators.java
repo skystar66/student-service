@@ -1,29 +1,19 @@
 package com.tengyue360.web.BeanValidators;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Constant;
-import com.sun.org.apache.regexp.internal.RE;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.utils.CommonTools;
-import com.tengyue360.utils.DateUtil;
 import com.tengyue360.web.requestModel.*;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 接口校验类
@@ -215,6 +205,27 @@ public class BeanValidators {
         } else if (StringUtils.isBlank(model.getPhone())) {
             //手机号不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+    /**
+     * 校验忘记密码验证码是否输入正确
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateBackPwdCode(UserRequestModel model, RedisTemplate redisTemplate) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getMessageCode())) {
+            //验证码不能为空
+            return new ResponseResult(ReturnCode.VALIDAT_CODE_EMPTY.code(), ReturnCode.VALIDAT_CODE_EMPTY.msg(), null);
+        } else if (StringUtils.isBlank(model.getPhone())) {
+            //手机号不能不能为空
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         } else if (StringUtils.isNotBlank(model.getMessageCode())) {
             String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
                     : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
@@ -222,7 +233,6 @@ public class BeanValidators {
                 //验证码不能为空 缓存期校验
                 return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
             }
-
         }
         return null;
     }

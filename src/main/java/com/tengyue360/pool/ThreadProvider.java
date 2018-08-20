@@ -16,7 +16,7 @@ public class ThreadProvider {
     //线程池，大小为threadCount
     private static final ExecutorService executor;
 
-    private static final Integer queueSize = 10;
+    private static final Integer queueSize = 1000;
 
     private static final Integer threadCount = 20;
 

@@ -4,7 +4,7 @@ workspace:
 
 pipeline:
   build:
-    image: harbor1.tengyue360.com/library/maven:3.5.2-jdk-8
+    image: harbor.tengyue360.com/library/maven:3.5.2-jdk-8
     privileged: true
     commands:
       - mvn clean package
@@ -12,40 +12,40 @@ pipeline:
       - /drone/maven-repo:/root/.m2
 
   public-dev:
-    image: harbor1.tengyue360.com/drone/drone-docker
+    image: harbor.tengyue360.com/drone/drone-docker
     secrets:
        - docker_username
        - docker_password
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD} harbor1.tengyue360.com
+      - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD} harbor.tengyue360.com
       - docker build --rm  -t student-service .
-      - docker tag student-service harbor1.tengyue360.com/tengyue360/student-service:dev
-      - docker push harbor1.tengyue360.com/tengyue360/student-service:dev
+      - docker tag student-service harbor.tengyue360.com/tengyue360/student-service:dev
+      - docker push harbor.tengyue360.com/tengyue360/student-service:dev
     when:
       branch: dev
       event: push
 
 
   public-test:
-    image: harbor1.tengyue360.com/drone/drone-docker
+    image: harbor.tengyue360.com/drone/drone-docker
     secrets:
        - docker_username
        - docker_password
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD} harbor1.tengyue360.com
+      - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD} harbor.tengyue360.com
       - docker build --rm  -t student-service .
-      - docker tag student-service harbor1.tengyue360.com/tengyue360/student-service:test
-      - docker push harbor1.tengyue360.com/tengyue360/student-service:test
+      - docker tag student-service harbor.tengyue360.com/tengyue360/student-service:test
+      - docker push harbor.tengyue360.com/tengyue360/student-service:test
     when:
       branch: test
       event: push
 
   public-online:
-    image: harbor1.tengyue360.com/drone/drone-docker
+    image: harbor.tengyue360.com/drone/drone-docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
@@ -60,12 +60,12 @@ pipeline:
 
 # 使用rancher插件，自动更新实例
   rancher-dev:
-    image: harbor1.tengyue360.com/drone/drone-rancher
+    image: harbor.tengyue360.com/drone/drone-rancher
     url: http://10.88.88.206:8080
     access_key: 47B85B251AEA3D033749
     secret_key: UQ6aPGZUZ87JPZas5ymdmdZijdmAxjSdG7kepWRF
     service: tengyue360/student-service
-    docker_image: harbor1.tengyue360.com/tengyue360/student-service:dev
+    docker_image: harbor.tengyue360.com/tengyue360/student-service:dev
     start_first: true
     confirm: true
     timeout: 240
@@ -74,12 +74,12 @@ pipeline:
       event: push
 
   rancher-test:
-    image: harbor1.tengyue360.com/drone/drone-rancher
+    image: harbor.tengyue360.com/drone/drone-rancher
     url: http://10.88.88.206:8080
     access_key: 290BE2E513F6D3B931CC
     secret_key: g1VfAKxoyRfk4BEZXch2gZbqFXXXjHNe68dUdub9
     service: tengyue360/student-service
-    docker_image: harbor1.tengyue360.com/tengyue360/student-service:test
+    docker_image: harbor.tengyue360.com/tengyue360/student-service:test
     start_first: true
     confirm: true
     timeout: 240
@@ -88,7 +88,7 @@ pipeline:
       event: push
 
   rancher-online:
-    image: harbor1.tengyue360.com/drone/drone-rancher
+    image: harbor.tengyue360.com/drone/drone-rancher
     url: http://47.93.33.197:8080
     secrets: 
        - rancher_access_key

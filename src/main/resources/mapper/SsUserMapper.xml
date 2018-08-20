@@ -21,7 +21,7 @@
     update_time, update_man, delete_state, user_count
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from ss_u_user
     where id = #{id,jdbcType=INTEGER}

@@ -1,5 +1,6 @@
 package com.tengyue360;
 
+import com.tengyue360.utils.JsonRpcUtils;
 import com.tengyue360.web.requestModel.LoginRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.mybatis.spring.annotation.MapperScan;
@@ -14,17 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
+//@ImportResource(locations = { "classpath:spring/applicationContext.xml" })
 @SpringBootApplication(scanBasePackages = "com.tengyue360")
 @EnableDiscoveryClient
 @MapperScan("com.tengyue360.dao")
 @RestController
 @ServletComponentScan
-//@ImportResource(locations = { "classpath:druid-bean.xml" })
 public class StudentServiceApplication {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
         SpringApplication.run(StudentServiceApplication.class, args);
+
+        //默认访问路径 封装http  缓存11
+        String rwesult = JsonRpcUtils.sendPost("http://127.0.0.1:8087/start", null);
+
+        System.out.println("结果："+rwesult);
     }
 
 }

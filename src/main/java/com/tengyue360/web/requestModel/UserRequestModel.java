@@ -15,6 +15,7 @@ public class UserRequestModel extends BaseRequestModel {
     private String messageCode;//验证码
     private String userId;//用户ID
     private String phone;//电话
+    private String type;//校验类型 0 忘记密码验证码校验
 
     public String getPhone() {
         return phone;
@@ -56,6 +57,14 @@ public class UserRequestModel extends BaseRequestModel {
         this.userId = userId;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "UserRequestModel{" +
@@ -64,6 +73,7 @@ public class UserRequestModel extends BaseRequestModel {
                 ", messageCode='" + messageCode + '\'' +
                 ", userId='" + userId + '\'' +
                 ", phone='" + phone + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
