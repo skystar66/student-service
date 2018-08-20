@@ -28,7 +28,7 @@ public class StudentServiceApplication {
 
         SpringApplication.run(StudentServiceApplication.class, args);
 
-        //默认访问路径 封装http  缓存
+        //默认访问路径 封装http  缓存1
         JsonRpcUtils.sendPost("http://127.0.0.1:8087/start", null);
 
 
