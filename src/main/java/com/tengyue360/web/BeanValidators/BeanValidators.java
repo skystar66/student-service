@@ -215,7 +215,34 @@ public class BeanValidators {
                     //验证码不能为空 缓存期校验
                     return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
                 }
+            }
+        }
+        return null;
+    }
 
+    /**
+     * 校验忘记密码验证码是否输入正确
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateBackPwdCode(UserRequestModel model, RedisTemplate redisTemplate) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getMessageCode())) {
+            //验证码不能为空
+            return new ResponseResult(ReturnCode.VALIDAT_CODE_EMPTY.code(), ReturnCode.VALIDAT_CODE_EMPTY.msg(), null);
+        } else if (StringUtils.isBlank(model.getPhone())) {
+            //手机号不能不能为空
+            return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        } else if (StringUtils.isNotBlank(model.getMessageCode())) {
+            String cacheCode = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()) == null ? ""
+                    : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone()).toString();
+            if (!cacheCode.equals(model.getMessageCode())) {
+                //验证码不能为空 缓存期校验
+                return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
             }
         }
         return null;

@@ -62,6 +62,8 @@ public class LoginController {
             //验证码登录
             responseResult = loginService.codeLogin(model);
         } else if (model.getLoginType().equals(Constants.LOGIN_TYPE_PWD)) {
+            long startcheck1 = System.currentTimeMillis();
+
             //密码登录
             responseResult = loginService.login(model);
         }
@@ -73,7 +75,6 @@ public class LoginController {
         return responseResult;
 
     }
-
 
 
     /**
@@ -99,7 +100,21 @@ public class LoginController {
         return null;
     }
 
-
+    /**
+     * 校验忘记密码验证码输入是否正确
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/isValidateForgetCode", method = RequestMethod.POST)
+    public ResponseResult isValidateForgetCode(@RequestBody UserRequestModel model) {
+        logger.info("调用忘记密码验证码接口，参数信息为：{}", model);
+        if (null != BeanValidators.isValidateBackPwdCode(model, redisTemplate)) {
+            logger.info("调用忘记密码验证码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateBackPwdCode(model, redisTemplate));
+            return BeanValidators.isValidateBackPwdCode(model, redisTemplate);
+        }
+        return ResponseResult.onSuccess(null, ReturnCode.ACTIVE_SUCCESS);
+    }
 
 
 }
