@@ -31,10 +31,10 @@ public class SendMqMessageByTopic implements RabbitTemplate.ReturnCallback, Rabb
     SsMqPushLogMapper mqPushLogMapper;
 
     public void send(MessageTemplate mqPushLog) {
-        logger.info("发送内容：{},到队列：{}", mqPushLog, mqPushLog.getMqQueueName());
+        logger.info("发送内容：{},到队列：{}", mqPushLog, mqPushLog.getMessageQueueName());
         this.rabbitTemplate.setReturnCallback(this);
         this.rabbitTemplate.setConfirmCallback(this);
-        this.rabbitTemplate.convertAndSend(FanoutExancheConstant.FANOUT_EXANCHE_CONSTANT_A, mqPushLog.getMqQueueName(), mqPushLog, mqPushLog);
+        this.rabbitTemplate.convertAndSend(FanoutExancheConstant.FANOUT_EXANCHE_CONSTANT_A, mqPushLog.getMessageQueueName(), mqPushLog, mqPushLog);
     }
 
 
@@ -61,11 +61,11 @@ public class SendMqMessageByTopic implements RabbitTemplate.ReturnCallback, Rabb
         SsMqPushLog pushLog = new SsMqPushLog();
         CommonBeanUtils.copyProperties(messageTemplate,pushLog);
         if (!ack) {
-            logger.info("队列：{}，消息发送失败:{}", messageTemplate.getMqQueueName(), cause);
+            logger.info("队列：{}，消息发送失败:{}", messageTemplate.getMessageQueueName(), cause);
             pushLog.setMqStatus(2);//发送失败
             mqPushLogMapper.insert(pushLog);
         } else {
-            logger.info("队列：{}，消息发送成功:{} ", messageTemplate.getMqQueueName(), messageTemplate.getMessageInfo());
+            logger.info("队列：{}，消息发送成功:{} ", messageTemplate.getMessageQueueName(), messageTemplate.getMessageInfo());
             pushLog.setMqStatus(0);//已发送
             mqPushLogMapper.insert(pushLog);
         }

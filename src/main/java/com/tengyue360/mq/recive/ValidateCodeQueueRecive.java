@@ -18,6 +18,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 
 
 /**
@@ -41,6 +42,7 @@ public class ValidateCodeQueueRecive {
             //发送短信
             SmsUtil.sendMessage(messageTemplate1.getPhone(), messageTemplate1.getMessageInfo());
             messageTemplate1.setMqStatus(1);//已处理
+            messageTemplate1.setAcceptTime(new Date());//接收时间
             SsMqPushLog pushLog = new SsMqPushLog();
             CommonBeanUtils.copyProperties(messageTemplate1, pushLog);
             mqPushLogMapper.updateByPrimaryKey(pushLog);
