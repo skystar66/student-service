@@ -313,7 +313,7 @@
         LEFT JOIN ss_attach_file_path st ON s.id = st.relation_id
         WHERE
             s.parent_phone = #{phone,jdbcType=VARCHAR}
-            order by create_time asc
+            order by s.create_time asc
     </select>
 
 
