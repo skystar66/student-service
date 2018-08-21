@@ -8,6 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/**
+ * loading
+ *
+ * @author xuliang
+ * @date 2018/8/14 上午11:22
+ */
+
 @RestController
 public class StartController {
 
