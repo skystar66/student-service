@@ -3,13 +3,16 @@ package com.tengyue360.service.impl;
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.RedisConstants;
+import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.LoginService;
+import com.tengyue360.service.SsStudentService;
 import com.tengyue360.service.UserLoginLogService;
 import com.tengyue360.utils.CommonBeanUtils;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.LoginRequestModel;
+import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import com.tengyue360.web.responseModel.UserResponseModel;
 import org.slf4j.Logger;
@@ -17,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 登录模块服务
@@ -33,6 +38,9 @@ public class LoginServiceImpl implements LoginService {
     RedisTemplate redisTemplate;
     @Autowired
     UserLoginLogService userLoginLogService;
+
+    @Autowired
+    SsUStudentMapper studentMapper;
 
     private static Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
 
@@ -64,11 +72,14 @@ public class LoginServiceImpl implements LoginService {
                     return result;
                 }
                 long startcheck2 = System.currentTimeMillis();
-
                 //获取学生端 app jwt topken
                 String token = TokenFactory.getInstance().createToken(user.getId().toString(), "3");
+                //默认分配最早的 一个学生token
+                List<AccountInfoResponseModel> stulist =  studentMapper.queryStudentByPhone(model.getPhone());
+                if (null != stulist && stulist.size() > 0) {
+                    token = TokenFactory.getInstance().createToken(stulist.get(0).getId().toString(), "3");
+                }
                 logger.info("生成token消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
-
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 result.setToken(token);
@@ -83,8 +94,6 @@ public class LoginServiceImpl implements LoginService {
             //封装返回参数
             UserResponseModel userResponseModel = new UserResponseModel();
             CommonBeanUtils.copyProperties(user, userResponseModel);
-
-
             result.setData(userResponseModel);
         } catch (Exception e) {
             logger.error("系统异常", e);

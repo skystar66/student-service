@@ -4,6 +4,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * 拦截器
+ *
+ * @author xuliang
+ * @date 2018/8/14 上午11:22
+ */
+
 @Configuration
 public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 

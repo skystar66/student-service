@@ -93,11 +93,12 @@ public class SsStudentServiceImpl implements SsStudentService {
     @Override
     public ResponseResult queryStudentById(StudentRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
-        StudentResponseModel studentResponseModel = new StudentResponseModel();
+        StudentResponseModel studentResponseModel = null;
         try {
             //根据学员id查询学员信息
             SsUStudent student = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
             if (null != student) {
+                studentResponseModel = new StudentResponseModel();
                 List<SStuClass> classes = stuClassMapper.queryClassBySid(String.valueOf(student.getId()));
                 if (null != classes && classes.size() > 0) {
                     SStuClass sStuClass = classes.get(0);
@@ -196,8 +197,8 @@ public class SsStudentServiceImpl implements SsStudentService {
                 responseResult.setData(null);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
-            responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
+            responseResult.setCode(ReturnCode.FIND_STUDENT_ERROR.code());
+            responseResult.setMsg(ReturnCode.FIND_STUDENT_ERROR.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
