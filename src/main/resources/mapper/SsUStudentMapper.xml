@@ -301,19 +301,15 @@
   </update>
 
 
-    <select id="queryStudentByPhone" parameterType="java.lang.String" resultMap="BaseResultMap_Common">
-      SELECT
-            s.id,
-            s.`name`,
-            st.attach_path,
-            s.state as stuStatus,
-            st.id as attachaId
+    <select id="queryStudentByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM
-            ss_u_student s
-        LEFT JOIN ss_attach_file_path st ON s.id = st.relation_id
+        ss_u_student s
         WHERE
-            s.parent_phone = #{phone,jdbcType=VARCHAR}
-            order by s.create_time asc
+        s.parent_phone = #{phone,jdbcType=VARCHAR}
+        ORDER BY
+        s.create_time asc
     </select>
 
 
@@ -334,10 +330,24 @@
         LEFT JOIN ss_attach_file_path sa ON sa.relation_id = st.id
 
         where st.id=#{id}
+    </select>
 
 
+    <select id="queryStudentByIdAndPhone" resultMap="BaseResultMap">
 
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        ss_u_student s
+        WHERE
+        s.parent_phone = #{phone,jdbcType=VARCHAR} and s.id = #{id,jdbcType=INTEGER}
 
     </select>
+
+
+
+
+
+
 
 </mapper>

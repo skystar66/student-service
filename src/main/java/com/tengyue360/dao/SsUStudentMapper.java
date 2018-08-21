@@ -28,7 +28,7 @@ public interface SsUStudentMapper {
      * @return
      * @throws Exception
      */
-    List<AccountInfoResponseModel> queryStudentByPhone(@Param("phone") String phone);
+    List<SsUStudent> queryStudentByPhone(@Param("phone") String phone);
 
 
 
@@ -39,6 +39,23 @@ public interface SsUStudentMapper {
      * @throws Exception
      */
     StudentResponseModel queryStudentById(@Param("id") String id);
+
+
+
+
+
+
+    /**
+     * 根据家长电话 学生id 查询学员信息
+     *
+     * @return
+     * @throws Exception
+     */
+
+    SsUStudent queryStudentByIdAndPhone(@Param("id") Integer id,@Param("phone") String phone);
+
+
+
 
 
 }

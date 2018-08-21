@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 学生管理类
  *
@@ -36,11 +39,11 @@ public class StudentController {
      * @throws Exception
      */
     @RequestMapping(value = "/queryStudentById", method = RequestMethod.POST)
-    public ResponseResult queryStudentById(@RequestBody StudentRequestModel model) {
+    public ResponseResult queryStudentById(@RequestBody StudentRequestModel model, HttpServletRequest request) {
         logger.info("开始调用根据学员id查询学员信息接口，参数信息：{}", model);
-        if (null != BeanValidators.isValidateQueryStudentById(model)) {
-            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model));
-            return BeanValidators.isValidateQueryStudentById(model);
+        if (null != BeanValidators.isValidateQueryStudentById(model,request)) {
+            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model,request));
+            return BeanValidators.isValidateQueryStudentById(model,request);
         }
         ResponseResult responseResult = studentService.queryStudentById(model);
         if (null != responseResult) {
@@ -59,11 +62,11 @@ public class StudentController {
      */
 
     @RequestMapping(value = "/updateStudentById", method = RequestMethod.POST)
-    public ResponseResult updateStudentById(@RequestBody StudentRequestModel model) {
+    public ResponseResult updateStudentById(@RequestBody StudentRequestModel model,HttpServletRequest request) {
         logger.info("开始调用根据学员id更新学员信息接口，参数信息：{}", model);
-        if (null != BeanValidators.isValidateQueryStudentById(model)) {
-            logger.info("根据学员id更新学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model));
-            return BeanValidators.isValidateQueryStudentById(model);
+        if (null != BeanValidators.isValidateQueryStudentById(model,request)) {
+            logger.info("根据学员id更新学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model,request));
+            return BeanValidators.isValidateQueryStudentById(model,request);
         }
         ResponseResult responseResult = studentService.updateStudentById(model);
         if (null != responseResult) {
@@ -74,7 +77,7 @@ public class StudentController {
     }
 
     /**
-     * 根据用户id查询学员接口
+     * 根据用户手机号查询学员接口
      *
      * @return
      * @throws Exception

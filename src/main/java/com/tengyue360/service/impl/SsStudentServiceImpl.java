@@ -1,7 +1,10 @@
 package com.tengyue360.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.bean.*;
 import com.tengyue360.common.ReturnCode;
+import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.*;
 import com.tengyue360.enums.EnumModelType;
 import com.tengyue360.exception.BusinessException;
@@ -17,8 +20,11 @@ import com.tengyue360.web.responseModel.StudentResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +55,8 @@ public class SsStudentServiceImpl implements SsStudentService {
     SSClassMapper classMapper;
     @Autowired
     SsAttachFilePathMapper attachFilePathMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
 
     /**
@@ -62,11 +70,35 @@ public class SsStudentServiceImpl implements SsStudentService {
     public ResponseResult queryStudentByPhone(UserRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            //查询学员列表
-            List<AccountInfoResponseModel> stuList = studentMapper.queryStudentByPhone(model.getPhone());
-            if (null != stuList && stuList.size() > 0) {
+            List<AccountInfoResponseModel> stuList = new ArrayList<AccountInfoResponseModel>();
+            //校验是否存在缓存
+            boolean exist = redisTemplate.hasKey(RedisConstants.STU_LIST_INFO + model.getPhone());
+            if (exist) {
+                stuList = (List<AccountInfoResponseModel>)JSON.parseObject(redisTemplate.opsForValue().get(RedisConstants.STU_LIST_INFO + model.getPhone()).toString(),List.class);
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(stuList);
+                return responseResult;
+            }
+            //查询学员列表
+            List<SsUStudent> uStudents = studentMapper.queryStudentByPhone(model.getPhone());
+            if (null != uStudents && uStudents.size() > 0) {
+                for (SsUStudent student : uStudents) {
+                    AccountInfoResponseModel model1 = new AccountInfoResponseModel();
+                    model1.setId(student.getId().toString());
+                    model1.setName(student.getName());
+                    //根据学员id查询附件
+                    List<SsAttachFilePath> attachFilePaths = attachFilePathMapper.queryUrlByReleationId(student.getId().toString());
+                    if (null != attachFilePaths && attachFilePaths.size() > 0) {
+                        model1.setAttachaId(attachFilePaths.get(0).getId());
+                        model1.setAttachPath(attachFilePaths.get(0).getAttachPath());
+                    }
+                    stuList.add(model1);
+                }
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                //处理缓存
+                redisTemplate.opsForValue().set(RedisConstants.STU_LIST_INFO + model.getPhone(), JSONObject.toJSON(stuList));
                 responseResult.setData(stuList);
                 return responseResult;
             }
@@ -95,6 +127,16 @@ public class SsStudentServiceImpl implements SsStudentService {
         ResponseResult responseResult = new ResponseResult();
         StudentResponseModel studentResponseModel = null;
         try {
+            //校验是否存在缓存
+            boolean exist = redisTemplate.hasKey(RedisConstants.STU_INFO + model.getId());
+            if (exist) {
+                studentResponseModel = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstants.STU_INFO + model.getId()).toString(),
+                        StudentResponseModel.class);
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(studentResponseModel);
+                return responseResult;
+            }
             //根据学员id查询学员信息
             SsUStudent student = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
             if (null != student) {
@@ -126,6 +168,8 @@ public class SsStudentServiceImpl implements SsStudentService {
             if (null != studentResponseModel) {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                //保存学员信息 --- redis缓存中
+                redisTemplate.opsForValue().set(RedisConstants.STU_INFO + model.getId(), studentResponseModel);
                 responseResult.setData(studentResponseModel);
                 return responseResult;
             }
@@ -166,6 +210,8 @@ public class SsStudentServiceImpl implements SsStudentService {
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(student);
+                //清除该学生缓存信息
+                redisTemplate.delete(RedisConstants.STU_INFO + model.getId());
                 return responseResult;
             }
             responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
