@@ -197,8 +197,8 @@ public class SsStudentServiceImpl implements SsStudentService {
                 responseResult.setData(null);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
-            responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
+            responseResult.setCode(ReturnCode.FIND_STUDENT_ERROR.code());
+            responseResult.setMsg(ReturnCode.FIND_STUDENT_ERROR.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {

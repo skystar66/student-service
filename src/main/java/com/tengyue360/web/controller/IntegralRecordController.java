@@ -48,13 +48,13 @@ public class IntegralRecordController {
      */
     @PostMapping(value = "/stuApp/opinionFeedback")
     public ResponseResult opinionFeedback(@RequestBody IntegralRequestModel integralRequestModel){
+        logger.info("in=====>integralRequestModel{},{},{}",integralRequestModel,integralRequestModel.getContent(),integralRequestModel.getUserId());
         SsOpinionFeedback ssOpinionFeedback = new SsOpinionFeedback();
         ssOpinionFeedback.setContent(integralRequestModel.getContent());
         SsUStudent ssUStudent = new SsUStudent();
         ssUStudent.setId(integralRequestModel.getUserId());
         ssOpinionFeedback.setSsUStudent(ssUStudent);
 
-        logger.info("in====>opinionFeedback:{}",ssOpinionFeedback);
         ResponseResult responseResult = new ResponseResult();
         return ssStudentService.findById(ssOpinionFeedback);
 
