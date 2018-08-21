@@ -18,12 +18,12 @@ spring:
         max-active: 1000
         max-wait: -1
   rabbitmq:
-          host: ${rabbitmq.host:10.88.88.47}
+          host: ${rabbitmq.host:127.0.0.1}
           port: ${rabbitmq.port:5672}
-          username: ${rabbitmq.account:tengyue360}
-          password: ${rabbitmq.pwd:tengyue360}
+          username: ${rabbitmq.account:xuliang}
+          password: ${rabbitmq.pwd:123456}
           publisher-confirms: true
-          virtual-host: ${rabbitmq.virthost:tengyue360_host}
+          virtual-host: ${rabbitmq.virthost:vhost1}
           listener:
             acknowledge-mode: manual
             concurrency: 1

@@ -3,11 +3,13 @@ package com.tengyue360.web.responseModel;
 import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.common.ReturnCode;
 
+import java.io.Serializable;
+
 /**
  * @author 统一返回格式
  * @date 2018年8月08日 20:04:55
  */
-public class ResponseResult extends BaseBean {
+public class ResponseResult   extends BaseBean implements Serializable{
 
     /**
      * 响应状态

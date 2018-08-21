@@ -1,13 +1,9 @@
 package com.tengyue360.service.impl;
 
 import com.tengyue360.bean.SsUser;
-import com.tengyue360.bean.SsUserLoginLog;
 import com.tengyue360.common.ReturnCode;
-import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
-import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
-import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.LoginService;
 import com.tengyue360.service.UserLoginLogService;
@@ -21,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 登录模块服务
@@ -69,8 +63,12 @@ public class LoginServiceImpl implements LoginService {
                     result.setData(null);
                     return result;
                 }
+                long startcheck2 = System.currentTimeMillis();
+
                 //获取学生端 app jwt topken
-                String token = TokenFactory.createToken(user.getId().toString(), null);
+                String token = TokenFactory.getInstance().createToken(user.getId().toString(), "3");
+                logger.info("生成token消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
+
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 result.setToken(token);
@@ -80,13 +78,13 @@ public class LoginServiceImpl implements LoginService {
                 result.setData(null);
                 return result;
             }
-
             result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
             result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-
             //封装返回参数
             UserResponseModel userResponseModel = new UserResponseModel();
             CommonBeanUtils.copyProperties(user, userResponseModel);
+
+
             result.setData(userResponseModel);
         } catch (Exception e) {
             logger.error("系统异常", e);
@@ -94,6 +92,8 @@ public class LoginServiceImpl implements LoginService {
             result.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
             result.setData(null);
         }
+
+
         return result;
     }
 
@@ -123,7 +123,7 @@ public class LoginServiceImpl implements LoginService {
                 return result;
             } else {
                 //获取学生端 app jwt topken
-                String token = TokenFactory.createToken(user.getId().toString(), null);
+                String token = TokenFactory.createToken(user.getId().toString(), "3");
                 //记录登录日志
                 saveloginLog(user.getId(), token);
                 //删除当日获取5次的验证码hash key
@@ -150,7 +150,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
-     * 记录用户登录日志
+     * 记录用户登录日志11
      *
      * @return
      * @throws Exception
