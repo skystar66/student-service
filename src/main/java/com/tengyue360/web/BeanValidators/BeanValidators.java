@@ -336,6 +336,29 @@ public class BeanValidators {
     }
 
 
+
+    /**
+     * 切换学员信息 参数校验
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateChangeStu(ChangeStuRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getId())) {
+            //用户手机号不能为空
+            return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
+        }
+        return null;
+    }
+
+
+
+
+
 //    /**
 //     * 访问方法频率控制在指定秒内
 //     *

@@ -93,11 +93,12 @@ public class SsStudentServiceImpl implements SsStudentService {
     @Override
     public ResponseResult queryStudentById(StudentRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
-        StudentResponseModel studentResponseModel = new StudentResponseModel();
+        StudentResponseModel studentResponseModel = null;
         try {
             //根据学员id查询学员信息
             SsUStudent student = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
             if (null != student) {
+                studentResponseModel = new StudentResponseModel();
                 List<SStuClass> classes = stuClassMapper.queryClassBySid(String.valueOf(student.getId()));
                 if (null != classes && classes.size() > 0) {
                     SStuClass sStuClass = classes.get(0);

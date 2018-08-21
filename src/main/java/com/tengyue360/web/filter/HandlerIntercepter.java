@@ -12,6 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * 拦截器
+ *
+ * @author xuliang
+ * @date 2018/8/14 上午11:22
+ */
+
 public class HandlerIntercepter implements HandlerInterceptor {
 
 
