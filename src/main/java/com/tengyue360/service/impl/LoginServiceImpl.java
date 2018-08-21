@@ -1,5 +1,6 @@
 package com.tengyue360.service.impl;
 
+import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.RedisConstants;
@@ -76,10 +77,10 @@ public class LoginServiceImpl implements LoginService {
                 //获取学生端 app jwt topken
                 String token = TokenFactory.getInstance().createToken(user.getId().toString(), "3");
                 //默认分配最早的 一个学生token
-                List<AccountInfoResponseModel> stulist =  studentMapper.queryStudentByPhone(model.getPhone());
+                List<SsUStudent> stulist =  studentMapper.queryStudentByPhone(model.getPhone());
                 if (null != stulist && stulist.size() > 0) {
                     token = TokenFactory.getInstance().createToken(stulist.get(0).getId().toString(), "3");
-                    logUserId = stulist.get(0).getId();
+                    logUserId = stulist.get(0).getId().toString();
                 }
                 logger.info("生成token消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
                 //记录登录日志

@@ -48,15 +48,4 @@ UserService {
     public ResponseResult loginOut(UserRequestModel model);
 
 
-    /**
-     * 根据用户id查询该学生列表
-     *
-     * @return
-     * @throws Exception
-     */
-
-    public ResponseResult queryStudentsByUserId(UserRequestModel model);
-
-
-
 }

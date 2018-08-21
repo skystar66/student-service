@@ -1,7 +1,9 @@
 package com.tengyue360.service.impl;
 
+import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
+import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.ChangeStuService;
 import com.tengyue360.service.SsStudentService;
@@ -27,12 +29,20 @@ public class ChangeStuServiceImpl implements ChangeStuService {
 
     @Autowired
     UserLoginLogService loginLogService;
+    @Autowired
+    SsUStudentMapper studentMapper;
 
 
     @Override
     public ResponseResult changeStu(ChangeStuRequestModel model) {
         ResponseResult result = new ResponseResult();
         try {
+            SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()),model.getPhone());
+            if (null == student) {
+                result.setCode(ReturnCode.CHANGE_STUDENT_ERROR.code());
+                result.setMsg(ReturnCode.CHANGE_STUDENT_ERROR.msg());
+                return result;
+            }
             //获取学生端 app jwt topken
             String token = TokenFactory.getInstance().createToken(model.getId().toString(), "3");
             //记录登录日志

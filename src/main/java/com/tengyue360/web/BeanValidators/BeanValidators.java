@@ -5,8 +5,12 @@ import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.enums.ValidateCodeEnum;
 import com.tengyue360.utils.CommonTools;
+import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.requestModel.*;
 import com.tengyue360.web.responseModel.ResponseResult;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -14,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 接口校验类
@@ -53,6 +59,25 @@ public class BeanValidators {
         return null;
 
     }
+
+    /**
+     * 校验当前token是否为当前学员
+     *
+     * @param request
+     * @return
+     */
+
+    public static final ResponseResult isValidateCurrentToken(HttpServletRequest request, String id) {
+        String token = request.getHeader(TokenFactory.HEADER_NAME);
+        Jws<Claims> jwsClaims = Jwts.parser().setSigningKey(TokenFactory.SIGNING_KEY)
+                .parseClaimsJws(token);
+        String stuId = jwsClaims.getBody().getSubject();
+        if (!id.equals(stuId)) {
+            return ResponseResult.onFailure(null, ReturnCode.CURRENT_STUDENT_ID_ERROR);
+        }
+        return null;
+    }
+
 
     /**
      * 登录 输入参数校验
@@ -304,7 +329,7 @@ public class BeanValidators {
      * @param model
      * @return
      */
-    public static ResponseResult isValidateQueryStudentById(StudentRequestModel model) {
+    public static ResponseResult isValidateQueryStudentById(StudentRequestModel model, HttpServletRequest request) {
         //基础校验
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
@@ -312,6 +337,10 @@ public class BeanValidators {
         if (StringUtils.isBlank(model.getId())) {
             //学生id不能为空
             return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
+        }
+        //校验token
+        if (null != isValidateCurrentToken(request, model.getId())) {
+            return isValidateCurrentToken(request, model.getId());
         }
         return null;
     }
@@ -336,7 +365,6 @@ public class BeanValidators {
     }
 
 
-
     /**
      * 切换学员信息 参数校验
      *
@@ -354,9 +382,6 @@ public class BeanValidators {
         }
         return null;
     }
-
-
-
 
 
 //    /**
