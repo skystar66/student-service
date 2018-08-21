@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
         ResponseResult responseResult = new ResponseResult();
         try {
-            SsUser user = userMapper.selectByPrimaryKey(Integer.parseInt(model.getUserId()));
+            SsUser user = userMapper.login(model.getPhone());
             if (null != user) {
                 if (model.getOldPwd().equals(user.getPassword())) {
                     //更新 密码
