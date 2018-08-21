@@ -72,16 +72,18 @@ public class LoginServiceImpl implements LoginService {
                     return result;
                 }
                 long startcheck2 = System.currentTimeMillis();
+                String logUserId = user.getId().toString();
                 //获取学生端 app jwt topken
                 String token = TokenFactory.getInstance().createToken(user.getId().toString(), "3");
                 //默认分配最早的 一个学生token
                 List<AccountInfoResponseModel> stulist =  studentMapper.queryStudentByPhone(model.getPhone());
                 if (null != stulist && stulist.size() > 0) {
                     token = TokenFactory.getInstance().createToken(stulist.get(0).getId().toString(), "3");
+                    logUserId = stulist.get(0).getId();
                 }
                 logger.info("生成token消费时间：" + Math.abs(System.currentTimeMillis() - startcheck2));
                 //记录登录日志
-                saveloginLog(user.getId(), token);
+                saveloginLog(Integer.parseInt(logUserId), token);
                 result.setToken(token);
             } else {
                 result.setCode(ReturnCode.NAME_PWD_FALSE.code());
