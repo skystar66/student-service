@@ -44,6 +44,15 @@
         <result column="uid" property="sId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="BaseResultMap_Opinion" type="com.tengyue360.web.requestModel.StudentOpinionRequestModel">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="parent_name" property="parentName" jdbcType="VARCHAR"/>
+        <result column="parent_phone" property="parentPhone" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="uid" property="uId" jdbcType="VARCHAR"/>
+    </resultMap>
+
 
     <sql id="Base_Column_List">
     id, name, head, create_time, create_man, update_time, update_man, delete_state, sex, 
@@ -340,4 +349,25 @@
 
     </select>
 
+
+    <select id="queryStudentList" parameterType="java.lang.String" resultMap="BaseResultMap_Opinion">
+        SELECT
+            st.id,
+            st.uid,
+            st.`name`,
+            st.parent_name,
+            st.parent_phone,
+            o.content
+        FROM ss_u_student st
+        JOIN ss_c_opinion_feedback o
+        ON st.id=o.student_id
+        <where>
+            <if test="queryElement != null and queryElement.length()>0">
+                st.uid LIKE CONCAT ('%',#{queryElement},'%')
+                OR st.`name` LIKE CONCAT ('%',#{queryElement},'%')
+                OR st.parent_name LIKE CONCAT ('%',#{queryElement},'%')
+                OR st.parent_phone LIKE CONCAT ('%',#{queryElement},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

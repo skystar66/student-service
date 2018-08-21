@@ -12,7 +12,6 @@ public class IntegralRequestModel extends BaseRequestModel {
 
     private String content; //积分内容
 
-    private Integer userId;//学员id
 
     public String getContent() {
         return content;
@@ -22,11 +21,4 @@ public class IntegralRequestModel extends BaseRequestModel {
         this.content = content;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 }
