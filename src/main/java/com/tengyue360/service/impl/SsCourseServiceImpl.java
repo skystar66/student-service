@@ -9,8 +9,6 @@ import com.tengyue360.utils.FastJsonUtil;
 import com.tengyue360.web.requestModel.SsClessonRequestModel;
 import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,58 +50,69 @@ public class SsCourseServiceImpl implements SsCourseService {
     public ResponseResult findClassByStudentId(Integer id) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            List<SsCourseRequestModel> ssCourseRequestModelList = new ArrayList<>();
-            List<SsStudentClass> ssStudentClassList = ssStudentClassMapper.findClassByStudentId(id);
-            for (SsStudentClass ssStudentClass : ssStudentClassList) {
-                List<SsKlass> ssKlassList = ssKlassMapper.findByKlassId(ssStudentClass.getClassId());
-                for (SsKlass ssKlass : ssKlassList) {
-                    SsSpeakerAssistant assistant = ssSpeakerAssistantMapper.findByAccountId(ssKlass.getAssistant().getId());
-                    SsSpeakerAssistant teacher = ssSpeakerAssistantMapper.findByAccountId(ssKlass.getTeacher().getId());
-                    SsCourseRequestModel ssCourseRequestModel = ssCourseMapper.findByCourseId(ssKlass.getSsCourse().getId());
-                    if (ssCourseRequestModel != null) {
-                        //查询课程下的课次总数
-                        int lessonCount = ssCourseMapper.findLessonCount(ssCourseRequestModel.getId());
-                        int lessonFinishCount = ssCourseMapper.findFinishLessonCount(ssCourseRequestModel.getId());
-                        ssCourseRequestModel.setTotalLseeon(lessonCount);
-                        ssCourseRequestModel.setTotalFinishLesson(lessonFinishCount);
-                        ssCourseRequestModel.setSsKlass(ssKlass);
-                        ssCourseRequestModel.setTeacher(teacher);
-                        ssCourseRequestModel.setAssistant(assistant);
-                        ssCourseRequestModelList.add(ssCourseRequestModel);
-                    }
-                }
-            }
-            Collections.sort(ssCourseRequestModelList, new Comparator<SsCourseRequestModel>() {
-                @Override
-                public int compare(SsCourseRequestModel o1, SsCourseRequestModel o2) {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    try {
-                        Date dt1 = o1.getStartTime();
-                        Date dt2 = o2.getStartTime();
-                        if (dt1.getTime() < dt2.getTime()) {
-                            return 1;
-                        } else if (dt1.getTime() > dt2.getTime()) {
-                            return -1;
-                        } else {
-                            return 0;
+            HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
+            boolean existHashKey = redisTemplate.hasKey(RedisConstants.COURSE_LIST + id);
+            if (existHashKey) {
+                String sss = (String) redisTemplate.opsForValue().get(RedisConstants.COURSE_LIST + id);
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(FastJsonUtil.json2List(sss));
+            } else {
+                List<SsCourseRequestModel> ssCourseRequestModelList = new ArrayList<>();
+                List<SsStudentClass> ssStudentClassList = ssStudentClassMapper.findClassByStudentId(id);
+                for (SsStudentClass ssStudentClass : ssStudentClassList) {
+                    List<SsKlass> ssKlassList = ssKlassMapper.findByKlassId(ssStudentClass.getClassId());
+                    for (SsKlass ssKlass : ssKlassList) {
+                        SsSpeakerAssistant assistant = ssSpeakerAssistantMapper.findByAccountId(ssKlass.getAssistant().getId());
+                        SsSpeakerAssistant teacher = ssSpeakerAssistantMapper.findByAccountId(ssKlass.getTeacher().getId());
+                        SsCourseRequestModel ssCourseRequestModel = ssCourseMapper.findByCourseId(ssKlass.getSsCourse().getId());
+                        if (ssCourseRequestModel != null) {
+                            //查询课程下的课次总数
+                            int lessonCount = ssCourseMapper.findLessonCount(ssCourseRequestModel.getId());
+                            int lessonFinishCount = ssCourseMapper.findFinishLessonCount(ssCourseRequestModel.getId());
+                            ssCourseRequestModel.setTotalLseeon(lessonCount);
+                            ssCourseRequestModel.setTotalFinishLesson(lessonFinishCount);
+                            ssCourseRequestModel.setSsKlass(ssKlass);
+                            ssCourseRequestModel.setTeacher(teacher);
+                            ssCourseRequestModel.setAssistant(assistant);
+                            ssCourseRequestModelList.add(ssCourseRequestModel);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                    return 0;
                 }
-            });
+                Collections.sort(ssCourseRequestModelList, new Comparator<SsCourseRequestModel>() {
+                    @Override
+                    public int compare(SsCourseRequestModel o1, SsCourseRequestModel o2) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            Date dt1 = o1.getStartTime();
+                            Date dt2 = o2.getStartTime();
+                            if (dt1.getTime() < dt2.getTime()) {
+                                return 1;
+                            } else if (dt1.getTime() > dt2.getTime()) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                });
 
-            if (ssCourseRequestModelList.size() <= 0) {
-                responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-                responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
-                responseResult.setData(null);
-                logger.info("out===>{}", responseResult);
-                return responseResult;
+                if (ssCourseRequestModelList.size() <= 0) {
+                    responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
+                    responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+                    responseResult.setData(null);
+                    logger.info("out===>{}", responseResult);
+                    return responseResult;
+                }
+                redisTemplate.opsForValue().set(RedisConstants.COURSE_LIST + id, FastJsonUtil.list2Json(ssCourseRequestModelList));
+                redisTemplate.expire(RedisConstants.COURSE_LIST + id, 180, TimeUnit.SECONDS);
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(ssCourseRequestModelList);
             }
-            responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-            responseResult.setData(ssCourseRequestModelList);
         } catch (Exception e) {
             logger.error("系统异常", e);
             responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
@@ -124,7 +133,7 @@ public class SsCourseServiceImpl implements SsCourseService {
             List<SsClessonRequestModel> ssLessonLists = new ArrayList<>();
             logger.info("执行redis操作-----");
             for (String ssClessonRequestModel : ssLessonList) {
-                SsClessonRequestModel ssClessonRequestModels =  FastJsonUtil.json2Bean(ssClessonRequestModel,SsClessonRequestModel.class);
+                SsClessonRequestModel ssClessonRequestModels = FastJsonUtil.json2Bean(ssClessonRequestModel, SsClessonRequestModel.class);
                 ssLessonLists.add(ssClessonRequestModels);
             }
 

@@ -191,15 +191,13 @@ public class SsStudentServiceImpl implements SsStudentService {
                     ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
                 });
 
-               // responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
-               // responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+            responseResult.setCode(ReturnCode.ADD_OPINION_ERROR.code());
+            responseResult.setMsg(ReturnCode.ADD_OPINION_ERROR.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {

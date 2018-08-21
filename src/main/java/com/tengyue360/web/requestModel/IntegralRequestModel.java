@@ -1,48 +1,32 @@
 package com.tengyue360.web.requestModel;
 
-import java.util.Date;
-
 /**
- * 封装积分model
+ * 封装积分信息
+ *
  * @author panjt
- * @date 2018/8/14 下午10:27
+ * @date 2018/8/20 21:37
  */
-public class IntegralRequestModel  extends BaseRequestModel{
-    private String name;
-    private String value;
-    private Date startTime;
 
-    public String getName() {
-        return name;
+public class IntegralRequestModel extends BaseRequestModel {
+
+
+    private String content; //积分内容
+
+    private Integer userId;//学员id
+
+    public String getContent() {
+        return content;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getValue() {
-        return value;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-
-    @Override
-    public String toString() {
-        return "IntegralRequestModel{" +
-                "name='" + name + '\'' +
-                ", value='" + value + '\'' +
-                ", startTime=" + startTime +
-                '}';
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

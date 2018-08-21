@@ -1,16 +1,17 @@
 package com.tengyue360.web.controller;
 
 import com.tengyue360.bean.SsOpinionFeedback;
+import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.service.SsIntegralService;
 import com.tengyue360.service.SsStudentService;
+import com.tengyue360.web.requestModel.IntegralRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 学生端app积分记录
@@ -42,11 +43,17 @@ public class IntegralRecordController {
 
     /**
      * 添加反馈意见
-     * @param ssOpinionFeedback
+     * @param integralRequestModel
      * @return
      */
-    @PostMapping("/stuApp/opinionFeedback")
-    public ResponseResult opinionFeedback(@RequestBody SsOpinionFeedback ssOpinionFeedback){
+    @PostMapping(value = "/stuApp/opinionFeedback")
+    public ResponseResult opinionFeedback(@RequestBody IntegralRequestModel integralRequestModel){
+        SsOpinionFeedback ssOpinionFeedback = new SsOpinionFeedback();
+        ssOpinionFeedback.setContent(integralRequestModel.getContent());
+        SsUStudent ssUStudent = new SsUStudent();
+        ssUStudent.setId(integralRequestModel.getUserId());
+        ssOpinionFeedback.setSsUStudent(ssUStudent);
+
         logger.info("in====>opinionFeedback:{}",ssOpinionFeedback);
         ResponseResult responseResult = new ResponseResult();
         return ssStudentService.findById(ssOpinionFeedback);
