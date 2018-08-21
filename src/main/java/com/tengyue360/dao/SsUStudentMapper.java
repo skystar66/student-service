@@ -41,10 +41,6 @@ public interface SsUStudentMapper {
     StudentResponseModel queryStudentById(@Param("id") String id);
 
 
-
-
-
-
     /**
      * 根据家长电话 学生id 查询学员信息
      *
@@ -57,5 +53,10 @@ public interface SsUStudentMapper {
 
 
 
-
+    /**
+     * 根据条件查询学生列表
+     * @param queryElement
+     * @return
+     */
+    List<SsUStudent> queryStudentList(@Param("queryElement") String queryElement);
 }

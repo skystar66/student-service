@@ -52,9 +52,10 @@ public interface SsStudentService {
     public ResponseResult findById(SsOpinionFeedback ssOpinionFeedback);
 
 
-
-
-
-
-
+    /**
+     * 根据条件查询学生列表
+     * @param queryElement
+     * @return
+     */
+    ResponseResult queryStudentList(String queryElement,Integer pageNum,Integer pageSize);
 }

@@ -19,7 +19,7 @@ spring:
         max-wait: -1
   rabbitmq:
           host: ${rabbitmq.host:127.0.0.1}
-          port: ${rabbitmq.port:5672}
+          rt: ${rabbitmq.port:5672}
           username: ${rabbitmq.account:xuliang}
           password: ${rabbitmq.pwd:123456}
           publisher-confirms: true

@@ -2,16 +2,15 @@ package com.tengyue360.web.controller;
 
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.web.BeanValidators.BeanValidators;
+import com.tengyue360.web.requestModel.StudentOpinionListRequestModel;
+import com.tengyue360.web.requestModel.StudentOpinionRequestModel;
 import com.tengyue360.web.requestModel.StudentRequestModel;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,6 +95,18 @@ public class StudentController {
             return responseResult;
         }
         return null;
+    }
+
+    /**
+     * 根据传入参数查询学生列表
+     * @param studentOpinionListRequestModel
+     * @return
+     */
+    @PostMapping("/stuApp/queryStudentList")
+    public ResponseResult queryStudentList(@RequestBody StudentOpinionListRequestModel studentOpinionListRequestModel){
+
+        logger.info("in====>studentOpinionRequestModel{},studentOpinionListRequestModel.getPageNum{},studentOpinionListRequestModel.getPageSize{}",studentOpinionListRequestModel.getQueryElement(),studentOpinionListRequestModel.getPageNum(),studentOpinionListRequestModel.getPageSize());
+        return studentService.queryStudentList(studentOpinionListRequestModel.getQueryElement(),studentOpinionListRequestModel.getPageNum(),studentOpinionListRequestModel.getPageSize());
     }
 
 

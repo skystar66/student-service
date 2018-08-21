@@ -50,13 +50,13 @@ public class SsCourseServiceImpl implements SsCourseService {
     public ResponseResult findClassByStudentId(Integer id) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
+           // HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
             boolean existHashKey = redisTemplate.hasKey(RedisConstants.COURSE_LIST + id);
             if (existHashKey) {
-                String sss = (String) redisTemplate.opsForValue().get(RedisConstants.COURSE_LIST + id);
+                String course = (String) redisTemplate.opsForValue().get(RedisConstants.COURSE_LIST + id);
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-                responseResult.setData(FastJsonUtil.json2List(sss));
+                responseResult.setData(FastJsonUtil.json2List(course));
             } else {
                 List<SsCourseRequestModel> ssCourseRequestModelList = new ArrayList<>();
                 List<SsStudentClass> ssStudentClassList = ssStudentClassMapper.findClassByStudentId(id);
@@ -126,44 +126,81 @@ public class SsCourseServiceImpl implements SsCourseService {
     @Override
     public ResponseResult findLessonList(Integer courseId, Integer lessonState, Integer userId) {
         ResponseResult responseResult = new ResponseResult();
-        HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
-        boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_ALREADY_FINISH + userId);
-        if (existHashKey) {
-            List<String> ssLessonList = redisValidateCode.values(RedisConstants.LESSON_ALREADY_FINISH + userId);
-            List<SsClessonRequestModel> ssLessonLists = new ArrayList<>();
-            logger.info("执行redis操作-----");
-            for (String ssClessonRequestModel : ssLessonList) {
-                SsClessonRequestModel ssClessonRequestModels = FastJsonUtil.json2Bean(ssClessonRequestModel, SsClessonRequestModel.class);
-                ssLessonLists.add(ssClessonRequestModels);
-            }
-
-            responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-            responseResult.setData(ssLessonLists);
-        } else {
-            logger.info("未执行redis----");
-            try {
-                List<SsClessonRequestModel> ssLessonList = ssClessonMapper.findLessonList(courseId, lessonState);
-                for (SsClessonRequestModel ssClessonRequestModel : ssLessonList) {
-                    if (ssClessonRequestModel != null) {
-                        Integer signCount = ssClessonMapper.findSignState(ssClessonRequestModel.getId(), userId);
-                        if (signCount > 0) {
-                            ssClessonRequestModel.setSignState("1");//已签到
-                        } else {
-                            ssClessonRequestModel.setSignState("0");//未签到
-                        }
-                        redisTemplate.opsForHash().put(RedisConstants.LESSON_ALREADY_FINISH + userId, "" + ssClessonRequestModel.getId() + userId, ssClessonRequestModel.toString());
-                    }
+        if (lessonState == 0) {
+            HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
+            boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_NOT_FINISH + userId);
+            if (existHashKey) {
+                List<String> ssLessonList = redisValidateCode.values(RedisConstants.LESSON_NOT_FINISH + userId);
+                List<SsClessonRequestModel> ssLessonLists = new ArrayList<>();
+                logger.info("执行redis操作-----");
+                for (String ssClessonRequestModel : ssLessonList) {
+                    SsClessonRequestModel ssClessonRequestModels = FastJsonUtil.json2Bean(ssClessonRequestModel, SsClessonRequestModel.class);
+                    ssLessonLists.add(ssClessonRequestModels);
                 }
-                redisTemplate.expire(RedisConstants.LESSON_ALREADY_FINISH + userId, 180, TimeUnit.SECONDS);
+
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
-                responseResult.setData(ssLessonList);
-            } catch (Exception e) {
-                logger.error("系统异常", e);
-                responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
-                responseResult.setData(null);
+                responseResult.setData(ssLessonLists);
+            } else {
+                logger.info("未执行redis----");
+                try {
+                    List<SsClessonRequestModel> ssLessonList = ssClessonMapper.findLessonList(courseId, lessonState);
+                    for (SsClessonRequestModel ssClessonRequestModel : ssLessonList) {
+                        if (ssClessonRequestModel != null) {
+                            Integer signCount = ssClessonMapper.findSignState(ssClessonRequestModel.getId(), userId);
+                            if (signCount > 0) {
+                                ssClessonRequestModel.setSignState("1");//已签到
+                            } else {
+                                ssClessonRequestModel.setSignState("0");//未签到
+                            }
+                            redisTemplate.opsForHash().put(RedisConstants.LESSON_NOT_FINISH + userId, "" + ssClessonRequestModel.getId() + userId, ssClessonRequestModel.toString());
+                        }
+                    }
+                    redisTemplate.expire(RedisConstants.LESSON_NOT_FINISH + userId, 180, TimeUnit.SECONDS);
+                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                    responseResult.setData(ssLessonList);
+                } catch (Exception e) {
+                    logger.error("系统异常", e);
+                    responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
+                    responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+                    responseResult.setData(null);
+                }
+            }
+        } else if (lessonState == 1) {
+            boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_ALREADY_FINISH + userId);
+            if (existHashKey) {
+                logger.info("执行redis操作-----");
+                String ssLessonList = (String)redisTemplate.opsForValue().get(RedisConstants.LESSON_ALREADY_FINISH + userId);
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(FastJsonUtil.json2List(ssLessonList));
+            } else {
+                logger.info("未执行redis----");
+                try {
+                    List<SsClessonRequestModel> ssLessonList = ssClessonMapper.findLessonList(courseId, lessonState);
+                    for (SsClessonRequestModel ssClessonRequestModel : ssLessonList) {
+                        if (ssClessonRequestModel != null) {
+                            Integer signCount = ssClessonMapper.findSignState(ssClessonRequestModel.getId(), userId);
+                            if (signCount > 0) {
+                                ssClessonRequestModel.setSignState("1");//已签到
+                            } else {
+                                ssClessonRequestModel.setSignState("0");//未签到
+                            }
+                        }
+                    }
+                    logger.info("FastJsonUtil.list2Json(ssLessonList){}",FastJsonUtil.list2Json(ssLessonList));
+                    redisTemplate.opsForValue().set(RedisConstants.LESSON_ALREADY_FINISH +userId, FastJsonUtil.list2Json(ssLessonList));
+                    redisTemplate.expire(RedisConstants.LESSON_ALREADY_FINISH + userId, 180, TimeUnit.SECONDS);
+                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                    responseResult.setData(ssLessonList);
+                } catch (Exception e) {
+                    logger.error("系统异常", e);
+                    responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
+                    responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+                    responseResult.setData(null);
+                }
             }
         }
         logger.info("out===>{}", responseResult);
