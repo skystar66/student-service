@@ -41,4 +41,10 @@ public interface SsUStudentMapper {
     StudentResponseModel queryStudentById(@Param("id") String id);
 
 
+    /**
+     * 根据条件查询学生列表
+     * @param queryElement
+     * @return
+     */
+    List<SsUStudent> queryStudentList(@Param("queryElement") String queryElement);
 }

@@ -54,8 +54,6 @@ public class IntegralRecordController {
         SsUStudent ssUStudent = new SsUStudent();
         ssUStudent.setId(integralRequestModel.getUserId());
         ssOpinionFeedback.setSsUStudent(ssUStudent);
-
-        ResponseResult responseResult = new ResponseResult();
         return ssStudentService.findById(ssOpinionFeedback);
 
     }

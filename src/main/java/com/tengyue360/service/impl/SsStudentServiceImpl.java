@@ -1,5 +1,6 @@
 package com.tengyue360.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.tengyue360.bean.*;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.*;
@@ -198,6 +199,33 @@ public class SsStudentServiceImpl implements SsStudentService {
             }
             responseResult.setCode(ReturnCode.FIND_STUDENT_ERROR.code());
             responseResult.setMsg(ReturnCode.FIND_STUDENT_ERROR.msg());
+            responseResult.setData(null);
+            return responseResult;
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setData(null);
+        }
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult queryStudentList(String queryElement,Integer pageNum,Integer pageSize) {
+
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            List<SsUStudent> studentList = studentMapper.queryStudentList(queryElement);
+            if (studentList.size()>0) {
+                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setData(studentList);
+                logger.info("out====>studentList{}",studentList);
+                return responseResult;
+            }
+            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
+            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
