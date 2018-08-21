@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 封装上传图片请求参数
+ * 封装上传图片请求参数1
  *
  * @author xuliang
  * @date 2018/8/10 12:37
