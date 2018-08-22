@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
-//@ImportResource(locations = { "classpath:spring/applicationContext.xml" })
+//@ImportResource(locations = { "classpath:quartz/applicationContext.xml" })
 @SpringBootApplication(scanBasePackages = "com.tengyue360")
 @EnableDiscoveryClient
 @MapperScan("com.tengyue360.dao")

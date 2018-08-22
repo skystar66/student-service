@@ -37,6 +37,6 @@ public interface SsAccountNumberMapper {
      * @throws Exception
      */
 
-    Long countParent(@Param("role") String role);
+    Integer countParent(@Param("role") String role);
 
 }

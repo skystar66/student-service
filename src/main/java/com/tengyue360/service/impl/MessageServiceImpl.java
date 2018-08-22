@@ -119,30 +119,30 @@ public class MessageServiceImpl implements MessageService {
 
             case SEND_RUNING_CLASS_READED: {
                 //发送上课准备短信
-                templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
+                templateMsg = "【腾跃校长在线】同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
                 //验证码登录
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.SEND_RUNING_CLASS_READED_ON_EIGHTEEN_CODE.getCode());
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_COURSE_READED, EMqSendType.SEND_RUNING_CLASS_READED_ON_EIGHTEEN_CODE.getCode());
                 messageTemplate.setTopic("开课准备");
             }
             break;
             case SEND_RUNING_CLASS_REMIND: {
                 //发送上课准备短信
-                templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
-                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_VALIDATE_CODE, EMqSendType.SEND_RUNING_CLASS_REMIND_ON_BEFOR_TWO_HOUR_CODE.getCode());
+                templateMsg = "【腾跃校长在线】同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
+                messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_COURSE_REMIND, EMqSendType.SEND_RUNING_CLASS_REMIND_ON_BEFOR_TWO_HOUR_CODE.getCode());
                 messageTemplate.setTopic("上课提醒");
             }
 
 
             case PUSH_RUNING_CLASS_READED: {
                 //推送上课准备短信
-                templateMsg = "同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
+                templateMsg = "【腾跃校长在线】同学好，《" + context.getString("courName") + "》将于明日" + context.getString("startTime") + "开课，请提前做好预习等准备工作，祝你学习愉快～";
                 messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_READED_MESSAGE, EMqSendType.PUSH_RUNING_CLASS_READED_ON_EIGHTEEN_CODE.getCode());
                 messageTemplate.setTopic("开课准备");
             }
             break;
             case PUSH_RUNING_CLASS_REMIND: {
                 //推送上课准备短信
-                templateMsg = "同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
+                templateMsg = "【腾跃校长在线】同学好，《" + context.getString("courName") + "》将于" + context.getString("startTime") + "开课，请带好必备物品，按时上课，注意安全～";
                 messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_PUSH_REMIND_MESSAGE, EMqSendType.PUSH_RUNING_CLASS_REMIND_ON_BEFOR_TWO_HOUR_CODE.getCode());
                 messageTemplate.setTopic("上课提醒");
             }
