@@ -37,7 +37,7 @@ public class UploadController {
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseResult upload( UploadFileRequestModel model) {
-        logger.info("开始调用上传文件接口，参数信息", model);
+        logger.info("开始调用上传文件接口，参数信息:{}", model);
         if (null != BeanValidators.isValidateUploadFile(model)) {
             logger.info("调用上传文件接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateUploadFile(model));
             return BeanValidators.isValidateUploadFile(model);
