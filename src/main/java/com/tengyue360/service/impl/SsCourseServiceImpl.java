@@ -69,6 +69,7 @@ public class SsCourseServiceImpl implements SsCourseService {
                         if (ssCourseRequestModel != null) {
                             //查询课程下的课次总数
                             int lessonCount = ssCourseMapper.findLessonCount(ssCourseRequestModel.getId());
+                            //查询已上完的课次列表
                             int lessonFinishCount = ssCourseMapper.findFinishLessonCount(ssCourseRequestModel.getId());
                             ssCourseRequestModel.setTotalLseeon(lessonCount);
                             ssCourseRequestModel.setTotalFinishLesson(lessonFinishCount);
