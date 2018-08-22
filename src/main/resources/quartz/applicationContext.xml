@@ -21,12 +21,10 @@
     <bean id="courseTask" class="com.tengyue360.quartz.task.course.CourseTask"/>
     <task:scheduler id="scheduler" pool-size="20"/>
     <task:scheduled-tasks scheduler="scheduler">
-        <task:scheduled ref="courseTask" method="runBeforeOneDay"
+       <task:scheduled ref="courseTask" method="runBeforeOneDay"
                         cron="0 */1 * * * ? "/>
-
-
-        <task:scheduled ref="courseTask" method="runBegingTwoHour"
-                        cron="0 */1 * * * ? "/>
+       <!-- <task:scheduled ref="courseTask" method="runBegingTwoHour"
+                        cron="0 */1 * * * ? "/>-->
     </task:scheduled-tasks>
     <context:component-scan base-package=" com.tengyue360.quartz"/>
 </beans>

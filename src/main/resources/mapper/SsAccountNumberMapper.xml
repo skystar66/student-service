@@ -198,7 +198,7 @@
   </update>
 
 
-    <select id="queryParentsByRole" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="queryParentsByRole" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ss_u_account_number where role = #{role,jdbcType=VARCHAR} and delete_state = '1'
@@ -206,7 +206,7 @@
 
     </select>
 
-    <select id="countParent" resultType="java.lang.Integer" parameterType="java.lang.Long">
+    <select id="countParent" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(id) from ss_u_account_number
         where role = #{role,jdbcType=VARCHAR} and delete_state = '1'
     </select>

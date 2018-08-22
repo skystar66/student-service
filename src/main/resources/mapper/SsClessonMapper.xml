@@ -225,7 +225,7 @@
     <select id="queryLoession" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ss_c_lesson sc where sc.class_id=#{cid,jdbcType=VARCHAR}
+        from ss_c_lesson sc where sc.course_id=#{cid,jdbcType=VARCHAR}
         and sc.state=#{state,jdbcType=VARCHAR}
         and DATE_FORMAT(date_add(start_time,interval-1 day),'%Y-%m-%d')
         = DATE_FORMAT(#{currentTime,jdbcType=TIMESTAMP},'%Y-%m-%d')

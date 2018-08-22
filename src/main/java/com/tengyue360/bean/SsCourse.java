@@ -31,6 +31,58 @@ public class SsCourse implements Serializable {
 
     private String level;
 
+    private Integer teacherId;
+
+    private Date createTime;
+
+    private String createMan;
+
+    private Date updateTime;
+
+    private String updateMan;
+
+    private String deleteState;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateMan() {
+        return createMan;
+    }
+
+    public void setCreateMan(String createMan) {
+        this.createMan = createMan;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateMan() {
+        return updateMan;
+    }
+
+    public void setUpdateMan(String updateMan) {
+        this.updateMan = updateMan;
+    }
+
+    public String getDeleteState() {
+        return deleteState;
+    }
+
+    public void setDeleteState(String deleteState) {
+        this.deleteState = deleteState;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -86,5 +138,14 @@ public class SsCourse implements Serializable {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+
+    public Integer getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
     }
 }

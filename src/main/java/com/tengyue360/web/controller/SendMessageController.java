@@ -70,9 +70,9 @@ public class SendMessageController {
     @RequestMapping(value = "/sendUpdatePwdSms", method = RequestMethod.POST)
     public ResponseResult sendUpdatePwdSms(@RequestBody SendSmsRequestModel model) {
         logger.info("获取修改密码短信验证码，参数信息：{}", model);
-        if (null != BeanValidators.isValidateForgetPwdSms(model)) {
-            logger.info("获取修改密码短信验证码，参数验证失败：{}", BeanValidators.isValidateForgetPwdSms(model));
-            return BeanValidators.isValidateForgetPwdSms(model);
+        if (null != BeanValidators.isValidateForgetPwdSms(model,redisTemplate)) {
+            logger.info("获取修改密码短信验证码，参数验证失败：{}", BeanValidators.isValidateForgetPwdSms(model,redisTemplate));
+            return BeanValidators.isValidateForgetPwdSms(model,redisTemplate);
         }
         //调用后台服务 获取验证码
         model.setValidateType(ValidateCodeEnum.FORGET_PWD_CODE.getKey());
