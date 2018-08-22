@@ -162,7 +162,7 @@ public class BeanValidators {
      * @return
      */
 
-    public static final ResponseResult isValidateForgetPwdSms(SendSmsRequestModel model) {
+    public static final ResponseResult isValidateForgetPwdSms(SendSmsRequestModel model, RedisTemplate redisTemplate) {
         //基础校验
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
@@ -171,6 +171,11 @@ public class BeanValidators {
                 !CommonTools.match(regex, model.getPhone())) {
             //用户名不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
+        }
+        //校验一个手机号 只能间隔60s才会获取第二次
+        String loginCodeKey = ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone();
+        if (null != redisTemplate.opsForValue().get(loginCodeKey)) {
+            return new ResponseResult(ReturnCode.ERROR_AGIN_COUNT.code(), ReturnCode.ERROR_AGIN_COUNT.msg(), null);
         }
         return null;
     }
