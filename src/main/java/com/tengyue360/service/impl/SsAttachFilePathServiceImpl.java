@@ -2,12 +2,14 @@ package com.tengyue360.service.impl;
 
 import com.tengyue360.bean.SsAttachFilePath;
 import com.tengyue360.common.ReturnCode;
+import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.SsAttachFilePathMapper;
 import com.tengyue360.service.SsAttachFilePathService;
 import com.tengyue360.utils.OssFileUtil;
 import com.tengyue360.web.requestModel.UploadFileRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,6 +28,8 @@ public class SsAttachFilePathServiceImpl implements SsAttachFilePathService {
 
     @Autowired
     SsAttachFilePathMapper attachFilePathMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
 
     /**
@@ -48,6 +52,9 @@ public class SsAttachFilePathServiceImpl implements SsAttachFilePathService {
             int num = attachFilePathMapper.insert(neWattachFilePath(url, model.getRelationId(),
                     model.getFile().getOriginalFilename(), model.getUploadType()));
             if (num > 0) {
+                //清除缓存信息
+                //清除该学生缓存信息
+                redisTemplate.delete(RedisConstants.STU_INFO + model.getRelationId());
                 responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);

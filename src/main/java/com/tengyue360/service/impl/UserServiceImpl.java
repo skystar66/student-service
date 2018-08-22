@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
         ResponseResult responseResult = new ResponseResult();
         try {
-            SsUser user = userMapper.selectByPrimaryKey(Integer.parseInt(model.getUserId()));
+            SsUser user = userMapper.login(model.getPhone());
             if (null != user) {
                 if (model.getOldPwd().equals(user.getPassword())) {
                     //更新 密码
@@ -165,27 +165,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /**
-     * 根据用户id查询该学生列表
-     *
-     * @return
-     * @throws Exception
-     */
-
-    @Override
-    public ResponseResult queryStudentsByUserId(UserRequestModel model) {
-        try {
-            List<AccountInfoResponseModel> stuList = studentMapper.queryStudentByPhone(model.getPhone());
-            if (null != stuList && stuList.size() > 0) {
-                return ResponseResult.onSuccess(stuList, ReturnCode.ACTIVE_SUCCESS);
-            }
-            return ResponseResult.onSuccess(null, ReturnCode.ERROR_EMPTY_DATA);
-        } catch (Exception e) {
-            logger.error("系统异常", e);
-            ResponseResult.onFailure(null, ReturnCode.ACTIVE_EXCEPTION);
-        }
-        return null;
-    }
 
 
     /**

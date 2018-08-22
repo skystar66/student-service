@@ -88,14 +88,14 @@ public class CourseTask {
                     for (int i = 0; i < accountNumbers.size(); i++) {
                         SsAccountNumber ssAccountNumber = accountNumbers.get(i);
                         //根据家长手机号查询相应未退班的学生信息
-                        List<AccountInfoResponseModel> accountInfoResponseModels = studentMapper.queryStudentByPhone(ssAccountNumber.getAccountNumber());
+                        List<SsUStudent> accountInfoResponseModels = studentMapper.queryStudentByPhone(ssAccountNumber.getAccountNumber());
                         if (null != accountInfoResponseModels && accountInfoResponseModels.size() > 0) {
-                            for (AccountInfoResponseModel model : accountInfoResponseModels) {
-                                if (StringUtils.isNotBlank(model.getStuStatus())) {
+                            for (SsUStudent model : accountInfoResponseModels) {
+                                if (StringUtils.isNotBlank(model.getState())) {
                                     //如果不是退班学员  发送短信
-                                    if (!"2".equals(model.getStuStatus())) {
+                                    if (!"2".equals(model.getState())) {
                                         //根据学员id查询  所在班级
-                                        List<SStuClass> stuClassList = sStuClassMapper.queryClassBySid(model.getId());
+                                        List<SStuClass> stuClassList = sStuClassMapper.queryClassBySid(model.getId().toString());
                                         if (null != stuClassList && stuClassList.size() > 0) {
                                             for (SStuClass cls : stuClassList) {
                                                 SSClass sclass = classMapper.selectByPrimaryKey(cls.getClassId());
@@ -164,14 +164,14 @@ public class CourseTask {
                     for (int i = 0; i < accountNumbers.size(); i++) {
                         SsAccountNumber ssAccountNumber = accountNumbers.get(i);
                         //根据家长手机号查询相应未退班的学生信息
-                        List<AccountInfoResponseModel> accountInfoResponseModels = studentMapper.queryStudentByPhone(ssAccountNumber.getAccountNumber());
+                        List<SsUStudent> accountInfoResponseModels = studentMapper.queryStudentByPhone(ssAccountNumber.getAccountNumber());
                         if (null != accountInfoResponseModels && accountInfoResponseModels.size() > 0) {
-                            for (AccountInfoResponseModel model : accountInfoResponseModels) {
-                                if (StringUtils.isNotBlank(model.getStuStatus())) {
+                            for (SsUStudent model : accountInfoResponseModels) {
+                                if (StringUtils.isNotBlank(model.getState())) {
                                     //如果不是退班学员  发送短信
-                                    if (!"2".equals(model.getStuStatus())) {
+                                    if (!"2".equals(model.getState())) {
                                         //根据学员id查询  所在班级
-                                        List<SStuClass> stuClassList = sStuClassMapper.queryClassBySid(model.getId());
+                                        List<SStuClass> stuClassList = sStuClassMapper.queryClassBySid(model.getId().toString());
                                         if (null != stuClassList && stuClassList.size() > 0) {
                                             for (SStuClass cls : stuClassList) {
                                                 SSClass sclass = classMapper.selectByPrimaryKey(cls.getClassId());
