@@ -307,10 +307,14 @@ public class BeanValidators {
      * @param model
      * @return
      */
-    public static ResponseResult isValidateUploadFile(UploadFileRequestModel model) {
+    public static ResponseResult isValidateUploadFile(UploadFileRequestModel model, HttpServletRequest request) {
         //基础校验
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
+        }
+        //校验token
+        if (null != isValidateCurrentToken(request, model.getRelationId())) {
+            return isValidateCurrentToken(request, model.getRelationId());
         }
         if (StringUtils.isBlank(model.getRelationId())) {
             //验证码不能为空
