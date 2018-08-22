@@ -262,10 +262,10 @@
         <include refid="Base_Column_List"/>
         from ss_c_lesson sc  where sc.course_id=#{courseId,jdbcType=INTEGER}
         <if test="lessonState == 1">
-            and sc.state=#{lessonState,jdbcType=VARCHAR}
+            and  sc.end_time <![CDATA[ <=]]> now()
         </if>
         <if test="lessonState != 1">
-            and sc.state !=#{lessonState,jdbcType=VARCHAR}
+            and sc.end_time <![CDATA[ > ]]> now()
         </if>
         order by sc.start_time desc
     </select>
