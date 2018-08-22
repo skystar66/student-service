@@ -355,6 +355,29 @@ public class BeanValidators {
         return null;
     }
 
+    /**
+     * 校验反馈内容
+     *
+     * @param model
+     * @return
+     */
+    public static ResponseResult isValidateContent (IntegralRequestModel model) {
+        //基础校验
+        if (null != isBaseValidate(model)) {
+            return isBaseValidate(model);
+        }
+        if (StringUtils.isBlank(model.getContent())) {
+            //反馈内容不能为空
+            return new ResponseResult(ReturnCode.CONTENT_EMPTY.code(), ReturnCode.CONTENT_EMPTY.msg(), null);
+        }
+        if(model.getContent().length()>200){
+            //反馈内容超过最大限制
+            return new ResponseResult(ReturnCode.CONTENT_TOO_LONG.code(), ReturnCode.CONTENT_TOO_LONG.msg(), null);
+
+        }
+        return null;
+    }
+
 
 
 
