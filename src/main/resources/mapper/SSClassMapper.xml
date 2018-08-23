@@ -315,4 +315,18 @@
       course_type = #{courseType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectClassesByStuId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    class_id id
+    from ss_u_c_class_stu
+    where student_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByIdAndCOurseId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ss_c_class
+    where id = #{id,jdbcType=INTEGER} and course_id=#{courseId}
+  </select>
 </mapper>
