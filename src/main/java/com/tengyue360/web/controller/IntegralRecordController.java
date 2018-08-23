@@ -40,9 +40,9 @@ public class IntegralRecordController {
      * @return
      */
     @PostMapping("/stuApp/integralRecord")
-    public ResponseResult integralRecord(Integer userId) {
-        logger.info("in====>userId:{}", userId);
-        return ssIntegralService.integralRecord(userId);
+    public ResponseResult integralRecord(Integer userId,String state) {
+        logger.info("in====>userId:{},state{}", userId,state);
+        return ssIntegralService.integralRecord(userId,state);
     }
 
 

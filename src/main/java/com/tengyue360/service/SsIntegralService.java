@@ -15,5 +15,5 @@ public interface SsIntegralService {
      * @param userId
      * @return
      */
-    ResponseResult integralRecord(Integer userId);
+    ResponseResult integralRecord(Integer userId,String state);
 }

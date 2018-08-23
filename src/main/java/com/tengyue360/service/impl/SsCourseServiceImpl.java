@@ -106,8 +106,8 @@ public class SsCourseServiceImpl implements SsCourseService {
                 });
 
                 if (ssCourseRequestModelList.size() <= 0) {
-                    responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
-                    responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());
+                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setError(ReturnCode.COURSE_EMPTY.msg());
                     responseResult.setData(null);
                     logger.info("out===>{}", responseResult);
                     return responseResult;

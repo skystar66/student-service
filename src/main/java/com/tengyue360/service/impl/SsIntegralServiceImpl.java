@@ -5,6 +5,7 @@ import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.SsIntegralMapper;
 import com.tengyue360.service.SsIntegralService;
 import com.tengyue360.web.responseModel.ResponseResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,18 @@ public class SsIntegralServiceImpl implements SsIntegralService {
     private SsIntegralMapper ssIntegralMapper;
 
     @Override
-    public ResponseResult integralRecord(Integer userId) {
+    public ResponseResult integralRecord(Integer userId,String state) {
         logger.info("in====>{}userId:", logger);
         ResponseResult responseResult = new ResponseResult();
         try {
             int resultCount = ssIntegralMapper.selectByUsrId(userId);
-            List<SsIntegral> ssIntegralList = ssIntegralMapper.integralRecord(userId);
+
             Map<String, Object> map = new HashMap<>();
             map.put("totalIntegral", resultCount);
-            map.put("integralDetail", ssIntegralList);
+            if(StringUtils.equals(state,"1")){
+                List<SsIntegral> ssIntegralList = ssIntegralMapper.integralRecord(userId);
+                map.put("integralDetail", ssIntegralList);
+            }
             logger.info("out====>{}map", map);
             responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
             responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());

@@ -59,4 +59,18 @@ public interface SsUStudentMapper {
      * @return
      */
     List<SsUStudent> queryStudentList(@Param("queryElement") String queryElement);
+
+    /**
+     * 查询所有学生
+     * @param startPages
+     * @param countPage
+     * @return
+     */
+    List<SsUStudent> findAllStudent(@Param("startPages") Integer startPages,@Param("countPage") Integer  countPage);
+
+    /**
+     * 查询学生总数
+     * @return
+     */
+    int countStudent();
 }
