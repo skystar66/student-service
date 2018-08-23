@@ -1,6 +1,5 @@
 package com.tengyue360.web.controller;
 
-import com.tengyue360.common.ReturnCode;
 import com.tengyue360.service.ChangeStuService;
 import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.BeanValidators.BeanValidators;
@@ -24,10 +23,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @RestController
-public class ChangeStudentInfo {
+public class ChangeStudentController {
 
 
-    private static Logger logger = LoggerFactory.getLogger(ChangeStudentInfo.class);
+    private static Logger logger = LoggerFactory.getLogger(ChangeStudentController.class);
 
 
     @Autowired
