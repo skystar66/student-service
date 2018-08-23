@@ -4,15 +4,16 @@
 
 <mapper namespace="com.tengyue360.dao.SsIntegralMapper">
 
-    <resultMap id="integralAsSLesson" type="com.tengyue360.web.requestModel.IntegralRequestModel">
+    <resultMap id="integralAsSLesson" type="com.tengyue360.rpcModel.requestModel.IntegralRequestModel">
         <result property="name" column="name"/>
         <result property="value" column="value"/>
+        <result property="source" column="source"/>
         <result property="startTime" column="start_time"/>
     </resultMap>
 
     <select id="integralRecord" resultMap="integralAsSLesson">
        SELECT
-            c. NAME ,i.VALUE,c.start_time
+            c. NAME ,i.VALUE,c.start_time,i.source
           FROM
         (
             SELECT

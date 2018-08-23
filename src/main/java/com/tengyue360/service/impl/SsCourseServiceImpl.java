@@ -1,5 +1,6 @@
 package com.tengyue360.service.impl;
 
+import com.netflix.discovery.converters.Auto;
 import com.tengyue360.bean.*;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.RedisConstants;
@@ -42,6 +43,9 @@ public class SsCourseServiceImpl implements SsCourseService {
 
     @Autowired
     private SsClessonMapper ssClessonMapper;
+
+    @Autowired
+    private SSClassMapper ssClassMapper;
 
     @Autowired
     RedisTemplate redisTemplate;
@@ -127,6 +131,21 @@ public class SsCourseServiceImpl implements SsCourseService {
     @Override
     public ResponseResult findLessonList(Integer courseId, Integer lessonState, Integer userId) {
         ResponseResult responseResult = new ResponseResult();
+        Integer resultCount =0;
+        List<SSClass> ssClassList = ssClassMapper.selectClassesByStuId(userId);
+        for(SSClass ssClass :ssClassList){
+            SSClass ssClass1 = ssClassMapper.selectByIdAndCOurseId(ssClass.getId(),courseId);
+            if(ssClass1 != null){
+                resultCount++;
+            }
+        }
+        if(resultCount<1){
+            responseResult.setCode(ReturnCode.COURSE_NOT_FOUND.code());
+            responseResult.setMsg(ReturnCode.COURSE_NOT_FOUND.msg());
+            responseResult.setData(null);
+            return responseResult;
+        }
+
         if (lessonState == 0) {
             HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
             boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_NOT_FINISH + userId);
