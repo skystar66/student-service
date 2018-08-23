@@ -32,7 +32,7 @@ public class CheckTokenServiceImpl implements CheckTokenService {
      * @throws Exception
      */
     @Override
-    public ResponseResult checkToken(String tokenId,String dataId, String phone) {
+    public ResponseResult checkToken(String tokenId, String dataId, String phone) {
         try {
             //根据学员id查询家长手机号
             SsUStudent student = studentMapper.selectByPrimaryKey(Integer.parseInt(tokenId));
@@ -42,12 +42,13 @@ public class CheckTokenServiceImpl implements CheckTokenService {
                         return ResponseResult.onFailure(null, ReturnCode.CURRENT_STUDENT_ID_ERROR);
                     }
                 }
-            } else {
+            } else if (StringUtils.isNotBlank(dataId)) {
                 //表示该家长手机号不挂学员id
                 if (!tokenId.equals(dataId)) {
                     return ResponseResult.onFailure(null, ReturnCode.CURRENT_STUDENT_ID_ERROR);
                 }
             }
+
         } catch (Exception ex) {
             logger.error(ex.toString());
         }

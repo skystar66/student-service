@@ -10,6 +10,7 @@ import com.tengyue360.dao.*;
 import com.tengyue360.enums.EnumModelType;
 import com.tengyue360.exception.BusinessException;
 import com.tengyue360.pool.ThreadProvider;
+import com.tengyue360.service.CheckTokenService;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.utils.CommonBeanUtils;
 import com.tengyue360.utils.ElseFiledsUtils;
@@ -59,6 +60,9 @@ public class SsStudentServiceImpl implements SsStudentService {
     @Autowired
     RedisTemplate redisTemplate;
 
+    @Autowired
+    CheckTokenService checkTokenService;
+
 
     /**
      * 根据家长电话查询该用户下的学员信息
@@ -71,11 +75,16 @@ public class SsStudentServiceImpl implements SsStudentService {
     public ResponseResult queryStudentByPhone(UserRequestModel model) {
         ResponseResult responseResult = new ResponseResult();
         try {
+            //校验身份
+            ResponseResult resultCheck = checkTokenService.checkToken(model.getUserId(), null, model.getPhone());
+            if (null != resultCheck) {
+                return resultCheck;
+            }
             List<AccountInfoResponseModel> stuList = new ArrayList<AccountInfoResponseModel>();
             //校验是否存在缓存
             boolean exist = redisTemplate.hasKey(RedisConstants.STU_LIST_INFO + model.getPhone());
             if (exist) {
-                stuList = (List<AccountInfoResponseModel>)JSON.parseObject(redisTemplate.opsForValue().get(RedisConstants.STU_LIST_INFO + model.getPhone()).toString(),List.class);
+                stuList = (List<AccountInfoResponseModel>) JSON.parseObject(redisTemplate.opsForValue().get(RedisConstants.STU_LIST_INFO + model.getPhone()).toString(), List.class);
                 responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(stuList);
@@ -258,17 +267,17 @@ public class SsStudentServiceImpl implements SsStudentService {
     }
 
     @Override
-    public ResponseResult queryStudentList(String queryElement,Integer pageNum,Integer pageSize) {
+    public ResponseResult queryStudentList(String queryElement, Integer pageNum, Integer pageSize) {
 
         ResponseResult responseResult = new ResponseResult();
         try {
             PageHelper.startPage(pageNum, pageSize);
             List<SsUStudent> studentList = studentMapper.queryStudentList(queryElement);
-            if (studentList.size()>0) {
+            if (studentList.size() > 0) {
                 responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(studentList);
-                logger.info("out====>studentList{}",studentList);
+                logger.info("out====>studentList{}", studentList);
                 return responseResult;
             }
             responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
