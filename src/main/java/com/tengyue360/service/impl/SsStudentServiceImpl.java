@@ -170,7 +170,7 @@ public class SsStudentServiceImpl implements SsStudentService {
                 responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 //保存学员信息 --- redis缓存中
-                redisTemplate.opsForValue().set(RedisConstants.STU_INFO + model.getId(), studentResponseModel);
+                redisTemplate.opsForValue().set(RedisConstants.STU_INFO + model.getId(), JSONObject.toJSON(studentResponseModel));
                 responseResult.setData(studentResponseModel);
                 return responseResult;
             }
