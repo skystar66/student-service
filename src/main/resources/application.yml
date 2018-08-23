@@ -61,7 +61,7 @@ url:
 #超时时间
 timeout: 120
 flyway:
-  locations: classpath:db/*.sql
+  locations: classpath:db
   enabled: true
   encoding: UTF-8
   baseline-on-migrate: true

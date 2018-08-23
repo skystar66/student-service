@@ -21,6 +21,7 @@ public class IntegralRequestModel extends BaseRequestModel {
     private String value;
     private Date startTime;
 
+
     public String getName() {
         return name;
     }
