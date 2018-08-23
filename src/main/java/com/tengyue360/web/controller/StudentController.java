@@ -1,6 +1,7 @@
 package com.tengyue360.web.controller;
 
 import com.tengyue360.service.SsStudentService;
+import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.BeanValidators.BeanValidators;
 import com.tengyue360.web.requestModel.StudentOpinionListRequestModel;
 import com.tengyue360.web.requestModel.StudentOpinionRequestModel;
@@ -40,10 +41,10 @@ public class StudentController {
     @RequestMapping(value = "/queryStudentById", method = RequestMethod.POST)
     public ResponseResult queryStudentById(@RequestBody StudentRequestModel model, HttpServletRequest request) {
         logger.info("开始调用根据学员id查询学员信息接口，参数信息：{}", model);
-        if (null != BeanValidators.isValidateQueryStudentById(model,request)) {
-            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model,request));
-            return BeanValidators.isValidateQueryStudentById(model,request);
-        }
+//        if (null != BeanValidators.isValidateQueryStudentById(model, request)) {
+//            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model, request));
+//            return BeanValidators.isValidateQueryStudentById(model, request);
+//        }
         ResponseResult responseResult = studentService.queryStudentById(model);
         if (null != responseResult) {
             logger.info("根据学员id查询学员信息接口成功，返回结果{}", responseResult);
@@ -61,11 +62,11 @@ public class StudentController {
      */
 
     @RequestMapping(value = "/updateStudentById", method = RequestMethod.POST)
-    public ResponseResult updateStudentById(@RequestBody StudentRequestModel model,HttpServletRequest request) {
+    public ResponseResult updateStudentById(@RequestBody StudentRequestModel model, HttpServletRequest request) {
         logger.info("开始调用根据学员id更新学员信息接口，参数信息：{}", model);
-        if (null != BeanValidators.isValidateQueryStudentById(model,request)) {
-            logger.info("根据学员id更新学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model,request));
-            return BeanValidators.isValidateQueryStudentById(model,request);
+        if (null != BeanValidators.isValidateQueryStudentById(model, request)) {
+            logger.info("根据学员id更新学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model, request));
+            return BeanValidators.isValidateQueryStudentById(model, request);
         }
         ResponseResult responseResult = studentService.updateStudentById(model);
         if (null != responseResult) {
@@ -83,12 +84,13 @@ public class StudentController {
      */
 
     @RequestMapping(value = "/queryStudentByPhone", method = RequestMethod.POST)
-    public ResponseResult queryStudentByPhone(@RequestBody UserRequestModel model) {
+    public ResponseResult queryStudentByPhone(@RequestBody UserRequestModel model,HttpServletRequest request) {
         logger.info("开始调用根据用户手机号查询学员信息接口，参数信息：{}", model);
         if (null != BeanValidators.isValidateQueryStudentByPhone(model)) {
             logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentByPhone(model));
             return BeanValidators.isValidateQueryStudentByPhone(model);
         }
+        model.setUserId(TokenFactory.analysisToken(TokenFactory.SIGNING_KEY, request.getHeader(TokenFactory.HEADER_NAME)));
         ResponseResult responseResult = studentService.queryStudentByPhone(model);
         if (null != responseResult) {
             logger.info("根据学员id查询学员信息接口成功，返回结果{}", responseResult);
@@ -99,24 +101,16 @@ public class StudentController {
 
     /**
      * 根据传入参数查询学生列表
+     *
      * @param studentOpinionListRequestModel
      * @return
      */
     @PostMapping("/stuApp/queryStudentList")
-    public ResponseResult queryStudentList(@RequestBody StudentOpinionListRequestModel studentOpinionListRequestModel){
+    public ResponseResult queryStudentList(@RequestBody StudentOpinionListRequestModel studentOpinionListRequestModel) {
 
-        logger.info("in====>studentOpinionRequestModel{},studentOpinionListRequestModel.getPageNum{},studentOpinionListRequestModel.getPageSize{}",studentOpinionListRequestModel.getQueryElement(),studentOpinionListRequestModel.getPageNum(),studentOpinionListRequestModel.getPageSize());
-        return studentService.queryStudentList(studentOpinionListRequestModel.getQueryElement(),studentOpinionListRequestModel.getPageNum(),studentOpinionListRequestModel.getPageSize());
+        logger.info("in====>studentOpinionRequestModel{},studentOpinionListRequestModel.getPageNum{},studentOpinionListRequestModel.getPageSize{}", studentOpinionListRequestModel.getQueryElement(), studentOpinionListRequestModel.getPageNum(), studentOpinionListRequestModel.getPageSize());
+        return studentService.queryStudentList(studentOpinionListRequestModel.getQueryElement(), studentOpinionListRequestModel.getPageNum(), studentOpinionListRequestModel.getPageSize());
     }
-
-
-
-
-
-
-
-
-
 
 
 }

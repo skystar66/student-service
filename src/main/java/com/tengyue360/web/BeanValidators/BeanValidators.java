@@ -194,22 +194,12 @@ public class BeanValidators {
             return isBaseValidate(model);
         }
 
-        if (StringUtils.isBlank(model.getMessageCode())) {
-            //验证码不能为空
-            return new ResponseResult(ReturnCode.VALIDAT_CODE_EMPTY.code(), ReturnCode.VALIDAT_CODE_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getPhone())) {
+        if (StringUtils.isBlank(model.getPhone())) {
             //新密码不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         } else if (StringUtils.isBlank(model.getOldPwd()) || StringUtils.isBlank(model.getNewPwd())) {
             //原始/新密码不能不能为空
             return new ResponseResult(ReturnCode.PASSWORD_EMPTY.code(), ReturnCode.PASSWORD_EMPTY.msg(), null);
-        } else if (StringUtils.isBlank(model.getMessageCode())
-                || !model.getMessageCode().equals(Constants.LOGIN_TYPE_CODE)) {
-            if (StringUtils.isBlank(model.getMessageCode())) {
-                //验证码不能为空  缓存期校验
-                return new ResponseResult(ReturnCode.VALIDATE_CODE_FALSE.code(), ReturnCode.VALIDATE_CODE_FALSE.msg(), null);
-            }
-
         }
         return null;
     }
@@ -398,7 +388,7 @@ public class BeanValidators {
      * @param model
      * @return
      */
-    public static ResponseResult isValidateContent (IntegralRequestModel model) {
+    public static ResponseResult isValidateContent(IntegralRequestModel model) {
         //基础校验
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
@@ -407,7 +397,7 @@ public class BeanValidators {
             //反馈内容不能为空
             return new ResponseResult(ReturnCode.CONTENT_EMPTY.code(), ReturnCode.CONTENT_EMPTY.msg(), null);
         }
-        if(model.getContent().length()>200){
+        if (model.getContent().length() > 200) {
             //反馈内容超过最大限制
             return new ResponseResult(ReturnCode.CONTENT_TOO_LONG.code(), ReturnCode.CONTENT_TOO_LONG.msg(), null);
 
