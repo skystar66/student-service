@@ -40,13 +40,13 @@ public class SsStartLogServiceImpl implements SsStartLogService {
         ResponseResult responseResult = new ResponseResult();
         try {
             SSstartLog user = logMapper.selectByPrimaryKey("1");
-            responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+            responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             responseResult.setData(user);
         } catch (Exception e) {
             logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;

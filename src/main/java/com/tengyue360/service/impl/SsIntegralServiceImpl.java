@@ -36,13 +36,13 @@ public class SsIntegralServiceImpl implements SsIntegralService {
             map.put("totalIntegral", resultCount);
             map.put("integralDetail", ssIntegralList);
             logger.info("out====>{}map", map);
-            responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+            responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             responseResult.setData(map);
             return responseResult;
         } catch (Exception ex) {
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;

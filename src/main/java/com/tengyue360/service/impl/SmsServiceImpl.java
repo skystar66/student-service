@@ -95,14 +95,14 @@ public class SmsServiceImpl implements SmsService {
                 redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
                 redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 60, TimeUnit.SECONDS);
             }
-            responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+            responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception e) {
             logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;

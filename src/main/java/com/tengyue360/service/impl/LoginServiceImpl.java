@@ -60,15 +60,15 @@ public class LoginServiceImpl implements LoginService {
             logger.info("查询消费时间：" + Math.abs(System.currentTimeMillis() - startcheck1));
             if (user == null) {
                 //用户不存在
-                result.setCode(ReturnCode.NAME_PWD_FALSE.code());
-                result.setMsg(ReturnCode.NAME_PWD_FALSE.msg());
+                result.setErrno(ReturnCode.NAME_PWD_FALSE.code());
+                result.setError(ReturnCode.NAME_PWD_FALSE.msg());
                 result.setData(null);
                 return result;
             } else if (user != null && model.getPassword().equals(user.getPassword())) {
                 if (user.getDeleteState().equals("0")) {
                     //表示该用户状态 不可用 通知后台处理
-                    result.setCode(ReturnCode.ERROR_EXPIRED.code());
-                    result.setMsg(ReturnCode.ERROR_EXPIRED.msg());
+                    result.setErrno(ReturnCode.ERROR_EXPIRED.code());
+                    result.setError(ReturnCode.ERROR_EXPIRED.msg());
                     result.setData(null);
                     return result;
                 }
@@ -87,21 +87,21 @@ public class LoginServiceImpl implements LoginService {
                 saveloginLog(Integer.parseInt(logUserId), token);
                 result.setToken(token);
             } else {
-                result.setCode(ReturnCode.NAME_PWD_FALSE.code());
-                result.setMsg(ReturnCode.NAME_PWD_FALSE.msg());
+                result.setErrno(ReturnCode.NAME_PWD_FALSE.code());
+                result.setError(ReturnCode.NAME_PWD_FALSE.msg());
                 result.setData(null);
                 return result;
             }
-            result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+            result.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+            result.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             //封装返回参数
             UserResponseModel userResponseModel = new UserResponseModel();
             CommonBeanUtils.copyProperties(user, userResponseModel);
             result.setData(userResponseModel);
         } catch (Exception e) {
             logger.error("系统异常", e);
-            result.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            result.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            result.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            result.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             result.setData(null);
         }
 
@@ -123,14 +123,14 @@ public class LoginServiceImpl implements LoginService {
             SsUser user = userMapper.login(model.getPhone());
             if (user == null) {
                 //用户不存在
-                result.setCode(ReturnCode.NAME_PWD_FALSE.code());
-                result.setMsg(ReturnCode.NAME_PWD_FALSE.msg());
+                result.setErrno(ReturnCode.NAME_PWD_FALSE.code());
+                result.setError(ReturnCode.NAME_PWD_FALSE.msg());
                 result.setData(null);
                 return result;
             } else if (user.getDeleteState().equals("0")) {
                 //表示该用户状态 不可用 通知后台处理
-                result.setCode(ReturnCode.ERROR_EXPIRED.code());
-                result.setMsg(ReturnCode.ERROR_EXPIRED.msg());
+                result.setErrno(ReturnCode.ERROR_EXPIRED.code());
+                result.setError(ReturnCode.ERROR_EXPIRED.msg());
                 result.setData(null);
                 return result;
             } else {
@@ -145,8 +145,8 @@ public class LoginServiceImpl implements LoginService {
                 saveloginLog(user.getId(), token);
 
                 result.setToken(token);
-                result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                result.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                result.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 //封装返回参数
                 UserResponseModel userResponseModel = new UserResponseModel();
                 CommonBeanUtils.copyProperties(user, userResponseModel);
@@ -154,8 +154,8 @@ public class LoginServiceImpl implements LoginService {
             }
         } catch (Exception e) {
             logger.error("系统异常", e);
-            result.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            result.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            result.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            result.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             result.setData(null);
         }
         return result;

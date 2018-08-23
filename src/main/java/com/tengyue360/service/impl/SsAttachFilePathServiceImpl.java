@@ -55,18 +55,18 @@ public class SsAttachFilePathServiceImpl implements SsAttachFilePathService {
                 //清除缓存信息
                 //清除该学生缓存信息
                 redisTemplate.delete(RedisConstants.STU_INFO + model.getRelationId());
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ACTIVE_FAILURE.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_FAILURE.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_FAILURE.code());
+            responseResult.setError(ReturnCode.ACTIVE_FAILURE.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;

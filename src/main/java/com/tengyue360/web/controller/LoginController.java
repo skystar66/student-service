@@ -67,7 +67,7 @@ public class LoginController {
             //密码登录
             responseResult = loginService.login(model);
         }
-        if (ReturnCode.ACTIVE_SUCCESS.code() == responseResult.getCode()) {
+        if (ReturnCode.ACTIVE_SUCCESS.code() == responseResult.getErrno()) {
             response.setHeader(TokenFactory.getInstance().HEADER_NAME, responseResult.getToken());
             responseResult.setToken(null);
         }
