@@ -39,20 +39,20 @@ public class StudentServiceApplication {
         System.out.println("结果："+rwesult);
     }
 
-
-    /**
-     * 使用fastjson做为json的解析器
-     * @return
-     */
-    @Bean
-    public HttpMessageConverters fastJsonHttpMessageConverters() {
-        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        //	fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-        fastConverter.setFastJsonConfig(fastJsonConfig);
-        HttpMessageConverter<?> converter = fastConverter;
-        return new HttpMessageConverters(converter);
-    }
+//
+//    /**
+//     * 使用fastjson做为json的解析器
+//     * @return
+//     */
+//    @Bean
+//    public HttpMessageConverters fastJsonHttpMessageConverters() {
+//        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+//        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+//        //	fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+//        fastConverter.setFastJsonConfig(fastJsonConfig);
+//        HttpMessageConverter<?> converter = fastConverter;
+//        return new HttpMessageConverters(converter);
+//    }
 
 
 
