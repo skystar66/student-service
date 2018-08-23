@@ -3,6 +3,7 @@ package com.tengyue360.web.controller;
 
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.service.UserService;
+import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.web.BeanValidators.BeanValidators;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -43,12 +46,13 @@ public class UserController {
      */
 
     @RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
-    public ResponseResult updatePwd(@RequestBody UserRequestModel model) {
+    public ResponseResult updatePwd(@RequestBody UserRequestModel model, HttpServletRequest request) {
         logger.info("调用修改密码接口，参数信息为：{}", model);
         if (null != BeanValidators.isValidateUpdatePwd(model)) {
             logger.info("调用修改密码接口，参数信息校验失败，返回结果：{}", BeanValidators.isValidateUpdatePwd(model));
             return BeanValidators.isValidateUpdatePwd(model);
         }
+        model.setUserId(TokenFactory.analysisToken(TokenFactory.SIGNING_KEY, request.getHeader(TokenFactory.HEADER_NAME)));
         //调用后台服务
         ResponseResult responseResult = userService.updatePwd(model);
         if (null != responseResult) {

@@ -1,11 +1,13 @@
 package com.tengyue360.service.impl;
 
+import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.pool.ThreadProvider;
+import com.tengyue360.service.CheckTokenService;
 import com.tengyue360.service.UserService;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     SsUStudentMapper studentMapper;
 
+    @Autowired
+    CheckTokenService checkTokenService;
+
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     /**
@@ -51,6 +56,11 @@ public class UserServiceImpl implements UserService {
         try {
             SsUser user = userMapper.login(model.getPhone());
             if (null != user) {
+                //校验身份
+                ResponseResult resultCheck = checkTokenService.checkToken(model.getUserId(), user.getId().toString(), model.getPhone());
+                if (null != resultCheck) {
+                    return resultCheck;
+                }
                 if (model.getOldPwd().equals(user.getPassword())) {
                     //更新 密码
                     user.setPassword(model.getNewPwd());
@@ -163,8 +173,6 @@ public class UserServiceImpl implements UserService {
         }
         return responseResult;
     }
-
-
 
 
     /**
