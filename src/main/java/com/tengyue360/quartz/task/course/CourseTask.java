@@ -2,6 +2,7 @@ package com.tengyue360.quartz.task.course;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.bean.*;
+import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.*;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
 import com.tengyue360.service.MessageService;
@@ -63,6 +64,18 @@ public class CourseTask {
         // 得到共需多少页
         int pageCounts = sumCount1 % pageSize > 0 ? sumCount1 / pageSize + 1 : sumCount1 / pageSize;
         excuteCourser1(0, pageSize, pageCounts);
+    }
+
+    public  void runZeroOclockEveryDay() {
+        int resultCount = studentMapper.countStudent();
+        int pageCounts = resultCount % pageSize > 0 ? resultCount/ pageSize + 1 : resultCount / pageSize;
+        excuteClearCourseRedis(0, pageSize, pageCounts);
+    }
+
+    public  void runEverySecond() {
+        int resultCount = studentMapper.countStudent();
+        int pageCounts = resultCount % pageSize > 0 ? resultCount/ pageSize + 1 : resultCount / pageSize;
+        excuteClearCourseLessonRedis(0, pageSize, pageCounts);
     }
 
 
@@ -219,5 +232,62 @@ public class CourseTask {
         return object;
     }
 
+
+    public int excuteClearCourseRedis(Integer startPages, Integer countPage, Integer sumPage) {
+
+        logger.info("开始执行定时任务，执行方法：excuteClearCourseRedis，【每天凌晨12点清除redis课程列表缓存】，执行时间：{}", DateUtil.dateToStr(new Date(), DateUtil.DATE_FORMAT_LONG));
+        logger.info("============================================================================================当前页：" + startPages);
+        if (startPages == sumPage) {
+            return 1;
+        }
+        // 定义每页500条数据
+        List<SsUStudent> ssUStudentList = studentMapper.findAllStudent(startPages, countPage);
+        for (int j = startPages * countPage + 1; j <= sumPage; j++) {
+            if (null != ssUStudentList && ssUStudentList.size() > 0) {
+                for (SsUStudent ssUStudent : ssUStudentList) {
+                    boolean existHashKey = redisTemplate.hasKey(RedisConstants.COURSE_LIST + ssUStudent.getId());
+                    logger.info("查询redis-----{}",existHashKey);
+                    if (existHashKey) {
+
+                        redisTemplate.delete(RedisConstants.COURSE_LIST + ssUStudent.getId());
+                        logger.info("删除redis COURSE_LIST KEY-----{}",RedisConstants.COURSE_LIST + ssUStudent.getId());
+                    }
+                    continue;
+                }
+            }
+        }
+        //继续执行递归
+        excuteClearCourseRedis(startPages + 1, countPage + pageSize, sumPage);
+        return 0;
+    }
+
+
+    public int excuteClearCourseLessonRedis(Integer startPages, Integer countPage, Integer sumPage) {
+
+        logger.info("开始执行定时任务，执行方法：excuteClearCourseLessonRedis，【每秒执行一次清除redis课程列表课次列表缓存】，执行时间：{}", DateUtil.dateToStr(new Date(), DateUtil.DATE_FORMAT_LONG));
+        logger.info("============================================================================================当前页：" + startPages);
+        if (startPages == sumPage) {
+            return 1;
+        }
+        // 定义每页500条数据
+        List<SsUStudent> ssUStudentList = studentMapper.findAllStudent(startPages, countPage);
+        for (int j = startPages * countPage + 1; j <= sumPage; j++) {
+            if (null != ssUStudentList && ssUStudentList.size() > 0) {
+                for (SsUStudent ssUStudent : ssUStudentList) {
+                    boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId());
+                    logger.info("查询redis-----{}",existHashKey);
+                    if (existHashKey) {
+
+                        redisTemplate.delete(RedisConstants.COURSE_LIST + ssUStudent.getId());
+                        logger.info("删除redis COURSE_LIST KEY-----{}",RedisConstants.COURSE_LIST + ssUStudent.getId());
+                    }
+                    continue;
+                }
+            }
+        }
+        //继续执行递归
+        excuteClearCourseLessonRedis(startPages + 1, countPage + pageSize, sumPage);
+        return 0;
+    }
 
 }
