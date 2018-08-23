@@ -64,7 +64,8 @@ public class SmsServiceImpl implements SmsService {
             } else {
                 return ResponseResult.onFailure(null, ReturnCode.NAME_EMPTY);
             }
-            String random = CommonTools.createRandom(true, 4);
+            //获取验证码
+            String random = getValidateCodeRandom(model.getValidateType(), model.getPhone());
             if (model.getValidateType().equals(ValidateCodeEnum.LOGIN_CODE.getKey())) {
                 //登录验证码
                 messageService.sendSms(EMessageTemplateBusinessType.LOGIN_CODE, model.getPhone(), sendParams(random));
@@ -75,12 +76,12 @@ public class SmsServiceImpl implements SmsService {
                 } else {
                     //不存在 新建
                     redisTemplate.opsForHash().put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), random, random);
-                    //设置过期时间60s
-                    redisTemplate.expire(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), 24 * 60 * 60, TimeUnit.SECONDS);
+                    //设置过期 当天剩余时间
+                    redisTemplate.expire(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), DateUtil.setValidateExprie(), TimeUnit.SECONDS);
                 }
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 60, TimeUnit.SECONDS);
+                redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 5 * 60, TimeUnit.SECONDS);
                 //设置该用户  验证码缓存器
             } else if (model.getValidateType().equals(ValidateCodeEnum.UPDATE_PWD_CODE.getKey())) {
                 //修改密码验证码
@@ -93,7 +94,7 @@ public class SmsServiceImpl implements SmsService {
                 messageService.sendSms(EMessageTemplateBusinessType.FINDBACK_LOGIN_PWD, model.getPhone(), sendParams(random));
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 60, TimeUnit.SECONDS);
+                redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 5 * 60, TimeUnit.SECONDS);
             }
             responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
             responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
@@ -122,6 +123,33 @@ public class SmsServiceImpl implements SmsService {
         JSONObject object = new JSONObject();
         object.put("random", random);
         return object;
+    }
+
+
+    /**
+     * 封装获取验证码
+     *
+     * @return return_type 返回类型
+     * @Title: excuteRemind
+     * @Description: TODO()
+     */
+
+    public String getValidateCodeRandom(String codeEnum, String phone) {
+        String random = CommonTools.createRandom(true, 4);
+        switch (codeEnum) {
+            case "LOGIN_CODE": {
+                random = redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + phone) == null ? ""
+                        : redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + phone).toString();
+            }
+            break;
+            case "FORGET_PWD_CODE": {
+                random = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + phone) == null ? ""
+                        : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + phone).toString();
+            }
+            break;
+        }
+        return random;
+
     }
 
 
