@@ -60,26 +60,26 @@ public class UserServiceImpl implements UserService {
                     ThreadProvider.getThreadPool().execute(() -> {
                         updatePwd(user);
                     });
-                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                     responseResult.setData(null);
                     return responseResult;
                 } else {
                     //旧密码与库中原始密码不一样
-                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                    responseResult.setMsg("原始密码输入不正确");
+                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setError("原始密码输入不正确");
                     responseResult.setData(null);
                     return responseResult;
                 }
             }
             //用户不存在
-            responseResult.setCode(ReturnCode.NAME_PWD_FALSE.code());
-            responseResult.setMsg(ReturnCode.NAME_PWD_FALSE.msg());
+            responseResult.setErrno(ReturnCode.NAME_PWD_FALSE.code());
+            responseResult.setError(ReturnCode.NAME_PWD_FALSE.msg());
             responseResult.setData(null);
         } catch (Exception e) {
             logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;
@@ -106,19 +106,19 @@ public class UserServiceImpl implements UserService {
                 ThreadProvider.getThreadPool().execute(() -> {
                     updatePwd(user);
                 });
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
             }
             //用户不存在
-            responseResult.setCode(ReturnCode.NAME_PWD_FALSE.code());
-            responseResult.setMsg(ReturnCode.NAME_PWD_FALSE.msg());
+            responseResult.setErrno(ReturnCode.NAME_PWD_FALSE.code());
+            responseResult.setError(ReturnCode.NAME_PWD_FALSE.msg());
             responseResult.setData(null);
         } catch (Exception e) {
             logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;
@@ -146,19 +146,19 @@ public class UserServiceImpl implements UserService {
                     loginLogMapper.deleteToeknByUserId(user.getId(), "3");
                 });
 
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
             }
             //用户不存在
-            responseResult.setCode(ReturnCode.NAME_PWD_FALSE.code());
-            responseResult.setMsg(ReturnCode.NAME_PWD_FALSE.msg());
+            responseResult.setErrno(ReturnCode.NAME_PWD_FALSE.code());
+            responseResult.setError(ReturnCode.NAME_PWD_FALSE.msg());
             responseResult.setData(null);
         } catch (Exception e) {
             logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;

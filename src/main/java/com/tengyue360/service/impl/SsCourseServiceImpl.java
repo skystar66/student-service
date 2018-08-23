@@ -58,8 +58,8 @@ public class SsCourseServiceImpl implements SsCourseService {
             boolean existHashKey = redisTemplate.hasKey(RedisConstants.COURSE_LIST + id);
             if (existHashKey) {
                 String course = (String) redisTemplate.opsForValue().get(RedisConstants.COURSE_LIST + id);
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(FastJsonUtil.json2List(course));
             } else {
                 List<SsCourseRequestModel> ssCourseRequestModelList = new ArrayList<>();
@@ -106,22 +106,22 @@ public class SsCourseServiceImpl implements SsCourseService {
                 });
 
                 if (ssCourseRequestModelList.size() <= 0) {
-                    responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-                    responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+                    responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
+                    responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());
                     responseResult.setData(null);
                     logger.info("out===>{}", responseResult);
                     return responseResult;
                 }
                 redisTemplate.opsForValue().set(RedisConstants.COURSE_LIST + id, FastJsonUtil.list2Json(ssCourseRequestModelList));
                 redisTemplate.expire(RedisConstants.COURSE_LIST + id, 180, TimeUnit.SECONDS);
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(ssCourseRequestModelList);
             }
         } catch (Exception e) {
             logger.error("系统异常", e);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         logger.info("out===>{}", responseResult);
@@ -140,8 +140,8 @@ public class SsCourseServiceImpl implements SsCourseService {
             }
         }
         if(resultCount<1){
-            responseResult.setCode(ReturnCode.COURSE_NOT_FOUND.code());
-            responseResult.setMsg(ReturnCode.COURSE_NOT_FOUND.msg());
+            responseResult.setErrno(ReturnCode.COURSE_NOT_FOUND.code());
+            responseResult.setError(ReturnCode.COURSE_NOT_FOUND.msg());
             responseResult.setData(null);
             return responseResult;
         }
@@ -158,8 +158,8 @@ public class SsCourseServiceImpl implements SsCourseService {
                     ssLessonLists.add(ssClessonRequestModels);
                 }
 
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(ssLessonLists);
             } else {
                 logger.info("未执行redis----");
@@ -177,13 +177,13 @@ public class SsCourseServiceImpl implements SsCourseService {
                         }
                     }
                     redisTemplate.expire(RedisConstants.LESSON_NOT_FINISH + userId, 180, TimeUnit.SECONDS);
-                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                     responseResult.setData(ssLessonList);
                 } catch (Exception e) {
                     logger.error("系统异常", e);
-                    responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-                    responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+                    responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+                    responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
                     responseResult.setData(null);
                 }
             }
@@ -192,8 +192,8 @@ public class SsCourseServiceImpl implements SsCourseService {
             if (existHashKey) {
                 logger.info("执行redis操作-----");
                 String ssLessonList = (String)redisTemplate.opsForValue().get(RedisConstants.LESSON_ALREADY_FINISH + userId);
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(FastJsonUtil.json2List(ssLessonList));
             } else {
                 logger.info("未执行redis----");
@@ -212,13 +212,13 @@ public class SsCourseServiceImpl implements SsCourseService {
                     logger.info("FastJsonUtil.list2Json(ssLessonList){}",FastJsonUtil.list2Json(ssLessonList));
                     redisTemplate.opsForValue().set(RedisConstants.LESSON_ALREADY_FINISH +userId, FastJsonUtil.list2Json(ssLessonList));
                     redisTemplate.expire(RedisConstants.LESSON_ALREADY_FINISH + userId, 180, TimeUnit.SECONDS);
-                    responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                    responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                     responseResult.setData(ssLessonList);
                 } catch (Exception e) {
                     logger.error("系统异常", e);
-                    responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-                    responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+                    responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+                    responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
                     responseResult.setData(null);
                 }
             }

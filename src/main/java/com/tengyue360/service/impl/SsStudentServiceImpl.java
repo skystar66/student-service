@@ -76,8 +76,8 @@ public class SsStudentServiceImpl implements SsStudentService {
             boolean exist = redisTemplate.hasKey(RedisConstants.STU_LIST_INFO + model.getPhone());
             if (exist) {
                 stuList = (List<AccountInfoResponseModel>)JSON.parseObject(redisTemplate.opsForValue().get(RedisConstants.STU_LIST_INFO + model.getPhone()).toString(),List.class);
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(stuList);
                 return responseResult;
             }
@@ -96,21 +96,21 @@ public class SsStudentServiceImpl implements SsStudentService {
                     }
                     stuList.add(model1);
                 }
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 //处理缓存
                 redisTemplate.opsForValue().set(RedisConstants.STU_LIST_INFO + model.getPhone(), JSONObject.toJSON(stuList));
                 responseResult.setData(stuList);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+            responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
+            responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());
             responseResult.setData(stuList);
             return responseResult;
         } catch (Exception ex) {
             logger.error(ex.getMessage());
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;
@@ -133,8 +133,8 @@ public class SsStudentServiceImpl implements SsStudentService {
             if (exist) {
                 studentResponseModel = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstants.STU_INFO + model.getId()).toString(),
                         StudentResponseModel.class);
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(studentResponseModel);
                 return responseResult;
             }
@@ -167,22 +167,22 @@ public class SsStudentServiceImpl implements SsStudentService {
                 CommonBeanUtils.copyPropertiesElseList(student, studentResponseModel, ElseFiledsUtils.elseFileds(EnumModelType.QUERY_STUDENT_BY_ID.code()));
             }
             if (null != studentResponseModel) {
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 //保存学员信息 --- redis缓存中
                 redisTemplate.opsForValue().set(RedisConstants.STU_INFO + model.getId(), studentResponseModel);
                 responseResult.setData(studentResponseModel);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+            responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
+            responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
             logger.error(ex.toString());
 //            throw new BusinessException(ex.toString(), true);
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;
@@ -208,21 +208,21 @@ public class SsStudentServiceImpl implements SsStudentService {
                 ThreadProvider.getThreadPool().execute(() -> {
                     studentMapper.updateByPrimaryKey(student);
                 });
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(student);
                 //清除该学生缓存信息
                 redisTemplate.delete(RedisConstants.STU_INFO + model.getId());
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+            responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
+            responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
             logger.error(ex.getMessage());
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;
@@ -239,19 +239,19 @@ public class SsStudentServiceImpl implements SsStudentService {
                     ssOpinionFeedbackMapper.addOpinion(ssOpinionFeedback);
                 });
 
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(null);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.FIND_STUDENT_ERROR.code());
-            responseResult.setMsg(ReturnCode.FIND_STUDENT_ERROR.msg());
+            responseResult.setErrno(ReturnCode.FIND_STUDENT_ERROR.code());
+            responseResult.setError(ReturnCode.FIND_STUDENT_ERROR.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
             logger.error(ex.getMessage());
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;
@@ -265,20 +265,20 @@ public class SsStudentServiceImpl implements SsStudentService {
             PageHelper.startPage(pageNum, pageSize);
             List<SsUStudent> studentList = studentMapper.queryStudentList(queryElement);
             if (studentList.size()>0) {
-                responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(studentList);
                 logger.info("out====>studentList{}",studentList);
                 return responseResult;
             }
-            responseResult.setCode(ReturnCode.ERROR_EMPTY_DATA.code());
-            responseResult.setMsg(ReturnCode.ERROR_EMPTY_DATA.msg());
+            responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
+            responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());
             responseResult.setData(null);
             return responseResult;
         } catch (Exception ex) {
             logger.error(ex.getMessage());
-            responseResult.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            responseResult.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            responseResult.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            responseResult.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             responseResult.setData(null);
         }
         return responseResult;

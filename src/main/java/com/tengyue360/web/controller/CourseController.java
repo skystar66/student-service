@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,7 +40,7 @@ public class CourseController {
      * @return
      */
     @PostMapping("/stuApp/lessonList")
-    public ResponseResult lessonList(Integer courseId,Integer lessonState,Integer userId){
+    public ResponseResult lessonList(@RequestParam Integer courseId, @RequestParam Integer lessonState, Integer userId){
         logger.info("in===>course{},lessonState{},userId{}",courseId,lessonState,userId);
         return ssCourseService.findLessonList(courseId,lessonState,userId);
 

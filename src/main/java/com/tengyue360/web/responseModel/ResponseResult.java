@@ -14,11 +14,11 @@ public class ResponseResult   extends BaseBean implements Serializable{
     /**
      * 响应状态
      */
-    private int code = 200;
+    private int errno = 200;
     /**
      * 响应状态说明
      */
-    private String msg = "正常调用";
+    private String error = "正常调用";
     /**
      * 响应数据
      */
@@ -43,48 +43,48 @@ public class ResponseResult   extends BaseBean implements Serializable{
 
     }
 
-    public ResponseResult(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
+    public ResponseResult(int errno, String error) {
+        this.errno = errno;
+        this.error = error;
     }
 
-    public ResponseResult(int code, String msg, Object data) {
-        this.code = code;
-        this.msg = msg;
+    public ResponseResult(int errno, String error, Object data) {
+        this.errno = errno;
+        this.error = error;
         this.data = data;
     }
 
 
     public static ResponseResult onFailure(Object rstObj, ReturnCode rstDesc) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.setCode(rstDesc.code());
-        responseResult.setMsg(rstDesc.msg());
+        responseResult.setErrno(rstDesc.code());
+        responseResult.setError(rstDesc.msg());
         responseResult.setData(rstObj);
         return responseResult;
     }
 
     public static ResponseResult onSuccess(Object rstObj, ReturnCode rstDesc) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.setCode(rstDesc.code());
-        responseResult.setMsg(rstDesc.msg());
+        responseResult.setErrno(rstDesc.code());
+        responseResult.setError(rstDesc.msg());
         responseResult.setData(rstObj);
         return responseResult;
     }
 
-    public int getCode() {
-        return code;
+    public int getErrno() {
+        return errno;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setErrno(int errno) {
+        this.errno = errno;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getError() {
+        return error;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setError(String error) {
+        this.error = error;
     }
 
     public Object getData() {

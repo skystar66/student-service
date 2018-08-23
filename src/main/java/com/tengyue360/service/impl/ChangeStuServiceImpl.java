@@ -39,8 +39,8 @@ public class ChangeStuServiceImpl implements ChangeStuService {
         try {
             SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()),model.getPhone());
             if (null == student) {
-                result.setCode(ReturnCode.CHANGE_STUDENT_ERROR.code());
-                result.setMsg(ReturnCode.CHANGE_STUDENT_ERROR.msg());
+                result.setErrno(ReturnCode.CHANGE_STUDENT_ERROR.code());
+                result.setError(ReturnCode.CHANGE_STUDENT_ERROR.msg());
                 return result;
             }
             //获取学生端 app jwt topken
@@ -50,13 +50,13 @@ public class ChangeStuServiceImpl implements ChangeStuService {
                 loginLogService.saveloginLog(Integer.parseInt(model.getId()), token);
             });
             result.setToken(token);
-            result.setCode(ReturnCode.ACTIVE_SUCCESS.code());
-            result.setMsg(ReturnCode.ACTIVE_SUCCESS.msg());
+            result.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+            result.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             result.setData(null);
         } catch (Exception e) {
             logger.error("系统异常", e);
-            result.setCode(ReturnCode.ACTIVE_EXCEPTION.code());
-            result.setMsg(ReturnCode.ACTIVE_EXCEPTION.msg());
+            result.setErrno(ReturnCode.ACTIVE_EXCEPTION.code());
+            result.setError(ReturnCode.ACTIVE_EXCEPTION.msg());
             result.setData(null);
         }
         return result;
