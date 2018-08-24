@@ -8,6 +8,7 @@ pipeline:
     privileged: true
     commands:
       - mvn clean package
+      - mvn sonar:sonar -Dsonar.host.url=http://sonarqube.tengyue360.com -Dsonar.login=tengyue360
     volumes:
       - /drone/maven-repo:/root/.m2
 
