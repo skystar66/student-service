@@ -138,12 +138,12 @@ public class SmsServiceImpl implements SmsService {
         String random = CommonTools.createRandom(true, 4);
         switch (codeEnum) {
             case "LOGIN_CODE": {
-                random = redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + phone) == null ? ""
+                random = redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + phone) == null ? random
                         : redisTemplate.opsForValue().get(ValidateCodeEnum.LOGIN_CODE.getKey() + phone).toString();
             }
             break;
             case "FORGET_PWD_CODE": {
-                random = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + phone) == null ? ""
+                random = redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + phone) == null ? random
                         : redisTemplate.opsForValue().get(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + phone).toString();
             }
             break;
