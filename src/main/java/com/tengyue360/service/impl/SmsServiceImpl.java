@@ -3,6 +3,7 @@ package com.tengyue360.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.bean.SsClesson;
 import com.tengyue360.bean.SsUser;
+import com.tengyue360.cache.ICountCache;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
@@ -44,6 +45,8 @@ public class SmsServiceImpl implements SmsService {
     RedisTemplate redisTemplate;
     @Autowired
     SsUserMapper userMapper;
+    @Autowired
+    ICountCache countCache;
 
     /**
      * 获取短信验证码
@@ -82,6 +85,8 @@ public class SmsServiceImpl implements SmsService {
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), random);
                 redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 5 * 60, TimeUnit.SECONDS);
+                //60s缓存器
+                countCache.isRequestOutInterface(ValidateCodeEnum.LOGIN_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone(), 60l);
                 //设置该用户  验证码缓存器
             } else if (model.getValidateType().equals(ValidateCodeEnum.UPDATE_PWD_CODE.getKey())) {
                 //修改密码验证码
@@ -95,6 +100,8 @@ public class SmsServiceImpl implements SmsService {
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
                 redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 5 * 60, TimeUnit.SECONDS);
+                //60s缓存器
+                countCache.isRequestOutInterface(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone(), 60l);
             }
             responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
             responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
