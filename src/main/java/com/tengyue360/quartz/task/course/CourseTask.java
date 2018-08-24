@@ -5,8 +5,10 @@ import com.tengyue360.bean.*;
 import com.tengyue360.constant.RedisConstants;
 import com.tengyue360.dao.*;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
+import com.tengyue360.rpcModel.requestModel.SsClessonRequestModel;
 import com.tengyue360.service.MessageService;
 import com.tengyue360.utils.DateUtil;
+import com.tengyue360.utils.FastJsonUtil;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -280,7 +282,10 @@ public class CourseTask {
                     if (existHashKey) {
                         Map<String,String> map = redisTemplate.opsForHash().entries(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId());
                         for(Map.Entry<String, String> entry : map.entrySet()){
-                            String ss = entry.getValue();
+                            SsClessonRequestModel ssClessonRequestModel = FastJsonUtil.json2Bean(entry.getValue(),SsClessonRequestModel.class);
+                           if( ssClessonRequestModel.getEndTime().getTime()>(new Date()).getTime()){
+                               redisTemplate.opsForHash().delete(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId(), ssClessonRequestModel.getId());
+                            }
                         }
                         redisTemplate.opsForHash().get(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId(),ssUStudent.getId());
                         redisTemplate.delete(RedisConstants.COURSE_LIST + ssUStudent.getId());
