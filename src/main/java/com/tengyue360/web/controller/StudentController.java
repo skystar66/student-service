@@ -41,10 +41,10 @@ public class StudentController {
     @RequestMapping(value = "/queryStudentById", method = RequestMethod.POST)
     public ResponseResult queryStudentById(@RequestBody StudentRequestModel model, HttpServletRequest request) {
         logger.info("开始调用根据学员id查询学员信息接口，参数信息：{}", model);
-//        if (null != BeanValidators.isValidateQueryStudentById(model, request)) {
-//            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model, request));
-//            return BeanValidators.isValidateQueryStudentById(model, request);
-//        }
+        if (null != BeanValidators.isValidateQueryStudentById(model, request)) {
+            logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model, request));
+            return BeanValidators.isValidateQueryStudentById(model, request);
+        }
         ResponseResult responseResult = studentService.queryStudentById(model);
         if (null != responseResult) {
             logger.info("根据学员id查询学员信息接口成功，返回结果{}", responseResult);
