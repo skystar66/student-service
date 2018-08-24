@@ -1,6 +1,7 @@
 package com.tengyue360.dao;
 
 import com.tengyue360.bean.SsCourse;
+import com.tengyue360.web.requestModel.SsCourseListRequestModel;
 import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,7 @@ public interface SsCourseMapper {
      * @param id
      * @return
      */
-    SsCourseRequestModel findByCourseId(Integer id);
+    SsCourseListRequestModel findByCourseId(Integer id);
 
     /**
      * 根据课程id查询课次总数

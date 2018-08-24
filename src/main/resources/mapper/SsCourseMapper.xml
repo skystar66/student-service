@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tengyue360.dao.SsCourseMapper">
-    <resultMap id="BaseResultModelMap" type="com.tengyue360.web.requestModel.SsCourseRequestModel">
+    <resultMap id="BaseResultModelMap" type="com.tengyue360.web.requestModel.SsCourseListRequestModel">
         <id property="id" column="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
