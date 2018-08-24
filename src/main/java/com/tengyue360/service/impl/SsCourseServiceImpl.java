@@ -9,7 +9,6 @@ import com.tengyue360.service.SsCourseService;
 import com.tengyue360.utils.FastJsonUtil;
 import com.tengyue360.web.requestModel.SsClessonRequestModel;
 import com.tengyue360.web.requestModel.SsCourseListRequestModel;
-import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -135,15 +133,15 @@ public class SsCourseServiceImpl implements SsCourseService {
     @Override
     public ResponseResult findLessonList(Integer courseId, Integer lessonState, Integer userId) {
         ResponseResult responseResult = new ResponseResult();
-        Integer resultCount =0;
+        Integer resultCount = 0;
         List<SSClass> ssClassList = ssClassMapper.selectClassesByStuId(userId);
-        for(SSClass ssClass :ssClassList){
-            SSClass ssClass1 = ssClassMapper.selectByIdAndCOurseId(ssClass.getId(),courseId);
-            if(ssClass1 != null){
+        for (SSClass ssClass : ssClassList) {
+            SSClass ssClass1 = ssClassMapper.selectByIdAndCOurseId(ssClass.getId(), courseId);
+            if (ssClass1 != null) {
                 resultCount++;
             }
         }
-        if(resultCount<1){
+        if (resultCount < 1) {
             responseResult.setErrno(ReturnCode.COURSE_NOT_FOUND.code());
             responseResult.setError(ReturnCode.COURSE_NOT_FOUND.msg());
             responseResult.setData(null);
@@ -195,7 +193,7 @@ public class SsCourseServiceImpl implements SsCourseService {
             boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_ALREADY_FINISH + userId);
             if (existHashKey) {
                 logger.info("执行redis操作-----");
-                String ssLessonList = (String)redisTemplate.opsForValue().get(RedisConstants.LESSON_ALREADY_FINISH + userId);
+                String ssLessonList = (String) redisTemplate.opsForValue().get(RedisConstants.LESSON_ALREADY_FINISH + userId);
                 responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
                 responseResult.setData(FastJsonUtil.json2List(ssLessonList));
@@ -213,8 +211,8 @@ public class SsCourseServiceImpl implements SsCourseService {
                             }
                         }
                     }
-                    logger.info("FastJsonUtil.list2Json(ssLessonList){}",FastJsonUtil.list2Json(ssLessonList));
-                    redisTemplate.opsForValue().set(RedisConstants.LESSON_ALREADY_FINISH +userId, FastJsonUtil.list2Json(ssLessonList));
+                    logger.info("FastJsonUtil.list2Json(ssLessonList){}", FastJsonUtil.list2Json(ssLessonList));
+                    redisTemplate.opsForValue().set(RedisConstants.LESSON_ALREADY_FINISH + userId, FastJsonUtil.list2Json(ssLessonList));
                     redisTemplate.expire(RedisConstants.LESSON_ALREADY_FINISH + userId, 180, TimeUnit.SECONDS);
                     responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
                     responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());

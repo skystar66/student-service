@@ -29,11 +29,12 @@
                 student_id = #{userId}
         ) i
         JOIN ss_c_lesson c ON i.lesson_id = c.id
+        where c.end_time  <![CDATA[ <=]]> now()
     </select>
 
     <select id="selectByUsrId" resultType="integer">
         SELECT COALESCE(sum(value),0)
-        FROM ss_c_integral
-        where student_id=#{userId}
+        FROM ss_c_integral i join ss_c_lesson c on i.lesson_id=c.id
+        where student_id=#{userId} and c.end_time<![CDATA[ <=]]> now()
     </select>
 </mapper>
