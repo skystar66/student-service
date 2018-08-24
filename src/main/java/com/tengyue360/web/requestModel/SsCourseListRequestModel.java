@@ -29,6 +29,7 @@ public class SsCourseListRequestModel extends BaseRequestModel {
     private String teacherPhoto;
 
     private Integer assistantId;
+
     private String assistantName;
 
     private String assistantPhoto;
