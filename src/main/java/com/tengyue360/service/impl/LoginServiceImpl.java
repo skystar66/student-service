@@ -121,6 +121,7 @@ public class LoginServiceImpl implements LoginService {
         ResponseResult result = new ResponseResult();
         try {
             SsUser user = userMapper.login(model.getPhone());
+            Integer logUserId = 0;
             if (user == null) {
                 //用户不存在
                 result.setErrno(ReturnCode.NAME_PWD_FALSE.code());
@@ -134,10 +135,17 @@ public class LoginServiceImpl implements LoginService {
                 result.setData(null);
                 return result;
             } else {
+                logUserId = user.getId();
                 //获取学生端 app jwt topken
                 String token = TokenFactory.createToken(user.getId().toString(), "3");
+                //默认分配最早的 一个学生token
+                List<SsUStudent> stulist =  studentMapper.queryStudentByPhone(model.getPhone());
+                if (null != stulist && stulist.size() > 0) {
+                    token = TokenFactory.getInstance().createToken(stulist.get(0).getId().toString(), "3");
+                    logUserId = stulist.get(0).getId();
+                }
                 //记录登录日志
-                saveloginLog(user.getId(), token);
+                saveloginLog(logUserId, token);
                 //删除当日获取5次的验证码hash key
                 redisTemplate.delete(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone());
 
