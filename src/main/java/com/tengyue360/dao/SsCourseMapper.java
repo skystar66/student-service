@@ -2,7 +2,6 @@ package com.tengyue360.dao;
 
 import com.tengyue360.bean.SsCourse;
 import com.tengyue360.web.requestModel.SsCourseListRequestModel;
-import com.tengyue360.web.requestModel.SsCourseRequestModel;
 import org.springframework.stereotype.Repository;
 
 /**
