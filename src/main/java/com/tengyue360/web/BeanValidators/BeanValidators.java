@@ -1,5 +1,6 @@
 package com.tengyue360.web.BeanValidators;
 
+import com.tengyue360.cache.ICountCache;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;
@@ -147,8 +148,8 @@ public class BeanValidators {
             }
         }
         //校验一个手机号 只能间隔60s才会获取第二次
-        String loginCodeKey = ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone();
-        if (null != redisTemplate.opsForValue().get(loginCodeKey)) {
+        boolean loginCodeKey = redisTemplate.hasKey(ValidateCodeEnum.LOGIN_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone());
+        if (loginCodeKey) {
             return new ResponseResult(ReturnCode.ERROR_AGIN_COUNT.code(), ReturnCode.ERROR_AGIN_COUNT.msg(), null);
         }
         return null;
