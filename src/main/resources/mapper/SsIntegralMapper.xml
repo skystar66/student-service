@@ -29,6 +29,7 @@
                 student_id = #{userId}
         ) i
         JOIN ss_c_lesson c ON i.lesson_id = c.id
+        where c.end_time  <![CDATA[ <=]]> now()
     </select>
 
     <select id="selectByUsrId" resultType="integer">

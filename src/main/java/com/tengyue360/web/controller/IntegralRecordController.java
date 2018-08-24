@@ -2,6 +2,7 @@ package com.tengyue360.web.controller;
 
 import com.tengyue360.bean.SsOpinionFeedback;
 import com.tengyue360.bean.SsUStudent;
+import com.tengyue360.rpcModel.requestModel.CommonRequestModel;
 import com.tengyue360.service.SsIntegralService;
 import com.tengyue360.service.SsStudentService;
 import com.tengyue360.web.BeanValidators.BeanValidators;
@@ -40,9 +41,9 @@ public class IntegralRecordController {
      * @return
      */
     @PostMapping("/stuApp/integralRecord")
-    public ResponseResult integralRecord(Integer userId,String state) {
-        logger.info("in====>userId:{},state{}", userId,state);
-        return ssIntegralService.integralRecord(userId,state);
+    public ResponseResult integralRecord(Integer userId, @RequestBody CommonRequestModel commonRequestModel) {
+        logger.info("in====>userId:{},state{}", userId,commonRequestModel);
+        return ssIntegralService.integralRecord(userId,commonRequestModel.getState());
     }
 
 
