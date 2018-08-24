@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 上课提醒 定时任务
@@ -277,7 +278,11 @@ public class CourseTask {
                     boolean existHashKey = redisTemplate.hasKey(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId());
                     logger.info("查询redis-----{}",existHashKey);
                     if (existHashKey) {
-
+                        Map<String,String> map = redisTemplate.opsForHash().entries(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId());
+                        for(Map.Entry<String, String> entry : map.entrySet()){
+                            String ss = entry.getValue();
+                        }
+                        redisTemplate.opsForHash().get(RedisConstants.LESSON_NOT_FINISH + ssUStudent.getId(),ssUStudent.getId());
                         redisTemplate.delete(RedisConstants.COURSE_LIST + ssUStudent.getId());
                         logger.info("删除redis COURSE_LIST KEY-----{}",RedisConstants.COURSE_LIST + ssUStudent.getId());
                     }
