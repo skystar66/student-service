@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
                     return responseResult;
                 } else {
                     //旧密码与库中原始密码不一样
-                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
-                    responseResult.setError("原始密码输入不正确");
+                    responseResult.setErrno(ReturnCode.OLD_PWD_ERROR.code());
+                    responseResult.setError(ReturnCode.OLD_PWD_ERROR.msg());
                     responseResult.setData(null);
                     return responseResult;
                 }
