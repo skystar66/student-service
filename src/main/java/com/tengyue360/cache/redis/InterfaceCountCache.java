@@ -23,7 +23,7 @@ public class InterfaceCountCache implements ICountCache {
     private final Logger LOG = LoggerFactory.getLogger(InterfaceCountCache.class);
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
 	public synchronized boolean isRequestOutInterface(String key, Long outTime) {

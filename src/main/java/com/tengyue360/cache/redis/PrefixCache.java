@@ -20,7 +20,7 @@ public class PrefixCache implements ICache {
     private final Logger logger = LoggerFactory.getLogger(PrefixCache.class);
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
     public Object readConfig(String key) {
