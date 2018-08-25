@@ -73,19 +73,22 @@ public class SmsServiceImpl implements SmsService {
                 //登录验证码
                 messageService.sendSms(EMessageTemplateBusinessType.LOGIN_CODE, model.getPhone(), sendParams(random));
                 HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
-                boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT);
+                boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT+ model.getPhone());
                 if (existHashKey) {
-                    long count = redisValidateCode.size(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT+model.getPhone());
-                    redisValidateCode.put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), String.valueOf(count+Long.valueOf(1)), random);
+                    long count = redisValidateCode.size(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone());
+                    redisValidateCode.put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), String.valueOf(count + Long.valueOf(1)), random);
                 } else {
                     //不存在 新建
                     redisTemplate.opsForHash().put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), "0", random);
                     //设置过期 当天剩余时间
                     redisTemplate.expire(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), DateUtil.setValidateExprie(), TimeUnit.SECONDS);
                 }
-                //缓存验证码 60s
-                redisTemplate.opsForValue().set(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
+                boolean existLogKey = redisTemplate.hasKey(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone());
+                if (!existLogKey) {
+                    //缓存验证码 60s
+                    redisTemplate.opsForValue().set(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), random);
+                    redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
+                }
                 //60s缓存器
                 countCache.isRequestOutInterface(ValidateCodeEnum.LOGIN_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone(), 60l);
                 //设置该用户  验证码缓存器
@@ -94,13 +97,16 @@ public class SmsServiceImpl implements SmsService {
                 messageService.sendSms(EMessageTemplateBusinessType.UPDATE_PWD_CHECKCODE, model.getPhone(), sendParams(random));
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), 60l, TimeUnit.SECONDS);
+                redisTemplate.expire(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
             } else if (model.getValidateType().equals(ValidateCodeEnum.FORGET_PWD_CODE.getKey())) {
                 //忘记密码验证码
                 messageService.sendSms(EMessageTemplateBusinessType.FINDBACK_LOGIN_PWD, model.getPhone(), sendParams(random));
-                //缓存验证码 60s
-                redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
+                boolean existForgKey = redisTemplate.hasKey(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone());
+                if (!existForgKey) {
+                    //缓存验证码 60s
+                    redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
+                    redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
+                }
                 //60s缓存器
                 countCache.isRequestOutInterface(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone(), 60l);
             }
