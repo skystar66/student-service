@@ -41,7 +41,7 @@ public class ChangeStuServiceImpl implements ChangeStuService {
     public ResponseResult changeStu(ChangeStuRequestModel model) {
         ResponseResult result = new ResponseResult();
         try {
-            SsUStudent studentParent = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
+            SsUStudent studentParent = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getTokenId()));
             if (null != studentParent) {
                 SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()), studentParent.getParentPhone());
                 if (null == student) {
