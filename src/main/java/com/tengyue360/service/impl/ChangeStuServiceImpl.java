@@ -41,18 +41,21 @@ public class ChangeStuServiceImpl implements ChangeStuService {
     public ResponseResult changeStu(ChangeStuRequestModel model) {
         ResponseResult result = new ResponseResult();
         try {
-            SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()), model.getPhone());
-            if (null == student) {
-                result.setErrno(ReturnCode.CHANGE_STUDENT_ERROR.code());
-                result.setError(ReturnCode.CHANGE_STUDENT_ERROR.msg());
-                return result;
+            SsUStudent studentParent = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getId()));
+            if (null != studentParent) {
+                SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()), studentParent.getParentPhone());
+                if (null == student) {
+                    result.setErrno(ReturnCode.CHANGE_STUDENT_ERROR.code());
+                    result.setError(ReturnCode.CHANGE_STUDENT_ERROR.msg());
+                    return result;
+                }
+                StudentVo studentVo = tokenManagerService.getToekn(student.getParentPhone());
+                //记录登录日志
+                ThreadProvider.getThreadPool().execute(() -> {
+                    loginLogService.saveloginLog(studentVo.getId(),studentVo.getToken());
+                });
+                result.setToken(studentVo.getToken());
             }
-            StudentVo studentVo = tokenManagerService.getToekn(model.getPhone());
-            //记录登录日志
-            ThreadProvider.getThreadPool().execute(() -> {
-                loginLogService.saveloginLog(studentVo.getId(),studentVo.getToken());
-            });
-            result.setToken(studentVo.getToken());
             result.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
             result.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             result.setData(null);

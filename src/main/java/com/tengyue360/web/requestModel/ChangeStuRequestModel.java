@@ -22,4 +22,13 @@ public class ChangeStuRequestModel extends BaseRequestModel {
     public void setId(String id) {
         this.id = id;
     }
+
+
+    @Override
+    public String toString() {
+        return "ChangeStuRequestModel{" +
+                "id='" + id + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }
