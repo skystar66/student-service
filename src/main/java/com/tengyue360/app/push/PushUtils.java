@@ -39,7 +39,7 @@ public class PushUtils {
             SingleMessage message = new SingleMessage();
             message.setOffline(true);
             // 离线有效时间，单位为毫秒，可选
-            message.setOfflineExpireTime(24 * 3600 * 1000);
+            message.setOfflineExpireTime(24 * 3600 * 1000l);
             message.setData(template);
             // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
             message.setPushNetWorkType(0);

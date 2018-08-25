@@ -38,7 +38,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public boolean sendSms(EMessageTemplateBusinessType businessType, String phone, JSONObject context) {
-        MessageTemplate messageTemplate = null;
+        MessageTemplate messageTemplate = new MessageTemplate();
         try {
             messageTemplate = handleMessageParam(businessType, context);
             logger.info("sendSms message=" + messageTemplate + ",businessType=" + businessType
