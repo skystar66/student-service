@@ -8,9 +8,10 @@ pipeline:
     privileged: true
     commands:
       - mvn clean package
-      #- mvn sonar:sonar -Dsonar.host.url=http://sonarqube.tengyue360.com -Dsonar.login=tengyue360
+      - mvn sonar:sonar -Dsonar.host.url=http://sonarqube.tengyue360.com -Dsonar.login=aa111d08de4fb71e24d84721a3277a4b5f93ce7a
     volumes:
       - /drone/maven-repo:/root/.m2
+      - /home/sonar-repo:/root/.sonar
 
   public-dev:
     image: harbor.tengyue360.com/drone/drone-docker
