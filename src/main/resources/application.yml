@@ -62,7 +62,7 @@ logging:
 url:
   appApi: https://api.tengyue360.com
   sms: api.tengyue360.com/api/tools/sms/send
-#超时时间
+#超时时间1
 timeout: 120
 flyway:
   locations: classpath:db
