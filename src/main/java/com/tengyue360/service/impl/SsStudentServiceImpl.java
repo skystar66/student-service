@@ -76,10 +76,10 @@ public class SsStudentServiceImpl implements SsStudentService {
         ResponseResult responseResult = new ResponseResult();
         try {
             //校验身份
-            ResponseResult resultCheck = checkTokenService.checkToken(model.getUserId(), null, model.getPhone());
-            if (null != resultCheck) {
-                return resultCheck;
-            }
+//            ResponseResult resultCheck = checkTokenService.checkToken(model.getUserId(), null, model.getPhone());
+//            if (null != resultCheck) {
+//                return resultCheck;
+//            }
             List<AccountInfoResponseModel> stuList = new ArrayList<AccountInfoResponseModel>();
             //校验是否存在缓存
             boolean exist = redisTemplate.hasKey(RedisConstants.STU_LIST_INFO + model.getPhone());
@@ -90,27 +90,31 @@ public class SsStudentServiceImpl implements SsStudentService {
                 responseResult.setData(stuList);
                 return responseResult;
             }
-            //查询学员列表
-            List<SsUStudent> uStudents = studentMapper.queryStudentByPhone(model.getPhone());
-            if (null != uStudents && uStudents.size() > 0) {
-                for (SsUStudent student : uStudents) {
-                    AccountInfoResponseModel model1 = new AccountInfoResponseModel();
-                    model1.setId(student.getId().toString());
-                    model1.setName(student.getName());
-                    //根据学员id查询附件
-                    List<SsAttachFilePath> attachFilePaths = attachFilePathMapper.queryUrlByReleationId(student.getId().toString());
-                    if (null != attachFilePaths && attachFilePaths.size() > 0) {
-                        model1.setAttachaId(attachFilePaths.get(0).getId());
-                        model1.setAttachPath(attachFilePaths.get(0).getAttachPath());
+            //根据学员id 查询学员信息接口
+            SsUStudent ssUStudent = studentMapper.selectByPrimaryKey(Integer.parseInt(model.getUserId()));
+            if (null != ssUStudent) {
+                //查询学员列表
+                List<SsUStudent> uStudents = studentMapper.queryStudentByPhone(ssUStudent.getParentPhone());
+                if (null != uStudents && uStudents.size() > 0) {
+                    for (SsUStudent student : uStudents) {
+                        AccountInfoResponseModel model1 = new AccountInfoResponseModel();
+                        model1.setId(student.getId().toString());
+                        model1.setName(student.getName());
+                        //根据学员id查询附件
+                        List<SsAttachFilePath> attachFilePaths = attachFilePathMapper.queryUrlByReleationId(student.getId().toString());
+                        if (null != attachFilePaths && attachFilePaths.size() > 0) {
+                            model1.setAttachaId(attachFilePaths.get(0).getId());
+                            model1.setAttachPath(attachFilePaths.get(0).getAttachPath());
+                        }
+                        stuList.add(model1);
                     }
-                    stuList.add(model1);
+                    responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
+                    responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
+                    //处理缓存
+                    redisTemplate.opsForValue().set(RedisConstants.STU_LIST_INFO + model.getPhone(), JSONObject.toJSON(stuList));
+                    responseResult.setData(stuList);
+                    return responseResult;
                 }
-                responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
-                responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
-                //处理缓存
-                redisTemplate.opsForValue().set(RedisConstants.STU_LIST_INFO + model.getPhone(), JSONObject.toJSON(stuList));
-                responseResult.setData(stuList);
-                return responseResult;
             }
             responseResult.setErrno(ReturnCode.ERROR_EMPTY_DATA.code());
             responseResult.setError(ReturnCode.ERROR_EMPTY_DATA.msg());

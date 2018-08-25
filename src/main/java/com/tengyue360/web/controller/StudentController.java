@@ -45,6 +45,7 @@ public class StudentController {
             logger.info("根据学员id查询学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model, request));
             return BeanValidators.isValidateQueryStudentById(model, request);
         }
+        model.setId(TokenFactory.analysisToken(TokenFactory.SIGNING_KEY, request.getHeader(TokenFactory.HEADER_NAME)));
         ResponseResult responseResult = studentService.queryStudentById(model);
         if (null != responseResult) {
             logger.info("根据学员id查询学员信息接口成功，返回结果{}", responseResult);
@@ -68,6 +69,7 @@ public class StudentController {
             logger.info("根据学员id更新学员信息接口参数信息校验失败，返回结果{}", BeanValidators.isValidateQueryStudentById(model, request));
             return BeanValidators.isValidateQueryStudentById(model, request);
         }
+        model.setId(TokenFactory.analysisToken(TokenFactory.SIGNING_KEY, request.getHeader(TokenFactory.HEADER_NAME)));
         ResponseResult responseResult = studentService.updateStudentById(model);
         if (null != responseResult) {
             logger.info("根据学员id更新学员信息接口成功，返回结果{}", responseResult);
