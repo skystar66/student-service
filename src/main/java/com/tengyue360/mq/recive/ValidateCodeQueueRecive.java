@@ -1,6 +1,5 @@
 package com.tengyue360.mq.recive;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.Channel;
 import com.tengyue360.bean.SsMqPushLog;
 import com.tengyue360.constant.QueueConstant;

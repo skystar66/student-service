@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.tengyue360.bean.SsMqPushLog;
 import com.tengyue360.constant.FanoutExancheConstant;
 import com.tengyue360.dao.SsMqPushLogMapper;
-import com.tengyue360.exception.BusinessException;
 import com.tengyue360.mq.topic.message.MessageTemplate;
 import com.tengyue360.utils.CommonBeanUtils;
 import org.slf4j.Logger;

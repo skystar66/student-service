@@ -1,6 +1,5 @@
 package com.tengyue360.service.impl;
 
-import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.dao.SsUStudentMapper;
@@ -10,10 +9,8 @@ import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.CheckTokenService;
 import com.tengyue360.service.TokenManagerService;
 import com.tengyue360.service.UserService;
-import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.vo.StudentVo;
 import com.tengyue360.web.requestModel.UserRequestModel;
-import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 /**
  * 用户模块服务

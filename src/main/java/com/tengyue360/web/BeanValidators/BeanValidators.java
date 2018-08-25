@@ -1,6 +1,5 @@
 package com.tengyue360.web.BeanValidators;
 
-import com.tengyue360.cache.ICountCache;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.RedisConstants;

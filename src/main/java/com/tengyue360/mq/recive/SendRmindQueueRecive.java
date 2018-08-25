@@ -1,9 +1,7 @@
 package com.tengyue360.mq.recive;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.Channel;
-import com.tengyue360.app.push.PushUtils;
 import com.tengyue360.bean.SsMqPushLog;
 import com.tengyue360.constant.QueueConstant;
 import com.tengyue360.dao.SsMqPushLogMapper;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * 接收端 QUEUE_MESSAGE_PUSH_READED_MESSAGE

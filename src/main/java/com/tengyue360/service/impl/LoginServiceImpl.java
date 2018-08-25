@@ -1,6 +1,5 @@
 package com.tengyue360.service.impl;
 
-import com.tengyue360.bean.SsUStudent;
 import com.tengyue360.bean.SsUser;
 import com.tengyue360.common.ReturnCode;
 import com.tengyue360.constant.RedisConstants;
@@ -8,14 +7,11 @@ import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.LoginService;
-import com.tengyue360.service.SsStudentService;
 import com.tengyue360.service.TokenManagerService;
 import com.tengyue360.service.UserLoginLogService;
 import com.tengyue360.utils.CommonBeanUtils;
-import com.tengyue360.utils.TokenFactory;
 import com.tengyue360.vo.StudentVo;
 import com.tengyue360.web.requestModel.LoginRequestModel;
-import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
 import com.tengyue360.web.responseModel.UserResponseModel;
 import org.slf4j.Logger;
@@ -24,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * 登录模块服务

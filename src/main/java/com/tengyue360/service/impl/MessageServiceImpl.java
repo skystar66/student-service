@@ -1,7 +1,6 @@
 package com.tengyue360.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tengyue360.constant.Constants;
 import com.tengyue360.constant.QueueConstant;
 import com.tengyue360.enums.EMessageTemplateBusinessType;
 import com.tengyue360.enums.EMqSendType;

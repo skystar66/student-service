@@ -1,7 +1,6 @@
 package com.tengyue360.mq.recive;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.Channel;
 import com.tengyue360.app.push.PushUtils;
 import com.tengyue360.bean.SsMqPushLog;
