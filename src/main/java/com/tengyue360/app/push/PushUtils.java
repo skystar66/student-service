@@ -28,7 +28,7 @@ public class PushUtils {
     private static String appId = ResourceUtil.getAPP_AppId();
     private static String appKey = ResourceUtil.getAPP_Key();
     private static String masterSecret = ResourceUtil.getAPP_MasterSecret();
-    static String CID = ResourceUtil.getAPP_CID();
+    static String cid = ResourceUtil.getAPP_CID();
     static String host = ResourceUtil.getAPP_Host();
 
     public static Map<String, Object> pushAppMessage(String topic, String context) {
@@ -45,7 +45,7 @@ public class PushUtils {
             message.setPushNetWorkType(0);
             Target target = new Target();
             target.setAppId(appId);
-            target.setClientId(CID);
+            target.setClientId(cid);
             //target.setAlias(Alias);
             IPushResult ret = null;
             try {
@@ -56,12 +56,14 @@ public class PushUtils {
             }
             if (ret != null) {
                 logger.info("个推成功，topic：{}，context：{},返回信息:{}", topic, context, ret.getResponse().toString());
+                return ret.getResponse();
             } else {
                 logger.info("个推失败，topic：{}，context：{} 服务器响应异常", topic, context);
+                return null;
             }
-            return ret.getResponse();
+
         } catch (Exception e) {
-            new BusinessException(e.getMessage(), true);
+            logger.error(e.getMessage());
         }
         return null;
     }

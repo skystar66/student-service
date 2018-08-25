@@ -45,15 +45,12 @@ public class MessageServiceImpl implements MessageService {
                     + "开始发送短信" + "，phone:" + phone);
             messageTemplate.setPhone(phone);
             mqMessageByTopic.send(messageTemplate);
+            return true;
         } catch (Exception e) {
             logger.info("sendSms message=" + messageTemplate + ",businessType=" + businessType
                     + "开始发送失败" + "，phone:" + phone);
             return false;
         }
-        if (messageTemplate == null) {
-            return false;
-        }
-        return false;
     }
 
 
@@ -66,21 +63,18 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public boolean pushMessage(EMessageTemplateBusinessType businessType, JSONObject context) {
-        MessageTemplate messageTemplate = null;
+        MessageTemplate messageTemplate = new MessageTemplate();
         try {
             messageTemplate = handleMessageParam(businessType, context);
             logger.info("pushMessage message=" + messageTemplate + ",businessType=" + businessType
                     + "开始推送消息,主题：" + messageTemplate.getTopic() + "，内容：" + messageTemplate.getMessageInfo());
             mqMessageByTopic.send(messageTemplate);
+            return true;
         } catch (Exception e) {
             logger.info("pushMessage message=" + messageTemplate + ",businessType=" + businessType
                     + "开始推送消息失败,主题：" + messageTemplate.getTopic() + "，内容：" + messageTemplate.getMessageInfo());
             return false;
         }
-        if (messageTemplate == null) {
-            return false;
-        }
-        return false;
     }
 
     /**

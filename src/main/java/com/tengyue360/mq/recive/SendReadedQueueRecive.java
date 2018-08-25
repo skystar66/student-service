@@ -52,7 +52,7 @@ public class SendReadedQueueRecive {
             mqPushLogMapper.updateByPrimaryKey(pushLog);
             //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会在发
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            logger.info("队列：{}, 消息已被成功处理：{}", messageTemplate1);
+            logger.info("队列：{}, 消息已被成功处理：{}",messageTemplate1.getMessageQueueName(), messageTemplate1);
         } catch (IOException e) {
             e.printStackTrace();
             //丢弃这条消息

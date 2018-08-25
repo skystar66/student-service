@@ -50,7 +50,7 @@ public class SendMqMessageByTopic implements RabbitTemplate.ReturnCallback, Rabb
             CommonBeanUtils.copyProperties(messageTemplate,pushLog);
             mqPushLogMapper.insert(pushLog);
         } catch (Exception ex) {
-            new BusinessException(ex.getMessage(), true);
+            logger.info(ex.getMessage());
         }
 
     }

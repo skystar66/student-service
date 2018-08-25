@@ -85,7 +85,7 @@ public class SmsServiceImpl implements SmsService {
                 }
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 5 * 60, TimeUnit.SECONDS);
+                redisTemplate.expire(ValidateCodeEnum.LOGIN_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
                 //60s缓存器
                 countCache.isRequestOutInterface(ValidateCodeEnum.LOGIN_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone(), 60l);
                 //设置该用户  验证码缓存器
@@ -94,13 +94,13 @@ public class SmsServiceImpl implements SmsService {
                 messageService.sendSms(EMessageTemplateBusinessType.UPDATE_PWD_CHECKCODE, model.getPhone(), sendParams(random));
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), 60, TimeUnit.SECONDS);
+                redisTemplate.expire(ValidateCodeEnum.UPDATE_PWD_CODE.getKey() + model.getPhone(), 60l, TimeUnit.SECONDS);
             } else if (model.getValidateType().equals(ValidateCodeEnum.FORGET_PWD_CODE.getKey())) {
                 //忘记密码验证码
                 messageService.sendSms(EMessageTemplateBusinessType.FINDBACK_LOGIN_PWD, model.getPhone(), sendParams(random));
                 //缓存验证码 60s
                 redisTemplate.opsForValue().set(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), random);
-                redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 5 * 60, TimeUnit.SECONDS);
+                redisTemplate.expire(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + model.getPhone(), 5 * 60l, TimeUnit.SECONDS);
                 //60s缓存器
                 countCache.isRequestOutInterface(ValidateCodeEnum.FORGET_PWD_CODE.getKey() + RedisConstants.INCREMENT_COUNT_STU + model.getPhone(), 60l);
             }
