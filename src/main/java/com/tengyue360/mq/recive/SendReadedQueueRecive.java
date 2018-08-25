@@ -54,7 +54,7 @@ public class SendReadedQueueRecive {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             logger.info("队列：{}, 消息已被成功处理：{}",messageTemplate1.getMessageQueueName(), messageTemplate1);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             //丢弃这条消息
             //channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
             if (message.getMessageProperties().getRedelivered()) {

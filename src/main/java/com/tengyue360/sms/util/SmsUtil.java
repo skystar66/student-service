@@ -46,7 +46,7 @@ public class SmsUtil {
             logger.info("手机号：{},短信【{}】发送成功,返回结果：{}", mobile, context, smsVariableResponse);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             logger.info("手机号：{},短信【{}】发送失败,返回结果：{}", mobile, context, responseResult);
         }
         return false;
@@ -72,7 +72,7 @@ public class SmsUtil {
             logger.info("手机号：{},短信【{}】发送成功,返回结果：{}", mobile, context, smsVariableResponse);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             logger.info("手机号：{},短信【{}】发送失败,返回结果：{}", mobile, context, responseResult);
         }
         return false;

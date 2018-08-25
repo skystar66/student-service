@@ -21,7 +21,7 @@ public class ThreadProvider {
     private static final Integer threadCount = 20;
 
 
-    public static LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
+    private static LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
 
     // 队列只能存放1000瓶酒，
 //    public static LinkedBlockingQueue<DemoObject> queue = new LinkedBlockingQueue<DemoObject>(1000);

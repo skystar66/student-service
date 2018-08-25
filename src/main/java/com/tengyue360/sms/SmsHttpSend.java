@@ -1,10 +1,14 @@
 package com.tengyue360.sms;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class SmsHttpSend {
+    private static Logger logger = LoggerFactory.getLogger(SmsHttpSend.class);
     /**
      * @param path
      * @param postContent
@@ -48,7 +52,7 @@ public class SmsHttpSend {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return null;
     }

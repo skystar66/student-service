@@ -51,7 +51,7 @@ public class PushUtils {
             try {
                 ret = push.pushMessageToSingle(message, target);
             } catch (RequestException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
                 ret = push.pushMessageToSingle(message, target, e.getRequestId());
             }
             if (ret != null) {

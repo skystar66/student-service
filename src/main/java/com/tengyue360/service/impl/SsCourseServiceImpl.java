@@ -101,7 +101,7 @@ public class SsCourseServiceImpl implements SsCourseService {
                                 return 0;
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error(e.getMessage());
                         }
                         return 0;
                     }
