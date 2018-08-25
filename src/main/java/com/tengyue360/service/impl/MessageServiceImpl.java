@@ -144,7 +144,7 @@ public class MessageServiceImpl implements MessageService {
 
             default:
                 logger.error("消息错误");
-                return null;
+                return messageTemplate;
         }
         return messageTemplate;
     }
