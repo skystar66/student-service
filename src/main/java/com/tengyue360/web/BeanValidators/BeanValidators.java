@@ -227,6 +227,13 @@ public class BeanValidators {
             //手机号不能不能为空
             return new ResponseResult(ReturnCode.NAME_EMPTY.code(), ReturnCode.NAME_EMPTY.msg(), null);
         }
+        //校验 该用户忘记密码 修改token 是否正确
+        boolean isexist = redisTemplate.hasKey(RedisConstants.FORGET_PWD_PHONE_TOKEN + model.getPhone());
+        if (!isexist) {
+            return new ResponseResult(ReturnCode.FORGET_PWD_TOKEN_ERROR.code(), ReturnCode.FORGET_PWD_TOKEN_ERROR.msg(), null);
+        }
+        //校验通过，删除token
+        redisTemplate.delete(RedisConstants.FORGET_PWD_PHONE_TOKEN + model.getPhone());
         return null;
     }
 
@@ -255,6 +262,8 @@ public class BeanValidators {
                 return new ResponseResult(ReturnCode.VALIDAT_CODE_ERROR.code(), ReturnCode.VALIDAT_CODE_ERROR.msg(), null);
             }
         }
+        //生成一个该用户忘记密码 修改token
+        redisTemplate.opsForValue().set(RedisConstants.FORGET_PWD_PHONE_TOKEN + model.getPhone(), model.getMessageCode());
         return null;
     }
 
