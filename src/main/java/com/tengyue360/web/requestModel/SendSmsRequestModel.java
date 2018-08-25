@@ -1,5 +1,7 @@
 package com.tengyue360.web.requestModel;
 
+import com.tengyue360.enums.ValidateCodeEnum;
+
 /**
  * 封装验证码请求参数
  *
@@ -14,7 +16,8 @@ public class SendSmsRequestModel extends BaseRequestModel {
 
     private String operateType;//获取验证码操作类型
 
-    private String validateType;//验证码类型
+    private ValidateCodeEnum validateType;//验证码类型
+
 
 
     public String getOperateType() {
@@ -33,14 +36,13 @@ public class SendSmsRequestModel extends BaseRequestModel {
         this.phone = phone;
     }
 
-    public String getValidateType() {
+    public ValidateCodeEnum getValidateType() {
         return validateType;
     }
 
-    public void setValidateType(String validateType) {
+    public void setValidateType(ValidateCodeEnum validateType) {
         this.validateType = validateType;
     }
-
 
     @Override
     public String toString() {

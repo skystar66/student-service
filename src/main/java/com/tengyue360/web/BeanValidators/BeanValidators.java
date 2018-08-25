@@ -29,7 +29,7 @@ public class BeanValidators {
 
 
     private static Logger logger = LoggerFactory.getLogger(BeanValidators.class);
-    private static final String regex = "^1[3|4|5|7|8|9][0-9]\\d{8}";
+    private static final String regex = "^1[3|4|5|6|7|8|9][0-9]\\d{8}";
 
     private static RedisOperations<String, Object> redisOperations;//redis 获取值对象
     private static HashOperations<String, String, String> reHashOperations; //redis 获取hash只对象
@@ -342,14 +342,6 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-//        if (StringUtils.isBlank(model.getId())) {
-//            //学生id不能为空
-//            return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
-//        }
-//        //校验token
-//        if (null != isValidateCurrentToken(request, model.getId())) {
-//            return isValidateCurrentToken(request, model.getId());
-//        }
         return null;
     }
 
@@ -365,10 +357,6 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-//        if (StringUtils.isBlank(model.getPhone())) {
-//            //用户手机号不能为空
-//            return new ResponseResult(ReturnCode.PHONE_IS_EMPTY.code(), ReturnCode.PHONE_IS_EMPTY.msg(), null);
-//        }
         return null;
     }
 
