@@ -40,17 +40,17 @@ public class InterfaceCountCache implements ICountCache {
 
     @Override
     public String getValue(String key) {
-        HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
-        if(operateions.get("student",key)==null){
-            return "false";
-        }
-        return operateions.get("student",key).toString();
+//        HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
+//        if(operateions.get("student",key)==null){
+//            return "false";
+//        }
+        return null;
     }
 
     @Override
     public void setValue(Object key,Object value) {
-        HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
-        operateions.put("student",key,value);
+//        HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
+//        operateions.put("student",key,value);
     }
 
 

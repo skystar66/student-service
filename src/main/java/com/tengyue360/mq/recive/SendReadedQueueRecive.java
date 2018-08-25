@@ -61,7 +61,6 @@ public class SendReadedQueueRecive {
                 logger.info("消息即将再次返回队列处理...");
                 channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true); // requeue为是否重新回到队列
             }
-            System.out.println("receiver1 fail");
         }
     }
 

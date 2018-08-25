@@ -124,7 +124,7 @@ public class MessageServiceImpl implements MessageService {
                 messageTemplate = newMessageTemplate(templateMsg, QueueConstant.QUEUE_MESSAGE_SEND_COURSE_REMIND, EMqSendType.SEND_RUNING_CLASS_REMIND_ON_BEFOR_TWO_HOUR_CODE.getCode());
                 messageTemplate.setTopic("上课提醒");
             }
-
+            break;
 
             case PUSH_RUNING_CLASS_READED: {
                 //推送上课准备短信
