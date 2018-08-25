@@ -75,10 +75,11 @@ public class SmsServiceImpl implements SmsService {
                 HashOperations<String, String, String> redisValidateCode = redisTemplate.opsForHash();
                 boolean existHashKey = redisTemplate.hasKey(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT);
                 if (existHashKey) {
-                    redisValidateCode.put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), random, random);
+                    long count = redisValidateCode.size(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT+model.getPhone());
+                    redisValidateCode.put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), String.valueOf(count+Long.valueOf(1)), random);
                 } else {
                     //不存在 新建
-                    redisTemplate.opsForHash().put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), random, random);
+                    redisTemplate.opsForHash().put(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), "0", random);
                     //设置过期 当天剩余时间
                     redisTemplate.expire(RedisConstants.REDIS_TWENTY_FOUR_CODE_COUNT + model.getPhone(), DateUtil.setValidateExprie(), TimeUnit.SECONDS);
                 }
