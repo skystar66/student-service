@@ -342,14 +342,6 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-//        if (StringUtils.isBlank(model.getId())) {
-//            //学生id不能为空
-//            return new ResponseResult(ReturnCode.STUDENT_ID_EMPTY.code(), ReturnCode.STUDENT_ID_EMPTY.msg(), null);
-//        }
-//        //校验token
-//        if (null != isValidateCurrentToken(request, model.getId())) {
-//            return isValidateCurrentToken(request, model.getId());
-//        }
         return null;
     }
 
@@ -365,10 +357,6 @@ public class BeanValidators {
         if (null != isBaseValidate(model)) {
             return isBaseValidate(model);
         }
-//        if (StringUtils.isBlank(model.getPhone())) {
-//            //用户手机号不能为空
-//            return new ResponseResult(ReturnCode.PHONE_IS_EMPTY.code(), ReturnCode.PHONE_IS_EMPTY.msg(), null);
-//        }
         return null;
     }
 

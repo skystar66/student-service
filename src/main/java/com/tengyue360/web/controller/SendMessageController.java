@@ -47,7 +47,7 @@ public class SendMessageController {
             return BeanValidators.isValidateLoginSms(model, redisTemplate);
         }
         //调用后台服务 获取验证码
-        model.setValidateType(ValidateCodeEnum.LOGIN_CODE.getKey());
+        model.setValidateType(ValidateCodeEnum.LOGIN_CODE);
         ResponseResult responseResult = smsService.getValidateCode(model);
         if (null != responseResult) {
             logger.info("获取登录短信验证码成功吗，返回信息x：{}", responseResult);
@@ -75,7 +75,7 @@ public class SendMessageController {
             return BeanValidators.isValidateForgetPwdSms(model,redisTemplate);
         }
         //调用后台服务 获取验证码
-        model.setValidateType(ValidateCodeEnum.FORGET_PWD_CODE.getKey());
+        model.setValidateType(ValidateCodeEnum.FORGET_PWD_CODE);
         ResponseResult responseResult = smsService.getValidateCode(model);
         if (null != responseResult) {
             logger.info("获取修改短信验证码成功吗，返回信息x：{}", responseResult);
