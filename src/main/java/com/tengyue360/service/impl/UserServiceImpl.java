@@ -8,8 +8,10 @@ import com.tengyue360.dao.SsUserLoginLogMapper;
 import com.tengyue360.dao.SsUserMapper;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.CheckTokenService;
+import com.tengyue360.service.TokenManagerService;
 import com.tengyue360.service.UserService;
 import com.tengyue360.utils.TokenFactory;
+import com.tengyue360.vo.StudentVo;
 import com.tengyue360.web.requestModel.UserRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -40,6 +42,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     CheckTokenService checkTokenService;
+
+
+    @Autowired
+    TokenManagerService tokenManagerService;
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -112,17 +118,10 @@ public class UserServiceImpl implements UserService {
                 //更新密码
                 user.setPassword(model.getNewPwd());
                 //获取学生端 app jwt topken
-                String token = TokenFactory.getInstance().createToken(user.getId().toString(), "3");
-                //默认分配最早的 一个学生token
-                List<SsUStudent> stulist = studentMapper.queryStudentByPhone(model.getPhone());
-                if (null != stulist && stulist.size() > 0) {
-                    model.setUserId(stulist.get(0).getId().toString());
-                }
-                //删除JWT中所有该用户的登录token
-//                    TokenFactory.refreshToken()
+                StudentVo studentVo = tokenManagerService.getToekn(model.getPhone());
                 //删除用户登录日志中的token
                 ThreadProvider.getThreadPool().execute(() -> {
-                    updatePwd(Integer.parseInt(model.getUserId() == null ? "0" : model.getUserId()), user);
+                    updatePwd(studentVo.getId(), user);
                 });
                 responseResult.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
                 responseResult.setError(ReturnCode.ACTIVE_SUCCESS.msg());
@@ -156,9 +155,6 @@ public class UserServiceImpl implements UserService {
         try {
             SsUser user = userMapper.selectByPrimaryKey(Integer.parseInt(model.getUserId()));
             if (null != user) {
-                //删除JWT中所有该用户的登录token
-//               TokenFactory.refreshToken()
-
                 //删除用户登录日志中的token
                 ThreadProvider.getThreadPool().execute(() -> {
                     loginLogMapper.deleteToeknByUserId(user.getId(), "3");

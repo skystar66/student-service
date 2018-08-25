@@ -7,9 +7,11 @@ import com.tengyue360.dao.SsUStudentMapper;
 import com.tengyue360.pool.ThreadProvider;
 import com.tengyue360.service.ChangeStuService;
 import com.tengyue360.service.SsStudentService;
+import com.tengyue360.service.TokenManagerService;
 import com.tengyue360.service.UserLoginLogService;
 import com.tengyue360.utils.CommonBeanUtils;
 import com.tengyue360.utils.TokenFactory;
+import com.tengyue360.vo.StudentVo;
 import com.tengyue360.web.requestModel.ChangeStuRequestModel;
 import com.tengyue360.web.responseModel.AccountInfoResponseModel;
 import com.tengyue360.web.responseModel.ResponseResult;
@@ -31,25 +33,26 @@ public class ChangeStuServiceImpl implements ChangeStuService {
     UserLoginLogService loginLogService;
     @Autowired
     SsUStudentMapper studentMapper;
+    @Autowired
+    TokenManagerService tokenManagerService;
 
 
     @Override
     public ResponseResult changeStu(ChangeStuRequestModel model) {
         ResponseResult result = new ResponseResult();
         try {
-            SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()),model.getPhone());
+            SsUStudent student = studentMapper.queryStudentByIdAndPhone(Integer.parseInt(model.getId()), model.getPhone());
             if (null == student) {
                 result.setErrno(ReturnCode.CHANGE_STUDENT_ERROR.code());
                 result.setError(ReturnCode.CHANGE_STUDENT_ERROR.msg());
                 return result;
             }
-            //获取学生端 app jwt topken
-            String token = TokenFactory.getInstance().createToken(model.getId().toString(), "3");
+            StudentVo studentVo = tokenManagerService.getToekn(model.getPhone());
             //记录登录日志
             ThreadProvider.getThreadPool().execute(() -> {
-                loginLogService.saveloginLog(Integer.parseInt(model.getId()), token);
+                loginLogService.saveloginLog(studentVo.getId(),studentVo.getToken());
             });
-            result.setToken(token);
+            result.setToken(studentVo.getToken());
             result.setErrno(ReturnCode.ACTIVE_SUCCESS.code());
             result.setError(ReturnCode.ACTIVE_SUCCESS.msg());
             result.setData(null);
